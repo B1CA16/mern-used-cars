@@ -16,17 +16,17 @@ const FormComponent = () => {
   const years = [2023, 2022, 2021, 2020, 2019];
 
   return (
-    <form className="w-full max-w-xl bg-white p-6 rounded-lg shadow-lg space-y-6">
+    <form className="w-full max-w-xl bg-white p-6 rounded-lg space-y-6">
       <h1 className='text-neutral-900 text-2xl font-medium mb-4'>What car are you looking for?</h1>
       
       <div className="flex flex-wrap gap-4 mb-4">
-        {/* Brand */}
+        {/* Make */}
         <Autocomplete
           freeSolo
           options={makes}
           value={make}
           onChange={(event, newValue) => setMake(newValue)}
-          renderInput={(params) => <TextField {...params} label="Brand" variant="standard" />}
+          renderInput={(params) => <TextField {...params} label="Make" variant="standard" />}
           className="flex-1"
         />
 
@@ -86,7 +86,7 @@ const FormComponent = () => {
 
       {/* Search */}
       <div className='flex flex-wrap gap-4'>
-        <a href="#" className="text-blue-500 flex-1 flex items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500">
+        <a href="#" className="text-blue-500 flex-1 flex gap-2 items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500">
           <FaSliders className='transform transition-transform duration-300 group-hover:scale-110' /> Advanced Search
         </a>
         <button className='flex-1 bg-red-600 text-white uppercase font-medium text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
