@@ -12,11 +12,11 @@ const Navbar = () => {
         <div className='flex gap-8 items-center'>
           <Link 
             to="/start-selling" 
-            className='text-lg flex items-center gap-2 px-5 py-[0.325rem] font-medium rounded-md border-2 border-transparent hover:border-neutral-300 hover:text-neutral-300 transition duration-300 group'>
-            <FaPlus className='transform transition-transform duration-300 group-hover:scale-125' />
+            className='text-lg flex items-center gap-2 px-5 py-[0.325rem] font-medium rounded-md border-2 border-transparent hover:scale-105 hover:border-neutral-300 hover:text-neutral-300 transition duration-300 group'>
+            <FaPlus className='transform transition-transform duration-300 group-hover:scale-110' />
             Start selling
           </Link>
-          <button className='bg-white text-blue-950 uppercase font-medium text-lg px-5 py-2 rounded-md hover:bg-neutral-200 transition-colors duration-300'>
+          <button className='bg-white text-blue-950 uppercase font-medium text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-neutral-200 transition duration-300'>
             Sign In
           </button>
         </div>
