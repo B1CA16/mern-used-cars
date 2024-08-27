@@ -42,9 +42,9 @@ const Footer = () => {
               <p className='flex gap-2 mb-2 items-center'>
                 <FaPhone /> +123 456 789 012
               </p>
-              <p className='flex gap-2 items-center'>
+              <a href='mailto:info@SeconDrive.com' className='flex gap-2 items-center'>
                 <FaEnvelope /> info@SeconDrive.com
-              </p>
+              </a>
             </div>
 
             {/* Redes sociais */}

@@ -12,7 +12,7 @@ const Navbar = () => {
         <div className='flex gap-8 items-center'>
           <Link 
             to="/start-selling" 
-            className='text-lg flex items-center gap-2 px-5 py-[0.325rem] font-medium rounded-md border-2 border-transparent hover:scale-105 hover:border-neutral-300 hover:text-neutral-300 transition duration-300 group'>
+            className='text-lg flex text-white items-center gap-2 px-5 py-[0.325rem] font-medium rounded-md border-2 border-transparent hover:scale-105 hover:border-neutral-300 hover:text-neutral-300 transition duration-300 group'>
             <FaPlus className='transform transition-transform duration-300 group-hover:scale-110' />
             Start selling
           </Link>
@@ -21,10 +21,6 @@ const Navbar = () => {
           </button>
         </div>
       </div>
-      {/* <div className='flex justify-between px-20'>
-        <img className='w-56' src="/Wheel.png" alt="Wheel" />
-        <img className='w-56' src="/Wheel.png" alt="Wheel" />
-      </div> */}
     </div>
     
   );
