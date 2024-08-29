@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CarCard from './CarCard'; 
 
-const MostPopular = () => {
+const RecentlyAdded = () => {
   const settings = {
     dots: false,
     infinite: true,
@@ -45,16 +45,16 @@ const MostPopular = () => {
   };
 
   const cars = [
-    { id: 1, name: 'Toyota Corolla', year: 2019, km: '30 000', fuel: 'Gasoline', cv: 132, image: 'corolla.jpg', price: '15 000' },
-    { id: 2, name: 'Honda Civic', year: 2018, km: '45 000', fuel: 'Diesel', cv: 158, image: 'civic.jpg', price: '40 500' },
-    { id: 3, name: 'Ford Focus', year: 2020, km: '25 000', fuel: 'Gasoline', cv: 160, image: 'focus.jpg', price: '19 200' },
-    { id: 4, name: 'BMW X5', year: 2017, km: '60 000', fuel: 'Diesel', cv: 300, image: 'x5.jpg', price: '34 900' },
-    { id: 5, name: 'Nissan Juke', year: 2021, km: '10 000', fuel: 'Electric', cv: 110, image: 'juke.jpg', price: '26 300' },
+    { id: 1, name: 'Lamborghini Huracán', year: 2017, km: '30 000', fuel: 'Gasoline', cv: 640, image: 'huracan.jpg', price: '270 000' },
+    { id: 2, name: 'Nissan Micra', year: 2022, km: '45 000', fuel: 'Gasoline', cv: 90, image: 'micra.jpg', price: '15 500' },
+    { id: 3, name: 'Opel Corsa', year: 2004, km: '225 000', fuel: 'Diesel', cv: 60, image: 'corsa.jpg', price: '3 200' },
+    { id: 4, name: 'Renault Clio', year: 2023, km: '6 000', fuel: 'Hybrid (Gasoline)', cv: 145, image: 'clio.jpg', price: '27 000' },
+    { id: 5, name: 'Mercedes-Benz C 220', year: 2019, km: '55 000', fuel: 'Diesel', cv: 194, image: 'c220.jpg', price: '36 900' },
   ];
 
   return (
     <div className="most-popular-section p-12">
-      <h2 className="text-4xl font-bold mb-6 text-center">Most Popular Cars</h2>
+      <h2 className="text-4xl font-bold mb-6 text-center">Recently Added Cars</h2>
       <Slider {...settings}>
         {cars.map(car => (
           <div className='p-4'>
@@ -66,4 +66,4 @@ const MostPopular = () => {
   );
 }
 
-export default MostPopular;
+export default RecentlyAdded;
