@@ -7,7 +7,7 @@ import CarsPage from './pages/CarsPage'
 
 const App = () => {
   return (
-    <div className=''>
+    <div>
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
