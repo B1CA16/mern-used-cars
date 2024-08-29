@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className='bg-blue-700 py-10 text-white'>
+    <footer className='bg-blue-700 py-10 mt-12 text-white'>
       <div className='container mx-auto px-10'>
         {/* Descrição da empresa */}
         <div className='text-center'>
