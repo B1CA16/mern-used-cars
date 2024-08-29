@@ -10,11 +10,13 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <MostPopular />
-      <HomeBanner />
-      <RecentlyAdded />
-      <FrequentlyAskedQuestions />
-      <TipsAndMaintenance />
+      <div className='w-11/12 mx-auto'>
+        <MostPopular />
+        <HomeBanner />
+        <RecentlyAdded />
+        <FrequentlyAskedQuestions />
+        <TipsAndMaintenance />
+      </div>
     </div>
   )
 }

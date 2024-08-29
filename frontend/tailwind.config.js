@@ -5,6 +5,9 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      'banner': '1120px',
+    },
     extend: {
       fontFamily: {
         sans: ['Roboto', 'sans-serif'],
