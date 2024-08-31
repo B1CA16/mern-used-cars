@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { FaSliders } from 'react-icons/fa6';
 
 const AdvancedSearch = () => {
   // Sample data for the fields (replace with your actual data sources)
@@ -24,7 +23,6 @@ const AdvancedSearch = () => {
   const [segment, setSegment] = useState(null);
   const [hpFrom, setHpFrom] = useState('');
   const [hpTo, setHpTo] = useState('');
-  const [transmission, setTransmission] = useState(null);
 
   return (
     <div>
