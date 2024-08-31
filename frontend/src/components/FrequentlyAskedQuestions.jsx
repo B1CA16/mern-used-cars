@@ -29,7 +29,7 @@ const FrequentlyAskedQuestions = () => {
 
   return (
     <div className="bg-neutral-100 dark:bg-neutral-900 py-12">
-      <div className="container mx-auto px-6">
+      <div className="mx-auto px-6 sm:px-16">
         <h2 className="text-3xl font-bold text-center mb-8 text-neutral-900 dark:text-neutral-100">
           Frequently Asked Questions (FAQ)
         </h2>

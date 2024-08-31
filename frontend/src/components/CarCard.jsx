@@ -7,7 +7,7 @@ const CarCard = ({ car }) => {
       <div className="p-4">
         <h3 className="text-xl font-bold truncate">{car.name}</h3>
         <p className="text-neutral-800 dark:text-neutral-400">{car.year} &#x2022; {car.km} km</p>
-        <p className="text-neutral-800 dark:text-neutral-400">{car.fuel} &#x2022; {car.cv} CV</p>
+        <p className="text-neutral-800 dark:text-neutral-400 truncate">{car.fuel} &#x2022; {car.hp} HP</p>
         <p className="text-blue-700 font-semibold text-xl mt-2">{car.price} <span className='text-sm'>EUR</span></p>
       </div>
     </div>

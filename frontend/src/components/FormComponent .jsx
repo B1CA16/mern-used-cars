@@ -16,10 +16,10 @@ const FormComponent = () => {
   const years = [2023, 2022, 2021, 2020, 2019];
 
   return (
-    <form className="w-full max-w-xl bg-white p-6 rounded-lg space-y-6">
-      <h1 className='text-neutral-900 text-2xl font-medium mb-4'>What car are you looking for?</h1>
+    <form className="w-full max-w-xl bg-white p-6 rounded-lg space-y-3">
+      <h1 className='text-neutral-900 text-2xl font-medium'>What car are you looking for?</h1>
       
-      <div className="flex flex-wrap gap-4 mb-4">
+      <div className="flex flex-wrap gap-4">
         {/* Make */}
         <Autocomplete
           freeSolo
@@ -41,7 +41,7 @@ const FormComponent = () => {
         />
       </div>
 
-      <div className="flex flex-wrap gap-4 mb-4">
+      <div className="flex flex-wrap gap-4">
         {/* Year Range */}
         <div className="flex flex-1 gap-4">
           <Autocomplete

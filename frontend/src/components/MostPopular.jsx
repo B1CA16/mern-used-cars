@@ -45,15 +45,15 @@ const MostPopular = () => {
   };
 
   const cars = [
-    { id: 1, name: 'Toyota Corolla', year: 2019, km: '30 000', fuel: 'Gasoline', cv: 132, image: 'corolla.jpg', price: '15 000' },
-    { id: 2, name: 'Honda Civic', year: 2018, km: '45 000', fuel: 'Diesel', cv: 158, image: 'civic.jpg', price: '40 500' },
-    { id: 3, name: 'Ford Focus', year: 2020, km: '25 000', fuel: 'Gasoline', cv: 160, image: 'focus.jpg', price: '19 200' },
-    { id: 4, name: 'BMW X5', year: 2017, km: '60 000', fuel: 'Diesel', cv: 300, image: 'x5.jpg', price: '34 900' },
-    { id: 5, name: 'Nissan Juke', year: 2021, km: '10 000', fuel: 'Electric', cv: 110, image: 'juke.jpg', price: '26 300' },
+    { id: 1, name: 'Toyota Corolla', year: 2019, km: '30 000', fuel: 'Gasoline', hp: 132, image: 'corolla.jpg', price: '15 000' },
+    { id: 2, name: 'Honda Civic', year: 2018, km: '45 000', fuel: 'Diesel', hp: 158, image: 'civic.jpg', price: '40 500' },
+    { id: 3, name: 'Ford Focus', year: 2020, km: '25 000', fuel: 'Gasoline', hp: 160, image: 'focus.jpg', price: '19 200' },
+    { id: 4, name: 'BMW X5', year: 2017, km: '60 000', fuel: 'Diesel', hp: 300, image: 'x5.jpg', price: '34 900' },
+    { id: 5, name: 'Nissan Juke', year: 2021, km: '10 000', fuel: 'Electric', hp: 110, image: 'juke.jpg', price: '26 300' },
   ];
 
   return (
-    <div className="most-popular-section p-12">
+    <div className="most-popular-section px-2 sm:px-12 py-12">
       <h2 className="text-4xl font-bold mb-6 text-center">Most Popular Cars</h2>
       <Slider {...settings}>
         {cars.map(car => (

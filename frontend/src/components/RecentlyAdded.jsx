@@ -45,15 +45,15 @@ const RecentlyAdded = () => {
   };
 
   const cars = [
-    { id: 1, name: 'Lamborghini Huracán', year: 2017, km: '30 000', fuel: 'Gasoline', cv: 640, image: 'huracan.jpg', price: '270 000' },
-    { id: 2, name: 'Nissan Micra', year: 2022, km: '45 000', fuel: 'Gasoline', cv: 90, image: 'micra.jpg', price: '15 500' },
-    { id: 3, name: 'Opel Corsa', year: 2004, km: '225 000', fuel: 'Diesel', cv: 60, image: 'corsa.jpg', price: '3 200' },
-    { id: 4, name: 'Renault Clio', year: 2023, km: '6 000', fuel: 'Hybrid (Gasoline)', cv: 145, image: 'clio.jpg', price: '27 000' },
-    { id: 5, name: 'Mercedes-Benz C 220', year: 2019, km: '55 000', fuel: 'Diesel', cv: 194, image: 'c220.jpg', price: '36 900' },
+    { id: 1, name: 'Lamborghini Huracán', year: 2017, km: '30 000', fuel: 'Gasoline', hp: 640, image: 'huracan.jpg', price: '270 000' },
+    { id: 2, name: 'Nissan Micra', year: 2022, km: '45 000', fuel: 'Gasoline', hp: 90, image: 'micra.jpg', price: '15 500' },
+    { id: 3, name: 'Opel Corsa', year: 2004, km: '225 000', fuel: 'Diesel', hp: 60, image: 'corsa.jpg', price: '3 200' },
+    { id: 4, name: 'Renault Clio', year: 2023, km: '6 000', fuel: 'Hybrid (Gasoline)', hp: 145, image: 'clio.jpg', price: '27 000' },
+    { id: 5, name: 'Mercedes-Benz C 220', year: 2019, km: '55 000', fuel: 'Diesel', hp: 194, image: 'c220.jpg', price: '36 900' },
   ];
 
   return (
-    <div className="most-popular-section p-12">
+    <div className="most-popular-section px-2 sm:px-12 py-12">
       <h2 className="text-4xl font-bold mb-6 text-center">Recently Added Cars</h2>
       <Slider {...settings}>
         {cars.map(car => (

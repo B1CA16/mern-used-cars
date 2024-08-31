@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const HomeBanner = () => {
   return (
-    <div className="relative rounded-md my-12 bg-cover bg-center mx-16 text-white py-0 banner:py-20" style={{ backgroundImage: "url('/road.jpg')" }}>
+    <div className="relative rounded-md my-12 bg-cover bg-center mx-6 sm:mx-16 text-white py-0 banner:py-20" style={{ backgroundImage: "url('/road.jpg')" }}>
       <div className="bg-blue-700/70 p-10 backdrop-blur-sm rounded-md mx-auto max-w-4xl text-center">
         <h2 className="text-4xl font-bold mb-4">Ready to Drive Your Dream Car?</h2>
         <p className="text-lg mb-6">
