@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { FaSliders } from 'react-icons/fa6';
 import { SearchContext } from '../context/SearchContext';
+import { Link } from 'react-router-dom';
 
 const FormComponent = () => {
   const {
@@ -89,9 +90,9 @@ const FormComponent = () => {
 
       {/* Search */}
       <div className='flex flex-wrap gap-4'>
-        <a href="#" className="text-blue-500 flex-1 flex gap-2 items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500">
+        <Link to='/cars' className="text-blue-500 flex-1 flex gap-2 items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500">
           <FaSliders className='transform transition-transform duration-300 group-hover:scale-110' /> Advanced Search
-        </a>
+        </Link>
         <button className='flex-1 bg-red-600 text-white uppercase font-medium text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
           Search
         </button>

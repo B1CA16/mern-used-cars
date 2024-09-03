@@ -31,8 +31,7 @@ const AdvancedSearch = () => {
       <div className="relative bg-blue-700 p-8 pt-14 pb-32 flex flex-col-reverse xl:flex-row gap-12 items-center lg:justify-between">
         <div className="flex justify-center w-full mb-8 lg:mb-0">
           <form className="w-full max-w-7xl bg-white p-6 rounded-lg space-y-4">
-            
-            {/* Row 1 */}
+            <h1 className='text-neutral-900 text-2xl font-medium'>Advanced Search</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {/* Make */}
               <Autocomplete
