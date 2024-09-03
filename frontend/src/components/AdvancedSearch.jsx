@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
+import { SearchContext } from '../context/SearchContext';
 
 const AdvancedSearch = () => {
   // Sample data for the fields (replace with your actual data sources)
@@ -8,21 +9,22 @@ const AdvancedSearch = () => {
   const years = [2022, 2021, 2020, 2019];
   const fuels = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
   const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe'];
-  const transmissions = ['Manual', 'Automatic'];
 
   // State management
-  const [make, setMake] = useState(null);
-  const [model, setModel] = useState(null);
-  const [fromYear, setFromYear] = useState(null);
-  const [untilYear, setUntilYear] = useState(null);
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [fuel, setFuel] = useState(null);
-  const [mileageFrom, setMileageFrom] = useState('');
-  const [mileageTo, setMileageTo] = useState('');
-  const [segment, setSegment] = useState(null);
-  const [hpFrom, setHpFrom] = useState('');
-  const [hpTo, setHpTo] = useState('');
+  const {
+    make, setMake,
+    model, setModel,
+    fromYear, setFromYear,
+    untilYear, setUntilYear,
+    minPrice, setMinPrice,
+    maxPrice, setMaxPrice,
+    fuel, setFuel,
+    mileageFrom, setMileageFrom,
+    mileageTo, setMileageTo,
+    segment, setSegment,
+    hpFrom, setHpFrom,
+    hpTo, setHpTo,
+  } = useContext(SearchContext);
 
   return (
     <div>

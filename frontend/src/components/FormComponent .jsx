@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { FaSliders } from 'react-icons/fa6';
+import { SearchContext } from '../context/SearchContext';
 
 const FormComponent = () => {
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
-  const [fromYear, setFromYear] = useState('');
-  const [untilYear, setUntilYear] = useState('');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const {
+    make, setMake,
+    model, setModel,
+    fromYear, setFromYear,
+    untilYear, setUntilYear,
+    minPrice, setMinPrice,
+    maxPrice, setMaxPrice,
+  } = useContext(SearchContext);
 
   // Sample data
   const makes = ['Toyota', 'Honda', 'Ford'];
