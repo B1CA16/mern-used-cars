@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const FrequentlyAskedQuestions = () => {
@@ -37,7 +37,7 @@ const FrequentlyAskedQuestions = () => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-neutral-800 p-4 rounded-md shadow"
+              className="bg-white dark:bg-neutral-800 p-4 rounded-md shadow hover:bg-neutral-100 hover:dark:bg-neutral-700/50 group transition-all duration-300"
             >
               <div
                 className="flex justify-between items-center cursor-pointer"
@@ -47,9 +47,9 @@ const FrequentlyAskedQuestions = () => {
                   {faq.question}
                 </h3>
                 {openIndex === index ? (
-                  <FaChevronUp className="text-neutral-900 dark:text-neutral-100" />
+                  <FaChevronUp className="text-neutral-900 dark:text-neutral-100 group-hover:scale-125 transition-transform duration-300" />
                 ) : (
-                  <FaChevronDown className="text-neutral-900 dark:text-neutral-100" />
+                  <FaChevronDown className="text-neutral-900 dark:text-neutral-100 group-hover:scale-125 transition-transform duration-300" />
                 )}
               </div>
               {openIndex === index && (
@@ -60,12 +60,11 @@ const FrequentlyAskedQuestions = () => {
             </div>
           ))}
         </div>
-        <div className='w-full flex justify-center py-6'>
+        <div className="w-full flex justify-center py-6">
           <p className="text-neutral-700 dark:text-neutral-300 text-lg">
-          If you have any additional questions or need further assistance, please don't hesitate to contact our support team. We're here to help!
-        </p>
+            If you have any additional questions or need further assistance, please don't hesitate to contact our support team. We're here to help!
+          </p>
         </div>
-        
       </div>
     </div>
   );
