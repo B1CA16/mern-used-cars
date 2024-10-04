@@ -1,0 +1,180 @@
+{
+    "cars": [
+      {
+        "id": 1,
+        "name": "Toyota Corolla",
+        "year": 2019,
+        "km": "30 000",
+        "fuel": "Gasoline",
+        "hp": 132,
+        "cm3": 1798,
+        "location": "Lisbon",
+        "image": "corolla.jpg",
+        "price": "15 000",
+        "extras": [
+          "Air Conditioning",
+          "Backup Camera",
+          "Bluetooth",
+          "Cruise Control"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Honda Civic",
+        "year": 2018,
+        "km": "45 000",
+        "fuel": "Diesel",
+        "hp": 158,
+        "cm3": 1597,
+        "location": "Porto",
+        "image": "civic.jpg",
+        "price": "40 500",
+        "extras": ["Leather Seats", "Sunroof", "Navigation", "Heated Seats"]
+      },
+      {
+        "id": 3,
+        "name": "Ford Focus",
+        "year": 2020,
+        "km": "25 000",
+        "fuel": "Gasoline",
+        "hp": 160,
+        "cm3": 1999,
+        "location": "Braga",
+        "image": "focus.jpg",
+        "price": "19 200",
+        "extras": [
+          "Parking Sensors",
+          "Alloy Wheels",
+          "Apple CarPlay",
+          "Android Auto"
+        ]
+      },
+      {
+        "id": 4,
+        "name": "BMW X5",
+        "year": 2017,
+        "km": "60 000",
+        "fuel": "Diesel",
+        "hp": 300,
+        "cm3": 2993,
+        "location": "Faro",
+        "image": "x5.jpg",
+        "price": "34 900",
+        "extras": [
+          "4WD",
+          "Panoramic Roof",
+          "Adaptive Cruise Control",
+          "Harman Kardon Sound System"
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Nissan Juke",
+        "year": 2021,
+        "km": "10 000",
+        "fuel": "Electric",
+        "hp": 110,
+        "cm3": 0,
+        "location": "Aveiro",
+        "image": "juke.jpg",
+        "price": "26 300",
+        "extras": [
+          "Keyless Entry",
+          "Climate Control",
+          "Lane Assist",
+          "Automatic Headlights"
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Lamborghini Huracán",
+        "year": 2017,
+        "km": "30 000",
+        "fuel": "Gasoline",
+        "hp": 640,
+        "cm3": 5204,
+        "location": "Cascais",
+        "image": "huracan.jpg",
+        "price": "270 000",
+        "extras": [
+          "Premium Sound System",
+          "Carbon Fiber Interior",
+          "Sports Exhaust",
+          "Launch Control"
+        ]
+      },
+      {
+        "id": 7,
+        "name": "Nissan Micra",
+        "year": 2022,
+        "km": "45 000",
+        "fuel": "Gasoline",
+        "hp": 90,
+        "cm3": 999,
+        "location": "Coimbra",
+        "image": "micra.jpg",
+        "price": "15 500",
+        "extras": [
+          "Rearview Camera",
+          "Bluetooth",
+          "Automatic Emergency Braking",
+          "Apple CarPlay"
+        ]
+      },
+      {
+        "id": 8,
+        "name": "Opel Corsa",
+        "year": 2004,
+        "km": "225 000",
+        "fuel": "Diesel",
+        "hp": 60,
+        "cm3": 1248,
+        "location": "Leiria",
+        "image": "corsa.jpg",
+        "price": "3 200",
+        "extras": [
+          "Manual Transmission",
+          "Cloth Seats",
+          "Air Conditioning",
+          "CD Player"
+        ]
+      },
+      {
+        "id": 9,
+        "name": "Renault Clio",
+        "year": 2023,
+        "km": "6 000",
+        "fuel": "Hybrid (Gasoline)",
+        "hp": 145,
+        "cm3": 1598,
+        "location": "Sintra",
+        "image": "clio.jpg",
+        "price": "27 000",
+        "extras": [
+          "Lane Departure Warning",
+          "Automatic Parking",
+          "Heated Steering Wheel",
+          "Android Auto"
+        ]
+      },
+      {
+        "id": 10,
+        "name": "Mercedes-Benz C 220",
+        "year": 2019,
+        "km": "55 000",
+        "fuel": "Diesel",
+        "hp": 194,
+        "cm3": 1950,
+        "location": "Albufeira",
+        "image": "c220.jpg",
+        "price": "36 900",
+        "extras": [
+          "Leather Seats",
+          "Panoramic Sunroof",
+          "Adaptive Cruise Control",
+          "Burmester Surround Sound"
+        ]
+      }
+    ]
+  }
+  

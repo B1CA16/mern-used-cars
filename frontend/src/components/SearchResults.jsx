@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CarBannerCard from "./CarBannerCard";
 
@@ -15,73 +15,14 @@ const SearchResults = () => {
     "HorsePower: Lower",
   ];
 
-  const cars = [
-    {
-      id: 1,
-      name: "Toyota Corolla",
-      year: 2019,
-      km: "30 000",
-      fuel: "Gasoline",
-      hp: 132,
-      cm3: 1798,
-      transmission: "Automatic",
-      location: "New York, NY",
-      image: "corolla.jpg",
-      price: "15 000",
-    },
-    {
-      id: 2,
-      name: "Honda Civic",
-      year: 2018,
-      km: "45 000",
-      fuel: "Diesel",
-      hp: 158,
-      cm3: 1496,
-      transmission: "Manual",
-      location: "Los Angeles, CA",
-      image: "civic.jpg",
-      price: "40 500",
-    },
-    {
-      id: 3,
-      name: "Ford Focus",
-      year: 2020,
-      km: "25 000",
-      fuel: "Gasoline",
-      hp: 160,
-      cm3: 1999,
-      transmission: "Automatic",
-      location: "Chicago, IL",
-      image: "focus.jpg",
-      price: "19 200",
-    },
-    {
-      id: 4,
-      name: "BMW X5",
-      year: 2017,
-      km: "60 000",
-      fuel: "Diesel",
-      hp: 300,
-      cm3: 2993,
-      transmission: "Automatic",
-      location: "Miami, FL",
-      image: "x5.jpg",
-      price: "34 900",
-    },
-    {
-      id: 5,
-      name: "Nissan Juke",
-      year: 2021,
-      km: "10 000",
-      fuel: "Electric",
-      hp: 110,
-      cm3: 0,
-      transmission: "Automatic",
-      location: "San Francisco, CA",
-      image: "juke.jpg",
-      price: "26 300",
-    },
-  ];
+  const [cars, setCars] = useState([]);
+
+  useEffect(() => {
+    fetch('/car_data.json')
+      .then((response) => response.json())
+      .then((data) => setCars(data.cars))
+      .catch((error) => console.error("Error fetching car data: ", error));
+  }, []);
 
   return (
     <div className="most-popular-section px-2 sm:px-12 py-12">
@@ -127,8 +68,8 @@ const SearchResults = () => {
         </div>
         <div>
           {cars.map((car) => (
-            <div className="p-4">
-              <CarBannerCard key={car.id} car={car} />
+            <div key={car.id} className="p-4">
+              <CarBannerCard car={car} />
             </div>
           ))}
         </div>
