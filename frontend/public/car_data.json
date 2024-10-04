@@ -11,6 +11,7 @@
         "location": "Lisbon",
         "image": "corolla.jpg",
         "price": "15 000",
+        "transmission": "Automatic",
         "extras": [
           "Air Conditioning",
           "Backup Camera",
@@ -29,7 +30,13 @@
         "location": "Porto",
         "image": "civic.jpg",
         "price": "40 500",
-        "extras": ["Leather Seats", "Sunroof", "Navigation", "Heated Seats"]
+        "transmission": "Manual",
+        "extras": [
+          "Leather Seats",
+          "Sunroof",
+          "Navigation",
+          "Heated Seats"
+        ]
       },
       {
         "id": 3,
@@ -42,6 +49,7 @@
         "location": "Braga",
         "image": "focus.jpg",
         "price": "19 200",
+        "transmission": "Automatic",
         "extras": [
           "Parking Sensors",
           "Alloy Wheels",
@@ -60,6 +68,7 @@
         "location": "Faro",
         "image": "x5.jpg",
         "price": "34 900",
+        "transmission": "Automatic",
         "extras": [
           "4WD",
           "Panoramic Roof",
@@ -78,6 +87,7 @@
         "location": "Aveiro",
         "image": "juke.jpg",
         "price": "26 300",
+        "transmission": "Automatic",
         "extras": [
           "Keyless Entry",
           "Climate Control",
@@ -96,6 +106,7 @@
         "location": "Cascais",
         "image": "huracan.jpg",
         "price": "270 000",
+        "transmission": "Automatic",
         "extras": [
           "Premium Sound System",
           "Carbon Fiber Interior",
@@ -114,6 +125,7 @@
         "location": "Coimbra",
         "image": "micra.jpg",
         "price": "15 500",
+        "transmission": "Manual",
         "extras": [
           "Rearview Camera",
           "Bluetooth",
@@ -132,6 +144,7 @@
         "location": "Leiria",
         "image": "corsa.jpg",
         "price": "3 200",
+        "transmission": "Manual",
         "extras": [
           "Manual Transmission",
           "Cloth Seats",
@@ -150,6 +163,7 @@
         "location": "Sintra",
         "image": "clio.jpg",
         "price": "27 000",
+        "transmission": "Automatic",
         "extras": [
           "Lane Departure Warning",
           "Automatic Parking",
@@ -168,6 +182,7 @@
         "location": "Albufeira",
         "image": "c220.jpg",
         "price": "36 900",
+        "transmission": "Automatic",
         "extras": [
           "Leather Seats",
           "Panoramic Sunroof",
