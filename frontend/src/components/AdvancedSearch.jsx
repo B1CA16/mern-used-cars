@@ -1,16 +1,17 @@
 import React, { useContext } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { SearchContext } from '../context/SearchContext';
+import { CarContext } from '../context/CarContext';
 
 const AdvancedSearch = () => {
-  // Sample data for the fields (replace with your actual data sources)
+  const cars = useContext(CarContext)
+
   const makes = ['Toyota', 'Ford', 'Honda'];
   const models = ['Camry', 'Mustang', 'Civic'];
   const years = [2022, 2021, 2020, 2019];
   const fuels = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
   const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe'];
 
-  // State management
   const {
     make, setMake,
     model, setModel,
@@ -151,7 +152,7 @@ const AdvancedSearch = () => {
             {/* Search Buttons */}
             <div className="w-full flex justify-end mt-4">
               <button className='bg-red-600 text-white uppercase font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
-                Search (10 437 ads)
+                Search ({cars.length} ads)
               </button>
             </div>
           </form>
