@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CarBannerCard from "./CarBannerCard";
+import { CarContext } from "../context/CarContext";
 
 const SearchResults = () => {
   const [sortOption, setSortOption] = useState("Default");
@@ -15,14 +16,7 @@ const SearchResults = () => {
     "HorsePower: Lower",
   ];
 
-  const [cars, setCars] = useState([]);
-
-  useEffect(() => {
-    fetch('/car_data.json')
-      .then((response) => response.json())
-      .then((data) => setCars(data.cars))
-      .catch((error) => console.error("Error fetching car data: ", error));
-  }, []);
+  const cars = useContext(CarContext);
 
   return (
     <div className="most-popular-section px-2 sm:px-12 py-12">

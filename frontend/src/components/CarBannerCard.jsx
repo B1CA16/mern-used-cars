@@ -1,9 +1,16 @@
 import React from 'react';
 import { FaTachometerAlt, FaGasPump, FaCogs, FaCalendarAlt, FaMapMarkerAlt, FaHeart } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const CarBannerCard = ({ car }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/car/${car.id}`);
+  };
+
   return (
-    <div className="dark:bg-neutral-800 bg-white rounded-lg overflow-hidden hover:cursor-pointer shadow transform transition-transform duration-300 hover:scale-105 flex flex-wrap sm:flex-nowrap">
+    <div onClick={handleNavigate} className="dark:bg-neutral-800 bg-white rounded-lg overflow-hidden hover:cursor-pointer shadow transform transition-transform duration-300 hover:scale-105 flex flex-wrap sm:flex-nowrap">
       <img src={car.image} alt={car.name} className="w-full sm:w-48 md:w-60 lg:w-72 object-cover" />
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>

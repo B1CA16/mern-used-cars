@@ -1,8 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CarCard = ({ car }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/car/${car.id}`);
+  };
+
   return (
-    <div className="dark:bg-neutral-800 rounded-lg overflow-hidden hover:cursor-pointer shadow transform transition-transform duration-300 hover:scale-105">
+    <div onClick={handleNavigate} className="dark:bg-neutral-800 rounded-lg overflow-hidden hover:cursor-pointer shadow transform transition-transform duration-300 hover:scale-105">
       <img src={car.image} alt={car.name} className="w-full h-48 object-cover" />
       <div className="p-4">
         <h3 className="text-xl font-bold truncate">{car.name}</h3>

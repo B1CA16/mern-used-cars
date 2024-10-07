@@ -2,17 +2,11 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import CarCard from './CarCard'; 
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { CarContext } from '../context/CarContext';
 
 const MostPopular = () => {
-  const [cars, setCars] = useState([]);
-
-  useEffect(() => {
-    fetch('/car_data.json')
-      .then((response) => response.json())
-      .then((data) => setCars(data.cars))
-      .catch((error) => console.error("Error fetching car data: ", error));
-  }, []);
+  const cars = useContext(CarContext);
 
   console.log(cars);
 
