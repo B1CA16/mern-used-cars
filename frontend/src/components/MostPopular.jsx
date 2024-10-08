@@ -8,8 +8,6 @@ import { CarContext } from '../context/CarContext';
 const MostPopular = () => {
   const cars = useContext(CarContext);
 
-  console.log(cars);
-
   const settings = {
     dots: false,
     infinite: true,
