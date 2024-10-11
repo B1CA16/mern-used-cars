@@ -12,8 +12,17 @@ export const CarProvider = ({ children }) => {
       .catch((error) => console.error('Error fetching car data: ', error));
   }, []);
 
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  };
+
+  const carValues = {
+    cars,
+    formatNumber,
+  }
+
   return (
-    <CarContext.Provider value={cars}>
+    <CarContext.Provider value={carValues}>
       {children}
     </CarContext.Provider>
   );

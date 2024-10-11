@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+/* eslint-disable react/no-unescaped-entities */
+import { useContext, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 import Slider from "react-slick";
 import {
   FaBolt,
   FaBuilding,
-  FaCar,
   FaCheck,
   FaChevronDown,
   FaChevronUp,
@@ -20,14 +20,14 @@ import "slick-carousel/slick/slick-theme.css";
 
 const CarAdPage = () => {
   const { id } = useParams();
-  const cars = useContext(CarContext);
+  const {cars, formatNumber } = useContext(CarContext);
   const [openIndex, setOpenIndex] = useState(null);
 
   const car = cars.find((car) => car.id === parseInt(id));
 
   if (!car) {
     return (
-      <div className="flex flex-col items-center justify-center justify-center justify-center h-[80vh]">
+      <div className="flex flex-col items-center justify-center h-[80vh]">
         <img src="/Logo.png" alt="logo" className="w-20 h-20 mb-4" />
         <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200 mb-2">
           Car Not Found
@@ -149,7 +149,7 @@ const CarAdPage = () => {
               <div className="flex flex-col items-center justify-center">
                 <FaRoad className="mr-2 text-3xl mb-2" />
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">Mileage</p>
-                <span className="text-xl font-medium">{car.km}</span>
+                <span className="text-xl font-medium">{formatNumber(car.km)}</span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
@@ -167,7 +167,7 @@ const CarAdPage = () => {
               </div>
 
               <div className="flex flex-col items-center justify-center">
-              <svg className="mr-2 text-4xl mb-2" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="currentColor" d="M11 9h6v10h-6.5l-2 -2h-2.5v-6.5l1.5 -1.5Z"/><path fill="currentColor" d="M17 13h4v-3h1v8h-1v-3h-4z"/><path d="M6 14h-4M2 11v6"/><path d="M11 9v-4M8 5h6"/></g></svg>
+              <svg className="mr-2 text-4xl mb-2" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" ><path fill="currentColor" d="M11 9h6v10h-6.5l-2 -2h-2.5v-6.5l1.5 -1.5Z"/><path fill="currentColor" d="M17 13h4v-3h1v8h-1v-3h-4z"/><path d="M6 14h-4M2 11v6"/><path d="M11 9v-4M8 5h6"/></g></svg>
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">Displacement</p>
                 <span className="text-xl font-medium">{car.cm3}</span>
               </div>
@@ -280,7 +280,7 @@ const CarAdPage = () => {
                 {car.financing_available ? "Financiable" : "Not Financiable"}
               </p>
               <h1 className="text-3xl font-bold mb-4">
-                {car.price} <span className="text-xl">EUR</span>
+                {formatNumber(car.price)} <span className="text-xl">EUR</span>
               </h1>
             </div>
 

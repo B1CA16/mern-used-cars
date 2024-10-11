@@ -1,6 +1,7 @@
-import React from 'react';
+import { useContext } from 'react';
 import { FaTachometerAlt, FaGasPump, FaCogs, FaCalendarAlt, FaMapMarkerAlt, FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { CarContext } from '../context/CarContext';
 
 const CarBannerCard = ({ car }) => {
   const navigate = useNavigate();
@@ -8,6 +9,8 @@ const CarBannerCard = ({ car }) => {
   const handleNavigate = () => {
     navigate(`/car/${car.id}`);
   };
+
+  const { formatNumber } = useContext(CarContext);
 
   return (
     <div onClick={handleNavigate} className="dark:bg-neutral-800 bg-white rounded-lg overflow-hidden hover:cursor-pointer shadow transform transition-transform duration-300 hover:scale-105 flex flex-wrap sm:flex-nowrap">
@@ -23,7 +26,7 @@ const CarBannerCard = ({ car }) => {
         <div className="flex flex-wrap gap-2 md:gap-4 my-2 text-md md:text-lg text-neutral-800 dark:text-neutral-400">
           <div className="flex items-center gap-2">
             <FaTachometerAlt />
-            <span>{car.km} km</span>
+            <span>{formatNumber(car.km)} km</span>
           </div>
           <div className="flex items-center gap-2">
             <FaGasPump />
@@ -44,7 +47,7 @@ const CarBannerCard = ({ car }) => {
         </div>
       </div>
       <div className="p-4 flex flex-col items-end justify-between">
-        <p className="text-blue-700 dark:text-blue-400 font-semibold text-lg sm:text-xl">{car.price} <span className='text-sm'>EUR</span></p>
+        <p className="text-blue-700 dark:text-blue-400 font-semibold text-lg sm:text-xl">{formatNumber(car.price)} <span className='text-sm'>EUR</span></p>
         <FaHeart className="text-red-500 hover:text-red-700 text-lg sm:text-xl cursor-pointer" />
       </div>
     </div>

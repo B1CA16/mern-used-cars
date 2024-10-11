@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import { CarContext } from '../context/CarContext';
 
 const MostPopular = () => {
-  const cars = useContext(CarContext);
+  const {cars} = useContext(CarContext);
 
   const settings = {
     dots: false,

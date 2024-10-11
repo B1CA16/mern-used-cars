@@ -1,5 +1,3 @@
-import React from "react";
-
 import { FaCar, FaDollarSign, FaSearch } from "react-icons/fa";
 import FormComponent from "./FormComponent ";
 
@@ -21,30 +19,20 @@ const Header = () => {
             in your area.
           </p>
 
-          <div className="flex flex-row flex-wrap justify-center gap-8">
+          <div className="flex flex-row flex-wrap justify-center gap-8 w-full">
             <div className="flex flex-col items-center text-center w-1/3 lg:w-1/4 max-w-[200px]">
               <FaCar className="text-4xl mb-2 text-yellow-400" />
               <h3 className="text-xl font-semibold mb-2">Wide Selection</h3>
-              <p className="text-sm lg:text-base">
-                Choose from various makes and models to suit your needs and
-                budget.
-              </p>
             </div>
 
             <div className="flex flex-col items-center text-center w-1/3 lg:w-1/4 max-w-[200px]">
               <FaDollarSign className="text-4xl mb-2 text-yellow-400" />
-              <h3 className="text-xl font-semibold mb-2">Best Prices</h3>
-              <p className="text-sm lg:text-base">
-                Get competitive prices and great offers on used cars.
-              </p>
+              <h3 className="text-xl font-semibold mb-2">Best Deals</h3>
             </div>
 
             <div className="flex flex-col items-center text-center w-1/3 lg:w-1/4 max-w-[200px]">
               <FaSearch className="text-4xl mb-2 text-yellow-400" />
               <h3 className="text-xl font-semibold mb-2">Easy Search</h3>
-              <p className="text-sm lg:text-base">
-                Find the perfect car quickly with our advanced search tools.
-              </p>
             </div>
           </div>
         </div>
