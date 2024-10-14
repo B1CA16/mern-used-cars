@@ -1,16 +1,10 @@
-import React, { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { SearchContext } from '../context/SearchContext';
 import { CarContext } from '../context/CarContext';
 
 const AdvancedSearch = () => {
-  const cars = useContext(CarContext)
-
-  const makes = ['Toyota', 'Ford', 'Honda'];
-  const models = ['Camry', 'Mustang', 'Civic'];
-  const years = [2022, 2021, 2020, 2019];
-  const fuels = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
-  const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe'];
+  const { cars } = useContext(CarContext); 
 
   const {
     make, setMake,
@@ -26,6 +20,28 @@ const AdvancedSearch = () => {
     hpFrom, setHpFrom,
     hpTo, setHpTo,
   } = useContext(SearchContext);
+
+  
+  const makes = useMemo(() => [...new Set(cars.map(car => car.brand))], [cars]);
+  const models = useMemo(() => {
+    return make ? [...new Set(cars.filter(car => car.brand === make).map(car => car.model))] : [];
+  }, [cars, make]);
+
+  const fuels = useMemo(() => [...new Set(cars.map(car => car.fuel))], [cars]);
+  const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe']; 
+  const years = [2022, 2021, 2020, 2019]; 
+
+  const handleFromYearChange = (event, newValue) => {
+    if (!untilYear || newValue <= untilYear) {
+      setFromYear(newValue);
+    }
+  };
+
+  const handleUntilYearChange = (event, newValue) => {
+    if (!fromYear || newValue >= fromYear) {
+      setUntilYear(newValue);
+    }
+  };
 
   return (
     <div>
@@ -43,6 +59,7 @@ const AdvancedSearch = () => {
                 renderInput={(params) => <TextField {...params} label="Make" variant="standard" />}
                 className="w-full"
               />
+
               {/* Model */}
               <Autocomplete
                 freeSolo
@@ -51,6 +68,7 @@ const AdvancedSearch = () => {
                 onChange={(event, newValue) => setModel(newValue)}
                 renderInput={(params) => <TextField {...params} label="Model" variant="standard" />}
                 className="w-full"
+                disabled={!make} 
               />
 
               {/* Year Range */}
@@ -58,7 +76,7 @@ const AdvancedSearch = () => {
                 freeSolo
                 options={years.map(year => year.toString())}
                 value={fromYear}
-                onChange={(event, newValue) => setFromYear(newValue)}
+                onChange={handleFromYearChange}
                 renderInput={(params) => <TextField {...params} label="From Year" variant="standard" />}
                 className="w-full"
               />
@@ -66,7 +84,7 @@ const AdvancedSearch = () => {
                 freeSolo
                 options={years.map(year => year.toString())}
                 value={untilYear}
-                onChange={(event, newValue) => setUntilYear(newValue)}
+                onChange={handleUntilYearChange}
                 renderInput={(params) => <TextField {...params} label="Until Year" variant="standard" />}
                 className="w-full"
               />
@@ -80,6 +98,7 @@ const AdvancedSearch = () => {
                 renderInput={(params) => <TextField {...params} label="Fuel Type" variant="standard" />}
                 className="w-full"
               />
+
               {/* Segment */}
               <Autocomplete
                 freeSolo
@@ -107,7 +126,6 @@ const AdvancedSearch = () => {
                 value={hpTo}
                 onChange={(event) => setHpTo(event.target.value)}
               />
-              
             </div>
 
             {/* Row 2 */}

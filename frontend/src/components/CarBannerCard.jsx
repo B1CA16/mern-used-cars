@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useContext } from 'react';
 import { FaTachometerAlt, FaGasPump, FaCogs, FaCalendarAlt, FaMapMarkerAlt, FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
