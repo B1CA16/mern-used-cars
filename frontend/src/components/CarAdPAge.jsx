@@ -21,7 +21,7 @@ import { FaChevronLeft, FaHeart } from "react-icons/fa6";
 
 const CarAdPage = () => {
   const { id } = useParams();
-  const {cars, formatNumber } = useContext(CarContext);
+  const { cars, formatNumber } = useContext(CarContext);
   const [openIndex, setOpenIndex] = useState(null);
 
   const navigate = useNavigate();
@@ -120,15 +120,41 @@ const CarAdPage = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between px-4">
         <div className="flex gap-2 items-center">
-          <Link className="font-light" to={navigate(-1)}><FaChevronLeft title="Go back" className="mr-4 hover:text-neutral-700 hover:dark:text-neutral-300" /></Link>
-          <Link className="hover:text-neutral-700 hover:dark:text-neutral-300" to='/cars'>Cars</Link>
+          <button
+            onClick={() => navigate(-1)}
+            className="font-light"
+          >
+            <FaChevronLeft
+              title="Go back"
+              className="mr-4 hover:text-neutral-700 hover:dark:text-neutral-300"
+            />
+          </button>
+          <Link
+            className="hover:text-neutral-700 hover:dark:text-neutral-300"
+            to="/cars"
+          >
+            Cars
+          </Link>
           &#183;
-          <Link className="hover:text-neutral-700 hover:dark:text-neutral-300" to={`/cars?make=${car.brand}`}>{car.brand}</Link>
+          <Link
+            className="hover:text-neutral-700 hover:dark:text-neutral-300"
+            to={`/cars?make=${car.brand}`}
+          >
+            {car.brand}
+          </Link>
           &#183;
-          <Link className="font-semibold hover:text-neutral-700 hover:dark:text-neutral-300" to={`/cars?model=${car.model}`}>{car.model}</Link>
+          <Link
+            className="font-semibold hover:text-neutral-700 hover:dark:text-neutral-300"
+            to={`/cars?model=${car.model}`}
+          >
+            {car.model}
+          </Link>
         </div>
         <div>
-          <FaHeart title="Add to favorites" className="hover:text-neutral-700 hover:dark:text-neutral-300 text-2xl cursor-pointer hover:scale-110" />
+          <FaHeart
+            title="Add to favorites"
+            className="hover:text-neutral-700 hover:dark:text-neutral-300 text-2xl cursor-pointer hover:scale-110"
+          />
         </div>
       </div>
       <div className="flex justify-between gap-8">
@@ -164,33 +190,59 @@ const CarAdPage = () => {
             <div className="flex justify-around items-center mt-6">
               <div className="flex flex-col items-center justify-center">
                 <FaRoad className="mr-2 text-3xl mb-2" />
-                <p className="text-sm text-neutral-700 dark:text-neutral-300">Mileage</p>
-                <span className="text-xl font-medium">{formatNumber(car.km)}</span>
+                <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  Mileage
+                </p>
+                <span className="text-xl font-medium">
+                  {formatNumber(car.km)}
+                </span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
                 <FaGasPump className="mr-2 text-3xl mb-2" />
-                <p className="text-sm text-neutral-700 dark:text-neutral-300">Fuel Type</p>
+                <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  Fuel Type
+                </p>
                 <span className="text-xl font-medium">{car.fuel}</span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
                 <FaCogs className="mr-2 text-3xl mb-2" />
-                <p className="text-sm text-neutral-700 dark:text-neutral-300">Transmission</p>
-                <span className="text-xl font-medium">
-                  {car.transmission}
-                </span>
+                <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  Transmission
+                </p>
+                <span className="text-xl font-medium">{car.transmission}</span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
-              <svg className="mr-2 text-4xl mb-2" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" ><path fill="currentColor" d="M11 9h6v10h-6.5l-2 -2h-2.5v-6.5l1.5 -1.5Z"/><path fill="currentColor" d="M17 13h4v-3h1v8h-1v-3h-4z"/><path d="M6 14h-4M2 11v6"/><path d="M11 9v-4M8 5h6"/></g></svg>
-                <p className="text-sm text-neutral-700 dark:text-neutral-300">Displacement</p>
+                <svg
+                  className="mr-2 text-4xl mb-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 24 24"
+                >
+                  <g fill="none" stroke="currentColor">
+                    <path
+                      fill="currentColor"
+                      d="M11 9h6v10h-6.5l-2 -2h-2.5v-6.5l1.5 -1.5Z"
+                    />
+                    <path fill="currentColor" d="M17 13h4v-3h1v8h-1v-3h-4z" />
+                    <path d="M6 14h-4M2 11v6" />
+                    <path d="M11 9v-4M8 5h6" />
+                  </g>
+                </svg>
+                <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  Displacement
+                </p>
                 <span className="text-xl font-medium">{car.cm3}</span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
                 <FaBolt className="mr-2 text-3xl mb-2" />
-                <p className="text-sm text-neutral-700 dark:text-neutral-300">Horsepower</p>
+                <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  Horsepower
+                </p>
                 <span className="text-xl font-medium">{car.hp}</span>
               </div>
             </div>
