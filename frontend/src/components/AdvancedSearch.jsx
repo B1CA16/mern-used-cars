@@ -1,7 +1,8 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useEffect } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { SearchContext } from '../context/SearchContext';
 import { CarContext } from '../context/CarContext';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 const AdvancedSearch = () => {
   const { cars } = useContext(CarContext); 
@@ -21,7 +22,6 @@ const AdvancedSearch = () => {
     hpTo, setHpTo,
   } = useContext(SearchContext);
 
-  
   const makes = useMemo(() => [...new Set(cars.map(car => car.brand))], [cars]);
   const models = useMemo(() => {
     return make ? [...new Set(cars.filter(car => car.brand === make).map(car => car.model))] : [];
@@ -49,11 +49,64 @@ const AdvancedSearch = () => {
     return years.filter(year => year >= fromYear);
   }, [fromYear, years]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const params = new URLSearchParams();
+    if (make) params.append('make', make);
+    if (model) params.append('model', model);
+    if (fuel) params.append('fuel', fuel);
+    if (fromYear) params.append('fromYear', fromYear);
+    if (untilYear) params.append('untilYear', untilYear);
+    if (minPrice) params.append('minPrice', minPrice);
+    if (maxPrice) params.append('maxPrice', maxPrice);
+    if (mileageFrom) params.append('mileageFrom', mileageFrom);
+    if (mileageTo) params.append('mileageTo', mileageTo);
+    if (segment) params.append('segment', segment);
+    if (hpFrom) params.append('hpFrom', hpFrom);
+    if (hpTo) params.append('hpTo', hpTo);
+
+    const url = `${window.location.origin}/cars?${params.toString()}`;
+    
+    window.location.href = url;
+};
+
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    
+    const urlMake = params.get('make');
+    const urlModel = params.get('model');
+    const urlFromYear = params.get('fromYear');
+    const urlUntilYear = params.get('untilYear');
+    const urlFuel = params.get('fuel');
+    const urlSegment = params.get('segment');
+    const urlHpFrom = params.get('hpFrom');
+    const urlHpTo = params.get('hpTo');
+    const urlMinPrice = params.get('minPrice');
+    const urlMaxPrice = params.get('maxPrice');
+    const urlMileageFrom = params.get('mileageFrom');
+    const urlMileageTo = params.get('mileageTo');
+
+    if (urlMake) setMake(urlMake);
+    if (urlModel) setModel(urlModel);
+    if (urlFromYear) setFromYear(urlFromYear);
+    if (urlUntilYear) setUntilYear(urlUntilYear);
+    if (urlFuel) setFuel(urlFuel);
+    if (urlSegment) setSegment(urlSegment);
+    if (urlHpFrom) setHpFrom(urlHpFrom);
+    if (urlHpTo) setHpTo(urlHpTo);
+    if (urlMinPrice) setMinPrice(urlMinPrice);
+    if (urlMaxPrice) setMaxPrice(urlMaxPrice);
+    if (urlMileageFrom) setMileageFrom(urlMileageFrom);
+    if (urlMileageTo) setMileageTo(urlMileageTo);
+  }, [setMake, setModel, setFromYear, setUntilYear, setFuel, setSegment, setHpFrom, setHpTo, setMinPrice, setMaxPrice, setMileageFrom, setMileageTo]);
+
   return (
     <div>
       <div className="relative bg-blue-700 p-8 pt-14 pb-32 flex flex-col-reverse xl:flex-row gap-12 items-center lg:justify-between">
         <div className="flex justify-center w-full mb-8 lg:mb-0">
-          <form className="w-full max-w-7xl bg-white p-6 rounded-lg space-y-4">
+          <form className="w-full max-w-7xl bg-white p-6 rounded-lg space-y-4" onSubmit={handleSubmit}>
             <h1 className='text-neutral-900 text-2xl font-medium'>Advanced Search</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {/* Make */}
@@ -175,8 +228,9 @@ const AdvancedSearch = () => {
 
             {/* Search Buttons */}
             <div className="w-full flex justify-end mt-4">
-              <button className='bg-red-600 text-white uppercase font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
-                Search ({cars.length} ads)
+              <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
+                <FaMagnifyingGlass className='mr-2' />
+                Search
               </button>
             </div>
           </form>
