@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { FaSliders } from 'react-icons/fa6';
 import { SearchContext } from '../context/SearchContext';
 import { Link } from 'react-router-dom';
+import { CarContext } from '../context/CarContext';
 
 const FormComponent = () => {
+  const { cars } = useContext(CarContext); 
+
   const {
     make, setMake,
     model, setModel,
@@ -14,10 +17,30 @@ const FormComponent = () => {
     maxPrice, setMaxPrice,
   } = useContext(SearchContext);
 
-  // Sample data
-  const makes = ['Toyota', 'Honda', 'Ford'];
-  const models = ['Camry', 'Civic', 'F-150'];
-  const years = [2023, 2022, 2021, 2020, 2019];
+  const makes = useMemo(() => [...new Set(cars.map(car => car.brand))], [cars]);
+  const models = useMemo(() => {
+    return make ? [...new Set(cars.filter(car => car.brand === make).map(car => car.model))] : [];
+  }, [cars, make]);
+
+  const years = [2022, 2021, 2020, 2019]; 
+
+  const handleFromYearChange = (event, newValue) => {
+    if (newValue > untilYear) {
+      setUntilYear(newValue);
+    }
+    setFromYear(newValue);
+  };
+
+  const handleUntilYearChange = (event, newValue) => {
+    if (newValue < fromYear) {
+      return;
+    }
+    setUntilYear(newValue);
+  };
+
+  const filteredUntilYears = useMemo(() => {
+    return years.filter(year => year >= fromYear);
+  }, [fromYear, years]);
 
   return (
     <form className="w-full max-w-xl bg-white p-6 rounded-lg space-y-3">
@@ -52,16 +75,16 @@ const FormComponent = () => {
             freeSolo
             options={years.map(year => year.toString())}
             value={fromYear}
-            onChange={(event, newValue) => setFromYear(newValue)}
+            onChange={handleFromYearChange}
             renderInput={(params) => <TextField {...params} label="From Year" variant="standard" />}
             className="flex-1"
           />
 
           <Autocomplete
             freeSolo
-            options={years.map(year => year.toString())}
+            options={filteredUntilYears.map(year => year.toString())} 
             value={untilYear}
-            onChange={(event, newValue) => setUntilYear(newValue)}
+            onChange={handleUntilYearChange}
             renderInput={(params) => <TextField {...params} label="Until Year" variant="standard" />}
             className="flex-1"
           />

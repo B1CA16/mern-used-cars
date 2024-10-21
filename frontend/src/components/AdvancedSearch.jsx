@@ -32,16 +32,22 @@ const AdvancedSearch = () => {
   const years = [2022, 2021, 2020, 2019]; 
 
   const handleFromYearChange = (event, newValue) => {
-    if (!untilYear || newValue <= untilYear) {
-      setFromYear(newValue);
+    if (newValue > untilYear) {
+      setUntilYear(newValue);
     }
+    setFromYear(newValue);
   };
 
   const handleUntilYearChange = (event, newValue) => {
-    if (!fromYear || newValue >= fromYear) {
-      setUntilYear(newValue);
+    if (newValue < fromYear) {
+      return;
     }
+    setUntilYear(newValue);
   };
+
+  const filteredUntilYears = useMemo(() => {
+    return years.filter(year => year >= fromYear);
+  }, [fromYear, years]);
 
   return (
     <div>
@@ -82,7 +88,7 @@ const AdvancedSearch = () => {
               />
               <Autocomplete
                 freeSolo
-                options={years.map(year => year.toString())}
+                options={filteredUntilYears.map(year => year.toString())}
                 value={untilYear}
                 onChange={handleUntilYearChange}
                 renderInput={(params) => <TextField {...params} label="Until Year" variant="standard" />}

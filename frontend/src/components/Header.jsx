@@ -1,5 +1,5 @@
 import { FaCar, FaDollarSign, FaSearch } from "react-icons/fa";
-import FormComponent from "./FormComponent ";
+import FormComponent from "./FormComponent";
 
 const Header = () => {
   return (
