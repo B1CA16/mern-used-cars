@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useContext, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 import Slider from "react-slick";
 import {
@@ -17,11 +17,14 @@ import {
 } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { FaChevronLeft, FaHeart } from "react-icons/fa6";
 
 const CarAdPage = () => {
   const { id } = useParams();
   const {cars, formatNumber } = useContext(CarContext);
   const [openIndex, setOpenIndex] = useState(null);
+
+  const navigate = useNavigate();
 
   const car = cars.find((car) => car.id === parseInt(id));
 
@@ -115,6 +118,19 @@ const CarAdPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between px-4">
+        <div className="flex gap-2 items-center">
+          <Link className="font-light" to={navigate(-1)}><FaChevronLeft title="Go back" className="mr-4 hover:text-neutral-700 hover:dark:text-neutral-300" /></Link>
+          <Link className="hover:text-neutral-700 hover:dark:text-neutral-300" to='/cars'>Cars</Link>
+          &#183;
+          <Link className="hover:text-neutral-700 hover:dark:text-neutral-300" to={`/cars?make=${car.brand}`}>{car.brand}</Link>
+          &#183;
+          <Link className="font-semibold hover:text-neutral-700 hover:dark:text-neutral-300" to={`/cars?model=${car.model}`}>{car.model}</Link>
+        </div>
+        <div>
+          <FaHeart title="Add to favorites" className="hover:text-neutral-700 hover:dark:text-neutral-300 text-2xl cursor-pointer hover:scale-110" />
+        </div>
+      </div>
       <div className="flex justify-between gap-8">
         <div className="w-3/4 p-4">
           <div className="w-full flex justify-center px-auto bg-neutral-100 dark:bg-neutral-800 rounded-md">
@@ -200,6 +216,13 @@ const CarAdPage = () => {
 
                 <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
                   <strong>Version</strong> {car.version}
+                </p>
+                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                  <strong>Year</strong> {car.year}
+                </p>
+
+                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                  <strong>Segment</strong> {car.segment}
                 </p>
                 <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
                   <strong>Month of Registration</strong>{" "}
