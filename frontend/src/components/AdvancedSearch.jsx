@@ -28,7 +28,7 @@ const AdvancedSearch = () => {
   }, [cars, make]);
 
   const fuels = useMemo(() => [...new Set(cars.map(car => car.fuel))], [cars]);
-  const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe']; 
+  const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe', 'Supercar', 'Convertible', 'Van'];
   const years = [2022, 2021, 2020, 2019]; 
 
   const handleFromYearChange = (event, newValue) => {

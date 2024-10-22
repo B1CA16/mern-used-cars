@@ -1,8 +1,8 @@
 import { useContext, useState, useMemo, useEffect } from "react";
 import { CarContext } from "../context/CarContext";
 import CarBannerCard from "./CarBannerCard";
-import { FaChevronDown, FaCarCrash } from "react-icons/fa"; // Importando um ícone
-import { MdWarning } from "react-icons/md"; // Ou outro ícone de sua escolha
+import { FaChevronDown, FaCarCrash } from "react-icons/fa";
+import NotFound from "./NotFound";
 
 const SearchResults = () => {
   const [sortOption, setSortOption] = useState("default");
@@ -39,7 +39,6 @@ const SearchResults = () => {
     const urlMileageFrom = params.get("mileageFrom");
     const urlMileageTo = params.get("mileageTo");
 
-    // Filtragem
     let filtered = [...cars];
 
     if (urlMake) {
@@ -172,15 +171,7 @@ const SearchResults = () => {
 
         <div>
           {sortedCars.length === 0 ? (
-            <div className="flex flex-col items-center justify-center my-20 text-red-600 text-lg">
-              <FaCarCrash className="text-7xl text-neutral-400 mb-6" />
-              <h2 className="text-3xl dark:text-neutral-200 font-semibold text-neutral-600 text-center">
-              No cars found
-              </h2>
-              <p className="text-lg text-neutral-500 dark:text-neutral-400 mt-4 text-center">
-                We couldn't find any cars matching your search.
-              </p>
-            </div>
+            <NotFound title="No cars found" message="We couldn't find any cars matching your search." buttonText="Back to Cars" link="/cars" />
           ) : (
             sortedCars.map((car) => (
               <div key={car.id} className="p-4">

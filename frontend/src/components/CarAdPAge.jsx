@@ -18,6 +18,7 @@ import {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaChevronLeft, FaHeart } from "react-icons/fa6";
+import NotFound from "./NotFound";
 
 const CarAdPage = () => {
   const { id } = useParams();
@@ -31,19 +32,7 @@ const CarAdPage = () => {
   if (!car) {
     return (
       <div className="flex flex-col items-center justify-center h-[80vh]">
-        <img src="/Logo.png" alt="logo" className="w-20 h-20 mb-4" />
-        <h2 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200 mb-2">
-          Car Not Found
-        </h2>
-        <p className="text-neutral-600 dark:text-neutral-400">
-          We couldn't find the car you're looking for.
-        </p>
-        <Link
-          to="/cars"
-          className="mt-6 px-6 py-3 bg-blue-700 text-white font-medium text-lg rounded-md hover:bg-blue-600 hover:scale-105 transition duration-300"
-        >
-          Back to Cars
-        </Link>
+        <NotFound title="Car Not Found" message="We couldn't find the car you're looking for." buttonText="Back to Cars" link="/cars" />
       </div>
     );
   }
