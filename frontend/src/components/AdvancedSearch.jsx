@@ -2,7 +2,7 @@ import { useContext, useMemo, useEffect } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { SearchContext } from '../context/SearchContext';
 import { CarContext } from '../context/CarContext';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaArrowsRotate, FaMagnifyingGlass } from 'react-icons/fa6';
 
 const AdvancedSearch = () => {
   const { cars } = useContext(CarContext); 
@@ -228,6 +228,10 @@ const AdvancedSearch = () => {
 
             {/* Search Buttons */}
             <div className="w-full flex justify-end mt-4">
+              <a href='/cars' className="text-blue-500 px-6 mr-4 flex items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500">
+                <FaArrowsRotate className='mr-2 transform transition-transform duration-300 group-hover:scale-110' />
+                Clear Choices
+              </a>
               <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
                 <FaMagnifyingGlass className='mr-2' />
                 Search
