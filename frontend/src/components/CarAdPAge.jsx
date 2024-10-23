@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useContext, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 import Slider from "react-slick";
 import {
@@ -118,26 +118,26 @@ const CarAdPage = () => {
               className="mr-4 hover:text-neutral-700 hover:dark:text-neutral-300"
             />
           </button>
-          <Link
+          <a
             className="hover:text-neutral-700 hover:dark:text-neutral-300"
-            to="/cars"
+            href="/cars"
           >
             Cars
-          </Link>
+          </a>
           &#183;
-          <Link
+          <a
             className="hover:text-neutral-700 hover:dark:text-neutral-300"
-            to={`/cars?make=${car.brand}`}
+            href={`/cars?make=${car.brand}`}
           >
             {car.brand}
-          </Link>
+          </a>
           &#183;
-          <Link
+          <a
             className="font-semibold hover:text-neutral-700 hover:dark:text-neutral-300"
-            to={`/cars?model=${car.model}`}
+            href={`/cars?make=${car.brand}&model=${car.model}`}
           >
             {car.model}
-          </Link>
+          </a>
         </div>
         <div>
           <FaHeart
