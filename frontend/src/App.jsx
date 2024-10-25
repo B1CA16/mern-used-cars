@@ -6,7 +6,7 @@ import CarsPage from './pages/CarsPage';
 import CarAdPAge from './components/CarAdPAge';
 import NotExist from './pages/NotExist';
 import SignIn from './components/SignIn';
-// import SignUp from './components/SignUp';
+import SignUp from './components/SignUp';
 
 const App = () => {
   const location = useLocation();
@@ -23,7 +23,7 @@ const App = () => {
         <Route path="/cars" element={<CarsPage />} />
         <Route path="/car/:id" element={<CarAdPAge />} />
         <Route path="/signin" element={<SignIn />} />
-        {/* <Route path="/signup" element={<SignUp />} /> */}
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
       
       {!hideNavFooter && <Footer />}

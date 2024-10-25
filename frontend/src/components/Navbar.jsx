@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
@@ -16,9 +15,9 @@ const Navbar = () => {
             <FaPlus className='transform transition-transform duration-300 group-hover:scale-110' />
             Start selling
           </Link>
-          <button className='bg-white text-blue-950 uppercase font-medium text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-neutral-200 transition duration-300'>
+          <Link to='/signin' className='bg-white text-blue-950 uppercase font-medium text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-neutral-200 transition duration-300'>
             Sign In
-          </button>
+          </Link>
         </div>
       </div>
     </div>
