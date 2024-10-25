@@ -1,25 +1,34 @@
-import React from 'react'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import Home from './pages/Home'
-import { Route, Routes } from 'react-router-dom'
-import CarsPage from './pages/CarsPage'
-import CarAdPAge from './components/CarAdPAge'
-import NotExist from './pages/NotExist'
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import CarsPage from './pages/CarsPage';
+import CarAdPAge from './components/CarAdPAge';
+import NotExist from './pages/NotExist';
+import SignIn from './components/SignIn';
+// import SignUp from './components/SignUp';
 
 const App = () => {
+  const location = useLocation();
+  const noNavFooterPaths = ['/signin', '/signup'];
+  const hideNavFooter = noNavFooterPaths.includes(location.pathname);
+
   return (
     <div>
-      <Navbar />
+      {!hideNavFooter && <Navbar />} 
+      
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='*' element={<NotExist />} />
-        <Route path='/cars' element={<CarsPage />} />
-        <Route path='/car/:id' element={<CarAdPAge />} />
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotExist />} />
+        <Route path="/cars" element={<CarsPage />} />
+        <Route path="/car/:id" element={<CarAdPAge />} />
+        <Route path="/signin" element={<SignIn />} />
+        {/* <Route path="/signup" element={<SignUp />} /> */}
       </Routes>
-      <Footer />
+      
+      {!hideNavFooter && <Footer />}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

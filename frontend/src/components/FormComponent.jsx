@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { FaMagnifyingGlass, FaSliders } from 'react-icons/fa6';
 import { SearchContext } from '../context/SearchContext';
