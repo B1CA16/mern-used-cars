@@ -7,6 +7,7 @@ import { FaArrowsRotate, FaMagnifyingGlass } from 'react-icons/fa6';
 const AdvancedSearch = () => {
   const [priceError, setPriceError] = useState(false);
   const [hpError, setHpError] = useState(false);
+  const [mileageError, setMileageError] = useState(false);
   const { cars } = useContext(CarContext);
 
   const {
@@ -85,7 +86,7 @@ const AdvancedSearch = () => {
     } else {
       setHpError(false);
     }
-  };
+  }
 
   const handleMaxHpChange = (event) => {
     const newMaxHp = parseFloat(event.target.value) || 0;
@@ -96,7 +97,29 @@ const AdvancedSearch = () => {
     } else {
       setHpError(false);
     }
-  };
+  }
+
+  const handleMinMileageChange = (event) => {
+    const newMinMileage = parseFloat(event.target.value) || 0;
+    setMileageFrom(newMinMileage);
+
+    if (newMinMileage && mileageTo && newMinMileage > mileageTo) {
+      setMileageError(true);
+    } else {
+      setMileageError(false);
+    }
+  }
+
+  const handleMaxMileageChange = (event) => {
+    const newMaxMileage = parseFloat(event.target.value) || 0;
+    setMileageTo(newMaxMileage);
+
+    if (newMaxMileage && mileageFrom && newMaxMileage < mileageFrom) {
+      setMileageError(true);
+    } else {
+      setMileageError(false);
+    }
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -266,7 +289,8 @@ const AdvancedSearch = () => {
                 label="Mileage From"
                 type="number"
                 value={mileageFrom}
-                onChange={(event) => setMileageFrom(event.target.value)}
+                onChange={handleMinMileageChange}
+                error={mileageError && mileageTo < mileageFrom}
               />
               <TextField
                 fullWidth
@@ -274,7 +298,8 @@ const AdvancedSearch = () => {
                 label="Mileage To"
                 type="number"
                 value={mileageTo}
-                onChange={(event) => setMileageTo(event.target.value)}
+                onChange={handleMaxMileageChange}
+                error={mileageError && mileageFrom > mileageTo}
               />
             </div>
 
@@ -284,7 +309,7 @@ const AdvancedSearch = () => {
                 <FaArrowsRotate className='mr-2 transform transition-transform duration-300 group-hover:scale-110' />
                 Clear Choices
               </a>
-              <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300' disabled={priceError || hpError}>
+              <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300' disabled={priceError || hpError || mileageError}>
                 <FaMagnifyingGlass className='mr-2' />
                 Search
               </button>
