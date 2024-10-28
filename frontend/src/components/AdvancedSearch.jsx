@@ -6,7 +6,8 @@ import { FaArrowsRotate, FaMagnifyingGlass } from 'react-icons/fa6';
 
 const AdvancedSearch = () => {
   const [priceError, setPriceError] = useState(false);
-  const { cars } = useContext(CarContext); 
+  const [hpError, setHpError] = useState(false);
+  const { cars } = useContext(CarContext);
 
   const {
     make, setMake,
@@ -30,14 +31,10 @@ const AdvancedSearch = () => {
 
   const fuels = useMemo(() => [...new Set(cars.map(car => car.fuel))], [cars]);
   const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe', 'Supercar', 'Convertible', 'Van'];
-  
-  let maxYear = new Date().getFullYear()
-  let minYear = maxYear - 100
-  var years = []
-  
-  for (var i = maxYear; i >= minYear; i--) {
-    years.push(i)
-  }
+
+  let maxYear = new Date().getFullYear();
+  let minYear = maxYear - 100;
+  const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i); // Gera uma lista de anos
 
   const handleFromYearChange = (event, newValue) => {
     if (newValue > untilYear) {
@@ -79,6 +76,28 @@ const AdvancedSearch = () => {
     }
   };
 
+  const handleMinHpChange = (event) => {
+    const newMinHp = parseFloat(event.target.value) || 0;
+    setHpFrom(newMinHp);
+
+    if (newMinHp && hpTo && newMinHp > hpTo) {
+      setHpError(true);
+    } else {
+      setHpError(false);
+    }
+  };
+
+  const handleMaxHpChange = (event) => {
+    const newMaxHp = parseFloat(event.target.value) || 0;
+    setHpTo(newMaxHp);
+
+    if (newMaxHp && hpFrom && newMaxHp < hpFrom) {
+      setHpError(true);
+    } else {
+      setHpError(false);
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -99,8 +118,7 @@ const AdvancedSearch = () => {
     const url = `${window.location.origin}/cars?${params.toString()}`;
     
     window.location.href = url;
-};
-
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -205,7 +223,8 @@ const AdvancedSearch = () => {
                 label="Horsepower From"
                 type="number"
                 value={hpFrom}
-                onChange={(event) => setHpFrom(event.target.value)}
+                onChange={handleMinHpChange}
+                error={hpError && hpTo < hpFrom}
               />
               <TextField
                 fullWidth
@@ -213,7 +232,8 @@ const AdvancedSearch = () => {
                 label="Horsepower To"
                 type="number"
                 value={hpTo}
-                onChange={(event) => setHpTo(event.target.value)}
+                onChange={handleMaxHpChange}
+                error={hpError && hpFrom > hpTo}
               />
             </div>
 
@@ -264,7 +284,7 @@ const AdvancedSearch = () => {
                 <FaArrowsRotate className='mr-2 transform transition-transform duration-300 group-hover:scale-110' />
                 Clear Choices
               </a>
-              <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300' disabled={priceError}>
+              <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300' disabled={priceError || hpError}>
                 <FaMagnifyingGlass className='mr-2' />
                 Search
               </button>
