@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { FaMagnifyingGlass, FaSliders } from 'react-icons/fa6';
 import { SearchContext } from '../context/SearchContext';
@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CarContext } from '../context/CarContext';
 
 const FormComponent = () => {
-  const { cars } = useContext(CarContext); 
+  const { cars } = useContext(CarContext);
 
   const {
     make, setMake,
@@ -18,13 +18,20 @@ const FormComponent = () => {
   } = useContext(SearchContext);
 
   const navigate = useNavigate();
+  const [priceError, setPriceError] = useState(false);
 
   const makes = useMemo(() => [...new Set(cars.map(car => car.brand))], [cars]);
   const models = useMemo(() => {
     return make ? [...new Set(cars.filter(car => car.brand === make).map(car => car.model))] : [];
   }, [cars, make]);
 
-  const years = [2022, 2021, 2020, 2019]; 
+  let maxYear = new Date().getFullYear();
+  let minYear = maxYear - 100;
+  var years = [];
+
+  for (var i = maxYear; i >= minYear; i--) {
+    years.push(i);
+  }
 
   const handleFromYearChange = (event, newValue) => {
     if (newValue > untilYear) {
@@ -58,6 +65,32 @@ const FormComponent = () => {
     navigate(`/cars?${params.toString()}`);
   };
 
+  // Update minPrice with validation
+  const handleMinPriceChange = (event) => {
+    const newMinPrice = parseFloat(event.target.value) || 0;
+    setMinPrice(newMinPrice);
+
+    // Check if both values are set and minPrice is greater than maxPrice
+    if (newMinPrice && maxPrice && newMinPrice > maxPrice) {
+      setPriceError(true);
+    } else {
+      setPriceError(false);
+    }
+  };
+
+  // Update maxPrice with validation
+  const handleMaxPriceChange = (event) => {
+    const newMaxPrice = parseFloat(event.target.value) || 0;
+    setMaxPrice(newMaxPrice);
+
+    // Check if both values are set and maxPrice is less than minPrice
+    if (newMaxPrice && minPrice && newMaxPrice < minPrice) {
+      setPriceError(true);
+    } else {
+      setPriceError(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSearch} className="w-full max-w-xl bg-white p-6 rounded-lg space-y-3">
       <h1 className='text-neutral-900 text-2xl font-medium'>What car are you looking for?</h1>
@@ -81,6 +114,7 @@ const FormComponent = () => {
           onChange={(event, newValue) => setModel(newValue)}
           renderInput={(params) => <TextField {...params} label="Model" variant="standard" />}
           className="flex-1"
+          disabled={!make} 
         />
       </div>
 
@@ -114,7 +148,8 @@ const FormComponent = () => {
             label="Min Price"
             type="number"
             value={minPrice}
-            onChange={(event) => setMinPrice(event.target.value)}
+            onChange={handleMinPriceChange}
+            error={priceError && minPrice > maxPrice}
           />
           <TextField
             fullWidth
@@ -122,17 +157,18 @@ const FormComponent = () => {
             label="Max Price"
             type="number"
             value={maxPrice}
-            onChange={(event) => setMaxPrice(event.target.value)}
+            onChange={handleMaxPriceChange}
+            error={priceError && maxPrice < minPrice}
           />
         </div>
       </div>
 
       {/* Search */}
-      <div className='flex flex-wrap gap-4'>
+      <div className='flex flex-wrap gap-4 pt-5'>
         <Link to='/cars' className="text-blue-500 flex-1 flex gap-2 items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500">
           <FaSliders className='transform transition-transform duration-300 group-hover:scale-110' /> Advanced Search
         </Link>
-        <button type="submit" className='flex-1 bg-red-600 text-white uppercase flex items-center font-medium justify-center text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
+        <button type="submit" className='flex-1 bg-red-600 text-white uppercase flex items-center font-medium justify-center text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300' disabled={priceError}>
           <FaMagnifyingGlass className='mr-2' />
           Search
         </button>

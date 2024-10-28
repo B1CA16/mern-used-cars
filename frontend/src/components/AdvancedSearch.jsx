@@ -1,10 +1,11 @@
-import { useContext, useMemo, useEffect } from 'react';
+import { useContext, useMemo, useEffect, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { SearchContext } from '../context/SearchContext';
 import { CarContext } from '../context/CarContext';
 import { FaArrowsRotate, FaMagnifyingGlass } from 'react-icons/fa6';
 
 const AdvancedSearch = () => {
+  const [priceError, setPriceError] = useState(false);
   const { cars } = useContext(CarContext); 
 
   const {
@@ -29,7 +30,14 @@ const AdvancedSearch = () => {
 
   const fuels = useMemo(() => [...new Set(cars.map(car => car.fuel))], [cars]);
   const segments = ['SUV', 'Sedan', 'Hatchback', 'Coupe', 'Supercar', 'Convertible', 'Van'];
-  const years = [2022, 2021, 2020, 2019]; 
+  
+  let maxYear = new Date().getFullYear()
+  let minYear = maxYear - 100
+  var years = []
+  
+  for (var i = maxYear; i >= minYear; i--) {
+    years.push(i)
+  }
 
   const handleFromYearChange = (event, newValue) => {
     if (newValue > untilYear) {
@@ -48,6 +56,28 @@ const AdvancedSearch = () => {
   const filteredUntilYears = useMemo(() => {
     return years.filter(year => year >= fromYear);
   }, [fromYear, years]);
+
+  const handleMinPriceChange = (event) => {
+    const newMinPrice = parseFloat(event.target.value) || 0;
+    setMinPrice(newMinPrice);
+
+    if (newMinPrice && maxPrice && newMinPrice > maxPrice) {
+      setPriceError(true);
+    } else {
+      setPriceError(false);
+    }
+  };
+
+  const handleMaxPriceChange = (event) => {
+    const newMaxPrice = parseFloat(event.target.value) || 0;
+    setMaxPrice(newMaxPrice);
+
+    if (newMaxPrice && minPrice && newMaxPrice < minPrice) {
+      setPriceError(true);
+    } else {
+      setPriceError(false);
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -196,7 +226,8 @@ const AdvancedSearch = () => {
                 label="Min Price"
                 type="number"
                 value={minPrice}
-                onChange={(event) => setMinPrice(event.target.value)}
+                onChange={handleMinPriceChange}
+                error={priceError && minPrice > maxPrice}
               />
               <TextField
                 fullWidth
@@ -204,7 +235,8 @@ const AdvancedSearch = () => {
                 label="Max Price"
                 type="number"
                 value={maxPrice}
-                onChange={(event) => setMaxPrice(event.target.value)}
+                onChange={handleMaxPriceChange}
+                error={priceError && maxPrice < minPrice}
               />
 
               {/* Mileage Range */}
@@ -227,12 +259,12 @@ const AdvancedSearch = () => {
             </div>
 
             {/* Search Buttons */}
-            <div className="w-full flex justify-end mt-4">
+            <div className="w-full flex justify-end pt-5">
               <a href='/cars' className="text-blue-500 px-6 mr-4 flex items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500">
                 <FaArrowsRotate className='mr-2 transform transition-transform duration-300 group-hover:scale-110' />
                 Clear Choices
               </a>
-              <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300'>
+              <button type='submit' className='bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300' disabled={priceError}>
                 <FaMagnifyingGlass className='mr-2' />
                 Search
               </button>
