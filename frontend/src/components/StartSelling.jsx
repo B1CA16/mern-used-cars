@@ -32,7 +32,7 @@ const StartSelling = () => {
       </div>
 
       <div className="w-11/12 mx-auto my-12 px-6 sm:px-16">
-        <h2 className="text-4xl font-bold mb-12 text-center">
+        <h2 className="text-3xl font-bold mb-12 text-center">
           What You Need to Start Selling
         </h2>
 
@@ -91,7 +91,7 @@ const StartSelling = () => {
           </div>
         </div>
 
-        <h2 className="text-4xl font-bold mb-12 text-center">
+        <h2 className="text-3xl font-bold mb-12 text-center">
           Tips for a Successful Sale
         </h2>
         <div className="grid gap-8 md:grid-cols-3">

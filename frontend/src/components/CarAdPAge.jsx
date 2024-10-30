@@ -119,21 +119,21 @@ const CarAdPage = () => {
             />
           </button>
           <a
-            className="hover:text-neutral-700 hover:dark:text-neutral-300"
+            className="hover:text-neutral-700 hover:dark:text-neutral-300 sm:text-base text-sm"
             href="/cars"
           >
             Cars
           </a>
           &#183;
           <a
-            className="hover:text-neutral-700 hover:dark:text-neutral-300"
+            className="hover:text-neutral-700 hover:dark:text-neutral-300 sm:text-base text-sm"
             href={`/cars?make=${car.brand}`}
           >
             {car.brand}
           </a>
           &#183;
           <a
-            className="font-semibold hover:text-neutral-700 hover:dark:text-neutral-300"
+            className="font-semibold hover:text-neutral-700 hover:dark:text-neutral-300 sm:text-base text-sm"
             href={`/cars?make=${car.brand}&model=${car.model}`}
           >
             {car.model}
@@ -146,8 +146,23 @@ const CarAdPage = () => {
           />
         </div>
       </div>
-      <div className="flex justify-between gap-8">
-        <div className="w-3/4 p-4">
+      <div className="flex md:flex-row flex-col justify-between md:gap-8 gap-0">
+        <div className="md:w-3/4 w-full p-4">
+        <div className="block md:hidden mt-4">
+              <h1 className="sm:text-3xl text-2xl font-bold">{car.name}</h1>
+              <div className="flex justify-between items-center">
+                <p className="mb-4 sm:text-base text-sm">
+                {car.month_of_registration} &#183;&nbsp;
+                {car.year} &#183;&nbsp;
+                {car.fixed_value ? "Fixed Value" : "Negotiable"} &#183;&nbsp;
+                {car.financing_available ? "Financiable" : "Not Financiable"}
+              </p>
+              <h1 className="sm:text-3xl text-xl font-bold mb-4">
+                {formatNumber(car.price)} <span className="sm:text-xl text-lg">EUR</span>
+              </h1>
+              </div>
+              
+            </div>
           <div className="w-full flex justify-center px-auto bg-neutral-100 dark:bg-neutral-800 rounded-md">
             {Array.isArray(car.image) ? (
               <Slider {...sliderSettings}>
@@ -175,14 +190,14 @@ const CarAdPage = () => {
           <hr className="my-4 border-neutral-200 dark:border-neutral-800" />
 
           <div className="mt-8">
-            <h2 className="text-2xl font-semibold mb-4">Highlights</h2>
-            <div className="flex justify-around items-center mt-6">
+            <h2 className="sm:text-2xl text-xl font-semibold mb-4">Highlights</h2>
+            <div className="flex justify-around gap-6 items-center mt-6 overflow-x-auto">
               <div className="flex flex-col items-center justify-center">
                 <FaRoad className="mr-2 text-3xl mb-2" />
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
                   Mileage
                 </p>
-                <span className="text-xl font-medium">
+                <span className="sm:text-xl text-base font-medium">
                   {formatNumber(car.km)}
                 </span>
               </div>
@@ -192,7 +207,7 @@ const CarAdPage = () => {
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
                   Fuel Type
                 </p>
-                <span className="text-xl font-medium">{car.fuel}</span>
+                <span className="sm:text-xl text-base font-medium">{car.fuel}</span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
@@ -200,7 +215,7 @@ const CarAdPage = () => {
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
                   Transmission
                 </p>
-                <span className="text-xl font-medium">{car.transmission}</span>
+                <span className="sm:text-xl text-base font-medium">{car.transmission}</span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
@@ -224,7 +239,7 @@ const CarAdPage = () => {
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
                   Displacement
                 </p>
-                <span className="text-xl font-medium">{car.cm3}</span>
+                <span className="sm:text-xl text-base font-medium">{car.cm3}</span>
               </div>
 
               <div className="flex flex-col items-center justify-center">
@@ -232,13 +247,13 @@ const CarAdPage = () => {
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
                   Horsepower
                 </p>
-                <span className="text-xl font-medium">{car.hp}</span>
+                <span className="sm:text-xl text-base font-medium">{car.hp}</span>
               </div>
             </div>
 
             <hr className="my-4 border-neutral-200 dark:border-neutral-800" />
 
-            <h2 className="text-2xl font-semibold mb-4">Car Description</h2>
+            <h2 className="sm:text-2xl text-xl font-semibold mb-4">Car Description</h2>
             <p className="text-neutral-800 dark:text-neutral-200 text-lg">
               {car.description}
             </p>
@@ -246,57 +261,57 @@ const CarAdPage = () => {
             <hr className="my-4 border-neutral-200 dark:border-neutral-800" />
 
             <div className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">Details</h2>
+              <h2 className="sm:text-2xl text-xl font-semibold mb-4">Details</h2>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Brand</strong> {car.brand}
                 </p>
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Model</strong> {car.model}
                 </p>
 
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Version</strong> {car.version}
                 </p>
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Year</strong> {car.year}
                 </p>
 
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Segment</strong> {car.segment}
                 </p>
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Month of Registration</strong>{" "}
                   {car.month_of_registration}
                 </p>
 
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Engine Capacity (cm³)</strong> {car.cm3}
                 </p>
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Financing Available</strong>{" "}
                   {car.financing_available ? "Yes" : "No"}
                 </p>
 
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Warranty</strong> {car.warranty}
                 </p>
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Previous Owners</strong> {car.previous_owners}
                 </p>
 
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Service Book</strong>{" "}
                   {car.service_book ? "Available" : "Not Available"}
                 </p>
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Non-Smoker</strong> {car.non_smoker ? "Yes" : "No"}
                 </p>
 
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Second Key</strong> {car.second_key ? "Yes" : "No"}
                 </p>
-                <p className="text-neutral-800 dark:text-neutral-200 text-lg mb-2">
+                <p className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base mb-2">
                   <strong>Vehicle Class</strong> {car.vehicle_class}
                 </p>
               </div>
@@ -305,7 +320,7 @@ const CarAdPage = () => {
             <hr className="my-4 border-neutral-200 dark:border-neutral-800" />
 
             <div className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">Features & Extras</h2>
+              <h2 className="sm:text-2xl text-xl font-semibold mb-4">Features & Extras</h2>
               {sections.map((section, index) => (
                 <div
                   key={index}
@@ -315,7 +330,7 @@ const CarAdPage = () => {
                     className="flex justify-between items-center cursor-pointer"
                     onClick={() => toggleSection(index)}
                   >
-                    <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-200 group-hover:text-neutral-900/90 dark:group-hover:text-neutral-100/90">
+                    <h3 className="sm:text-xl text-lg font-semibold text-neutral-900 dark:text-neutral-200 group-hover:text-neutral-900/90 dark:group-hover:text-neutral-100/90">
                       {section.title}
                     </h3>
                     {openIndex === index ? (
@@ -333,9 +348,11 @@ const CarAdPage = () => {
           </div>
         </div>
 
-        <div className="w-1/4">
-          <div className="sticky top-8 p-4">
-            <div>
+        <div className="md:w-1/4 w-full">
+          <hr className="md:hidden block m-4 border-neutral-200 dark:border-neutral-800" />
+
+          <div className="sticky md:top-8 top-0 p-4">
+            <div className="md:block hidden">
               <h1 className="text-3xl font-bold mb-4">{car.name}</h1>
               <p className="mb-4">
                 {car.month_of_registration} &#183;&nbsp;
@@ -348,11 +365,11 @@ const CarAdPage = () => {
               </h1>
             </div>
 
-            <div className="flex flex-col mt-12 rounded-md justify-center">
-              <h2 className="text-2xl font-semibold mb-2">Seller</h2>
-              <div className="mb-4">
+            <div className="flex flex-col mt-0 md:mt-12 rounded-md justify-center">
+              <h2 className="sm:text-2xl text-xl font-semibold mb-2">Seller</h2>
+              <div className="mb-1">
                 {car.owner.name ? (
-                  <div className="text-neutral-800 dark:text-neutral-200 text-lg">
+                  <div className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base">
                     <p className="flex items-center gap-4 mb-1">
                       <FaUser />
                       {car.owner.name}
@@ -363,7 +380,7 @@ const CarAdPage = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="text-neutral-800 dark:text-neutral-200 text-lg">
+                  <div className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base">
                     <p className="flex items-center gap-4 mb-1">
                       <FaBuilding />
                       {car.owner.company}
@@ -376,7 +393,7 @@ const CarAdPage = () => {
                 )}
               </div>
               {car.owner.verified ? (
-                <p className="flex items-center gap-4 text-neutral-800 dark:text-neutral-200 text-lg">
+                <p className="flex items-center gap-4 text-neutral-800 dark:text-neutral-200 sm:text-lg text-base">
                   <FaCheck />
                   Verified Seller
                 </p>
