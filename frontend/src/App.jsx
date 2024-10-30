@@ -7,6 +7,7 @@ import CarAdPAge from './components/CarAdPAge';
 import NotExist from './pages/NotExist';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import StartSelling from './components/StartSelling';
 
 const App = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="*" element={<NotExist />} />
         <Route path="/cars" element={<CarsPage />} />
         <Route path="/car/:id" element={<CarAdPAge />} />
+        <Route path="/start-selling" element={<StartSelling />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>

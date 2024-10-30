@@ -201,7 +201,7 @@ const SearchResults = () => {
             onPageChange={handlePageClick}
             pageRangeDisplayed={5}
             pageCount={pageCount}
-            previousLabel={<FaChevronLeft title="Previous" className="text-xl pr-2" />}
+            previousLabel={<FaChevronLeft title="Previous" className="text-xl scroll-pr-16" />}
             renderOnZeroPageCount={null}
             containerClassName="flex justify-center items-center my-4 space-x-2"
             pageClassName="mx-1"
