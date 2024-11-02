@@ -24,7 +24,7 @@ const TipsAndMaintenance = () => {
     <div className="py-12">
       <div className="mx-auto px-6 sm:px-16">
         <h2 className="text-3xl font-bold text-center mb-8">Car Buying and Maintenance Tips</h2>
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-8 lg:grid-cols-3">
           {tips.map((tip, index) => (
             <div key={index} className="dark:bg-neutral-800 bg-neutral-100 p-6 rounded-md shadow">
               <div className="flex justify-center mb-4">

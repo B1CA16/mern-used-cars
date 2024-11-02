@@ -19,6 +19,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaChevronLeft, FaHeart } from "react-icons/fa6";
 import NotFound from "./NotFound";
+import Accordion from "./Accordion";
 
 const CarAdPage = () => {
   const { id } = useParams();
@@ -44,7 +45,7 @@ const CarAdPage = () => {
   const sections = [
     {
       title: "Audio & Multimedia",
-      content: (
+      body: (
         <ul className="list-disc list-inside">
           {car.extras.audio_and_multimedia.map((feature, index) => (
             <li key={index} className="text-neutral-800 dark:text-neutral-200">
@@ -56,7 +57,7 @@ const CarAdPage = () => {
     },
     {
       title: "Comfort & Other Equipment",
-      content: (
+      body: (
         <ul className="list-disc list-inside">
           {car.extras.comfort_and_other_equipment.map((feature, index) => (
             <li key={index} className="text-neutral-800 dark:text-neutral-200">
@@ -68,7 +69,7 @@ const CarAdPage = () => {
     },
     {
       title: "Electronic & Driving Assistance",
-      content: (
+      body: (
         <ul className="list-disc list-inside">
           {car.extras.electronic_and_driving_assistance.map(
             (feature, index) => (
@@ -85,7 +86,7 @@ const CarAdPage = () => {
     },
     {
       title: "Safety",
-      content: (
+      body: (
         <ul className="list-disc list-inside">
           {car.extras.safety.map((feature, index) => (
             <li key={index} className="text-neutral-800 dark:text-neutral-200">
@@ -321,29 +322,7 @@ const CarAdPage = () => {
 
             <div className="mt-8">
               <h2 className="sm:text-2xl text-xl font-semibold mb-4">Features & Extras</h2>
-              {sections.map((section, index) => (
-                <div
-                  key={index}
-                  className="mb-4 bg-white dark:bg-neutral-800 p-4 rounded-md shadow hover:bg-neutral-100 hover:dark:bg-neutral-700/50 group transition-all duration-300"
-                >
-                  <div
-                    className="flex justify-between items-center cursor-pointer"
-                    onClick={() => toggleSection(index)}
-                  >
-                    <h3 className="sm:text-xl text-lg font-semibold text-neutral-900 dark:text-neutral-200 group-hover:text-neutral-900/90 dark:group-hover:text-neutral-100/90">
-                      {section.title}
-                    </h3>
-                    {openIndex === index ? (
-                      <FaChevronUp className="text-neutral-800 dark:text-neutral-200" />
-                    ) : (
-                      <FaChevronDown className="text-neutral-800 dark:text-neutral-200" />
-                    )}
-                  </div>
-                  {openIndex === index && (
-                    <div className="mt-4">{section.content}</div>
-                  )}
-                </div>
-              ))}
+              <Accordion values={sections} />
             </div>
           </div>
         </div>
