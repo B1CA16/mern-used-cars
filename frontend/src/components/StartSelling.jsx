@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import TipCard from "./TipCard"; // Import the TipCard component
 import HomeBanner from "./HomeBanner";
+import BottomWheels from "./BottomWheels";
 
 const StartSelling = () => {
   const sellingRequirements = [
@@ -65,15 +66,7 @@ const StartSelling = () => {
         </div>
         <div className="absolute bottom-0 left-0 w-full h-24 bg-blue-700 transform origin-bottom-right -skew-y-2"></div>
       </div>
-      <div className="bg-blue-500 h-40"></div>
-      <div className="flex justify-between px-20">
-        <div className="flex justify-center items-center">
-          <img className="w-56" src="/Wheel.png" alt="Wheel" />
-        </div>
-        <div className="flex justify-center items-center">
-          <img className="w-56" src="/Wheel.png" alt="Wheel" />
-        </div>
-      </div>
+      <BottomWheels />
 
       <div className="w-11/12 mx-auto my-12 px-6 sm:px-16">
         <h2 className="text-3xl font-bold mb-12 text-center">

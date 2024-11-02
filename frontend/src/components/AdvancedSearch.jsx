@@ -3,6 +3,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { SearchContext } from '../context/SearchContext';
 import { CarContext } from '../context/CarContext';
 import { FaArrowsRotate, FaMagnifyingGlass } from 'react-icons/fa6';
+import BottomWheels from './BottomWheels';
 
 const AdvancedSearch = () => {
   const [priceError, setPriceError] = useState(false);
@@ -320,15 +321,7 @@ const AdvancedSearch = () => {
         <div className="absolute bottom-0 left-0 w-full h-24 bg-blue-700 transform origin-bottom-right -skew-y-2"></div>
       </div>
 
-      <div className="bg-blue-500 h-40"></div>
-      <div className="flex justify-between px-20">
-        <div className="flex justify-center items-center">
-          <img className="w-56" src="/Wheel.png" alt="Wheel" />
-        </div>
-        <div className="flex justify-center items-center">
-          <img className="w-56" src="/Wheel.png" alt="Wheel" />
-        </div>
-      </div>
+      <BottomWheels />
     </div>
   );
 };
