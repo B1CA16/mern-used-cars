@@ -8,6 +8,7 @@ import {
   FaRegIdCard,
 } from "react-icons/fa";
 import TipCard from "./TipCard"; // Import the TipCard component
+import HomeBanner from "./HomeBanner";
 
 const StartSelling = () => {
   const sellingRequirements = [
@@ -85,24 +86,13 @@ const StartSelling = () => {
           ))}
         </div>
 
-        <div
-          className="relative rounded-md my-12 bg-cover bg-center text-white py-0 banner:py-20"
-          style={{ backgroundImage: "url('/road2.jpg')" }}
-        >
-          <div className="bg-blue-700/70 p-10 backdrop-blur-sm rounded-md mx-auto max-w-4xl text-center">
-            <h2 className="text-4xl font-bold mb-4">Why Sell with Us?</h2>
-            <p className="text-lg mb-6">
-              Maximize your sale price, reach thousands of potential buyers, and
-              enjoy a hassle-free selling process.
-            </p>
-            <Link
-              to="/create-ad"
-              className="bg-yellow-400 text-blue-900 flex items-center justify-center mx-auto w-48 h-12 rounded-md font-semibold hover:scale-105 hover:bg-yellow-500 transition-transform duration-300"
-            >
-              Create an Ad
-            </Link>
-          </div>
-        </div>
+        <HomeBanner
+          image="/road2.jpg"
+          title="Why Sell with Us?"
+          description="Maximize your sale price, reach thousands of potential buyers, and enjoy a hassle-free selling process."
+          buttonText="Create an Ad"
+          buttonLink="/create-ad"
+        />
 
         <h2 className="text-3xl font-bold mb-12 text-center">
           Tips for a Successful Sale
