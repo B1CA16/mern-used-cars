@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaWrench, FaLightbulb, FaClipboardCheck } from 'react-icons/fa';
+import TipCard from './TipCard';
 
 const TipsAndMaintenance = () => {
   const tips = [
@@ -26,13 +27,7 @@ const TipsAndMaintenance = () => {
         <h2 className="text-3xl font-bold text-center mb-8">Car Buying and Maintenance Tips</h2>
         <div className="grid gap-8 lg:grid-cols-3">
           {tips.map((tip, index) => (
-            <div key={index} className="dark:bg-neutral-800 bg-neutral-100 p-6 rounded-md shadow">
-              <div className="flex justify-center mb-4">
-                {tip.icon}
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-center">{tip.title}</h3>
-              <p className="dark:text-neutral-300 text-neutral-700 text-center">{tip.description}</p>
-            </div>
+            <TipCard key={index} tip={tip} />
           ))}
         </div>
       </div>

@@ -7,8 +7,51 @@ import {
   FaClipboardList,
   FaRegIdCard,
 } from "react-icons/fa";
+import TipCard from "./TipCard"; // Import the TipCard component
 
 const StartSelling = () => {
+  const sellingRequirements = [
+    {
+      icon: <FaCar size={24} className="text-yellow-400" />,
+      title: "Vehicle Details",
+      description:
+        "Have all the essential details ready, including make, model, year, and mileage.",
+    },
+    {
+      icon: <FaCamera size={24} className="text-yellow-400" />,
+      title: "Quality Photos",
+      description:
+        "Capture clear images of your car from multiple angles to attract more buyers.",
+    },
+    {
+      icon: <FaRegIdCard size={24} className="text-yellow-400" />,
+      title: "ID Verification",
+      description:
+        "Verify your identity to add credibility to your ad and build trust with buyers.",
+    },
+  ];
+
+  const sellingTips = [
+    {
+      icon: <FaClipboardList size={24} className="text-yellow-400" />,
+      title: "Detailed Description",
+      description:
+        "Write a thorough description, including any recent maintenance or unique features.",
+    },
+    {
+      icon: <FaDollarSign size={24} className="text-yellow-400" />,
+      title: "Competitive Pricing",
+      description:
+        "Research market prices to set a fair and competitive price that attracts buyers.",
+    },
+    {
+      icon: <FaCamera size={24} className="text-yellow-400" />,
+      title: "Highlight Condition",
+      description:
+        "Showcase the car’s current condition with both interior and exterior photos.",
+    },
+  ];
+
   return (
     <div>
       <div className="relative bg-blue-700 p-8 pt-14 pb-24 flex flex-col-reverse xl:flex-row gap-12 items-center lg:justify-between">
@@ -37,38 +80,8 @@ const StartSelling = () => {
         </h2>
 
         <div className="grid gap-8 md:grid-cols-3">
-          {[
-            {
-              icon: <FaCar size={24} className="text-yellow-400" />,
-              title: "Vehicle Details",
-              description:
-                "Have all the essential details ready, including make, model, year, and mileage.",
-            },
-            {
-              icon: <FaCamera size={24} className="text-yellow-400" />,
-              title: "Quality Photos",
-              description:
-                "Capture clear images of your car from multiple angles to attract more buyers.",
-            },
-            {
-              icon: <FaRegIdCard size={24} className="text-yellow-400" />,
-              title: "ID Verification",
-              description:
-                "Verify your identity to add credibility to your ad and build trust with buyers.",
-            },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="bg-neutral-100 dark:bg-neutral-800 p-6 rounded-md shadow text-center"
-            >
-              <div className="flex justify-center mb-4">{item.icon}</div>
-              <h3 className="text-xl font-semibold mb-2 text-center">
-                {item.title}
-              </h3>
-              <p className="text-neutral-600 dark:text-neutral-300">
-                {item.description}
-              </p>
-            </div>
+          {sellingRequirements.map((item, index) => (
+            <TipCard key={index} tip={item} />
           ))}
         </div>
 
@@ -95,38 +108,8 @@ const StartSelling = () => {
           Tips for a Successful Sale
         </h2>
         <div className="grid gap-8 md:grid-cols-3">
-          {[
-            {
-              icon: <FaClipboardList size={24} className="text-yellow-400" />,
-              title: "Detailed Description",
-              description:
-                "Write a thorough description, including any recent maintenance or unique features.",
-            },
-            {
-              icon: <FaDollarSign size={24} className="text-yellow-400" />,
-              title: "Competitive Pricing",
-              description:
-                "Research market prices to set a fair and competitive price that attracts buyers.",
-            },
-            {
-              icon: <FaCamera size={24} className="text-yellow-400" />,
-              title: "Highlight Condition",
-              description:
-                "Showcase the car’s current condition with both interior and exterior photos.",
-            },
-          ].map((tip, index) => (
-            <div
-              key={index}
-              className="bg-neutral-100 dark:bg-neutral-800 p-6 rounded-md shadow text-center"
-            >
-              <div className="flex justify-center mb-4">{tip.icon}</div>
-              <h3 className="text-xl font-semibold mb-2 text-center">
-                {tip.title}
-              </h3>
-              <p className="text-neutral-600 dark:text-neutral-300">
-                {tip.description}
-              </p>
-            </div>
+          {sellingTips.map((tip, index) => (
+            <TipCard key={index} tip={tip} />
           ))}
         </div>
       </div>
