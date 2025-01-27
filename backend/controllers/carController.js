@@ -7,7 +7,6 @@ const addCar = async (req, res) => {
     let image_filename = req.file ? req.file.filename : null;
 
     const car = new carModel({
-        id: req.body.id,
         name: req.body.name,
         brand: req.body.brand,
         model: req.body.model,

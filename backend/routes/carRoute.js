@@ -21,9 +21,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Routes for managing cars
-carRouter.post("/add", upload.single("image"), addCar); // Route to add a new car
-carRouter.get("/list", getCars); // Route to list all cars
-carRouter.get("/list/:id", getCarById); // Route to get details of a specific car by ID
-carRouter.delete("/remove/:id", removeCar); // Route to remove a car by ID
+carRouter.post("/", upload.single("image"), addCar); // Route to add a new car
+carRouter.get("/", getCars); // Route to list all cars
+carRouter.get("/:id", getCarById); // Route to get details of a specific car by ID
+carRouter.delete("/:id", removeCar); // Route to remove a car by ID
 
 export default carRouter;
