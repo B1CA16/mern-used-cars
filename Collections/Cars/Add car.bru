@@ -1,0 +1,57 @@
+meta {
+  name: Add car
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:4000/api/cars/add
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  name: Toyota Corolla
+  brand: Toyota
+  model: Corolla
+  version: Sedan
+  segment: Sedan
+  year: 2019
+  month_of_registration: january
+  km: 30000
+  fuel: Gasoline
+  hp: 132
+  cm3: 1798
+  location: Lisbon
+  price: 15000
+  transmission: Automatic
+  owner_name: John Doe
+  owner_phone: 987654321
+  owner_verified: true
+  description: Reliable compact sedan with modern features and low mileage.
+  financing_available: true
+  fixed_value: true
+  warranty: 12 Months
+  previous_owners: 0
+  service_book: true
+  non_smoker: true
+  second_key: true
+  vehicle_class: Class 1
+  image: @file(C:\Users\Francisco\Desktop\hq720.jpg)
+  audio_and_multimedia: Bluetooth
+  audio_and_multimedia: USB Port
+  audio_and_multimedia: Navigation System
+  audio_and_multimedia: Sound System
+  comfort_and_other_equipment: Automatic AC
+  comfort_and_other_equipment: Leather Seats
+  comfort_and_other_equipment: Driver’s Seat with Electric Adjustment
+  comfort_and_other_equipment: Passenger’s Seat with Electric Adjustment
+  electronic_and_driving_assistance: Cruise Control
+  electronic_and_driving_assistance: Rear Parking Sensor
+  electronic_and_driving_assistance: Parking Assistant
+  electronic_and_driving_assistance: Rearview Camera
+  safety: ABS
+  safety: Driver Airbag
+  safety: Passenger Airbag
+  safety: ISOFIX
+}

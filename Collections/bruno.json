@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "SeconDrive",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
