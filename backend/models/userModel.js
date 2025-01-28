@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema(
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         type: { type: String, enum: ["dealer", "user"], default: "user" },
+        phone: { type: String, default: "" },
         cars: { type: Object, default: {} },
         verified: { type: Boolean, default: false },
     },

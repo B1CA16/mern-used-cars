@@ -1,4 +1,5 @@
 import carModel from "../models/carModel.js";
+import userModel from "../models/userModel.js";
 import fs from "fs";
 import mongoose from "mongoose";
 
@@ -22,11 +23,7 @@ const addCar = async (req, res) => {
         image: image_filename,
         price: req.body.price,
         transmission: req.body.transmission,
-        owner: {
-            name: req.body.owner_name,
-            phone: req.body.owner_phone,
-            verified: req.body.owner_verified,
-        },
+        owner: req.body.owner,
         description: req.body.description,
         financing_available: req.body.financing_available,
         fixed_value: req.body.fixed_value,
@@ -76,7 +73,9 @@ const getCarById = async (req, res) => {
             });
         }
 
-        const car = await carModel.findById(id);
+        const car = await carModel
+            .findById(id)
+            .populate("owner", "name phone verified"); // Usando populate para preencher as informações do proprietário
 
         if (!car) {
             return res
@@ -84,6 +83,14 @@ const getCarById = async (req, res) => {
                 .json({ success: false, message: "Car not found" });
         }
 
+        if (!car.owner) {
+            return res.status(404).json({
+                success: false,
+                message: "Owner not found",
+            });
+        }
+
+        // Se o populate foi bem-sucedido, o campo "owner" já conterá as informações completas
         res.json({ success: true, data: car });
     } catch (err) {
         console.error("Error:", err);
