@@ -62,18 +62,9 @@ const carSchema = new mongoose.Schema({
         required: true,
     },
     owner: {
-        name: {
-            type: String,
-            required: true,
-        },
-        phone: {
-            type: String,
-            required: true,
-        },
-        verified: {
-            type: Boolean,
-            required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
     },
     description: {
         type: String,
