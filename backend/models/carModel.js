@@ -124,6 +124,10 @@ const carSchema = new mongoose.Schema({
             },
         ],
     },
+    likes: {
+        type: Number,
+        default: 0,
+    },
 });
 
 const carModel = mongoose.models.car || mongoose.model("car", carSchema);

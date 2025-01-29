@@ -31,7 +31,7 @@ const createToken = (id) => {
 };
 
 const registerUser = async (req, res) => {
-    const { name, email, password, type } = req.body;
+    const { name, email, password, type, phone } = req.body;
 
     try {
         const exists = await userModel.findOne({ email });
@@ -50,6 +50,17 @@ const registerUser = async (req, res) => {
             });
         }
 
+        // if (phone && !validator.isMobilePhone(phone)) {
+        //     return res.json({ success: false, message: "Invalid phone number" });
+        // }
+
+        if (phone.length > 16 || phone.length < 6) {
+            return res.json({
+                success: false,
+                message: "Invalid phone number",
+            });
+        }
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -61,6 +72,7 @@ const registerUser = async (req, res) => {
             email,
             password: hashedPassword,
             type: userType,
+            phone,
         });
 
         const user = await newUser.save();

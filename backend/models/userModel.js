@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
         type: { type: String, enum: ["dealer", "user"], default: "user" },
         phone: { type: String, default: "" },
         cars: { type: Object, default: {} },
+        favorites: { type: Array, default: [] },
         verified: { type: Boolean, default: false },
     },
     { minimize: false }

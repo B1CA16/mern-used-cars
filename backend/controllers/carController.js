@@ -75,7 +75,7 @@ const getCarById = async (req, res) => {
 
         const car = await carModel
             .findById(id)
-            .populate("owner", "name phone verified"); // Usando populate para preencher as informações do proprietário
+            .populate("owner", "name phone verified");
 
         if (!car) {
             return res
@@ -90,7 +90,6 @@ const getCarById = async (req, res) => {
             });
         }
 
-        // Se o populate foi bem-sucedido, o campo "owner" já conterá as informações completas
         res.json({ success: true, data: car });
     } catch (err) {
         console.error("Error:", err);
