@@ -21,13 +21,13 @@ const SignUp = () => {
         confirmPassword: "",
         phoneNumber: "",
     });
-    const [apiError, setApiError] = useState(""); // Novo estado para erros da API
+    const [apiError, setApiError] = useState("");
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setCredentials((prev) => ({ ...prev, [name]: value }));
-        setFormErrors((prev) => ({ ...prev, [name]: "" })); // Limpar erro ao digitar
-        setApiError(""); // Limpar o erro da API ao alterar os campos
+        setFormErrors((prev) => ({ ...prev, [name]: "" }));
+        setApiError("");
     };
 
     const handleBlur = (event) => {
@@ -81,7 +81,6 @@ const SignUp = () => {
     const handleSignUp = async (event) => {
         event.preventDefault();
 
-        // Validação geral antes de submeter
         let valid = true;
         let newFormErrors = { ...formErrors };
 
@@ -93,7 +92,6 @@ const SignUp = () => {
         if (!credentials.phoneNumber || !formErrors.phoneNumber)
             validateField("phoneNumber");
 
-        // Verificar se há erros no formulário
         for (let error in newFormErrors) {
             if (newFormErrors[error]) valid = false;
         }
@@ -114,11 +112,9 @@ const SignUp = () => {
                 setToken(response.data.token);
                 navigate("/");
             } else {
-                // Se a API retornar um erro, só definir o erro da API
                 setApiError(response.data.message);
             }
         } catch (error) {
-            // Erro genérico da API
             setApiError("Something went wrong. Please try again.");
         }
     };
@@ -137,7 +133,6 @@ const SignUp = () => {
                         <p className="text-center text-gray-600 mb-6">
                             Create your account.
                         </p>
-                        {/* Exibição de erros vindos da API */}
                         {apiError && (
                             <p className="text-red-500 text-center">
                                 {apiError}
