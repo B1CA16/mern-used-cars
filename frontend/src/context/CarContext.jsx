@@ -1,30 +1,32 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from "react";
 
 export const CarContext = createContext();
 
 export const CarProvider = ({ children }) => {
-  const [cars, setCars] = useState([]);
+    const url = "http://localhost:4000";
+    const [cars, setCars] = useState([]);
 
-  useEffect(() => {
-    fetch('/car_data.json')
-      .then((response) => response.json())
-      .then((data) => setCars(data.cars))
-      .catch((error) => console.error('Error fetching car data: ', error));
-  }, []);
+    useEffect(() => {
+        fetch("/car_data.json")
+            .then((response) => response.json())
+            .then((data) => setCars(data.cars))
+            .catch((error) =>
+                console.error("Error fetching car data: ", error)
+            );
+    }, []);
 
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-  };
+    const formatNumber = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    };
 
-  const carValues = {
-    cars,
-    formatNumber,
-  }
+    const carValues = {
+        cars,
+        formatNumber,
+        url,
+    };
 
-  return (
-    <CarContext.Provider value={carValues}>
-      {children}
-    </CarContext.Provider>
-  );
+    return (
+        <CarContext.Provider value={carValues}>{children}</CarContext.Provider>
+    );
 };

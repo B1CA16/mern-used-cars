@@ -1,52 +1,107 @@
 import { TextField } from "@mui/material";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 const SignIn = () => {
-    const handleSignIn = (event) => {
-        event.preventDefault();
-        console.log("Sign In");
-    };
-
-    const [credentials, setCredentials] = useState({
-        username: "",
-        password: "",
-    });
+    const navigate = useNavigate();
+    const { url, setToken } = useContext(AuthContext);
+    const [credentials, setCredentials] = useState({ email: "", password: "" });
+    const [error, setError] = useState("");
+    const [formErrors, setFormErrors] = useState({ email: "", password: "" });
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setCredentials((prev) => ({ ...prev, [name]: value }));
+        setFormErrors((prev) => ({ ...prev, [name]: "" }));
+        setError("");
+    };
+
+    const handleBlur = (event) => {
+        const { name } = event.target;
+        validateField(name);
+    };
+
+    const validateField = (field) => {
+        let newFormErrors = { ...formErrors };
+
+        if (field === "email") {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(credentials.email)) {
+                newFormErrors.email = "Please enter a valid email address.";
+            } else {
+                newFormErrors.email = "";
+            }
+        }
+
+        if (field === "password") {
+            if (!credentials.password) {
+                newFormErrors.password = "Password cannot be empty.";
+            } else {
+                newFormErrors.password = "";
+            }
+        }
+
+        setFormErrors(newFormErrors);
+    };
+
+    const handleSignIn = async (event) => {
+        event.preventDefault();
+        setError("");
+
+        validateField("email");
+        validateField("password");
+
+        if (formErrors.email || formErrors.password) {
+            return;
+        }
+
+        try {
+            const response = await axios.post(url + "/login", credentials);
+            if (response.data.success) {
+                setToken(response.data.token);
+                navigate("/");
+            } else {
+                setError(response.data.message);
+            }
+        } catch (err) {
+            setError("Invalid email or password.");
+        }
     };
 
     return (
         <div className="min-h-screen bg-blue-500">
-            <Link className="fixed top-2 left-10 z-20" to='/'>
-                <img className='w-52 sm:w-72' src="/LogoText.png" alt="Logo" />
+            <Link className="fixed top-2 left-10 z-20" to="/">
+                <img className="w-52 sm:w-72" src="/LogoText.png" alt="Logo" />
             </Link>
             <div className="relative bg-blue-700 h-[50vh]">
                 <div className="fixed inset-0 flex items-center justify-center z-10">
-                    <div className="w-full max-w-xl bg-white p-6 rounded-lg shadow-lg space-y-4 px-8">   
+                    <div className="w-full max-w-xl bg-white p-6 rounded-lg shadow-lg space-y-4 px-8">
                         <h1 className="text-neutral-900 text-3xl font-bold text-center">
                             Sign In
                         </h1>
                         <p className="text-center text-gray-600 mb-6">
                             Please sign in to your account.
                         </p>
-                        <form
-                            onSubmit={(e) => handleSignIn(e, credentials)}
-                            className="space-y-5"
-                        >
+                        {error && (
+                            <p className="text-red-500 text-center">{error}</p>
+                        )}
+                        <form onSubmit={handleSignIn} className="space-y-5">
                             <div className="flex flex-col gap-4">
                                 <TextField
                                     fullWidth
                                     variant="standard"
-                                    label="Username"
-                                    name="username"
-                                    value={credentials.username}
+                                    label="Email"
+                                    name="email"
+                                    value={credentials.email}
                                     onChange={handleChange}
-                                    type="text"
+                                    onBlur={handleBlur}
+                                    type="email"
                                     required
-                                    aria-label="Username"
+                                    aria-label="Email"
+                                    error={!!formErrors.email}
+                                    helperText={formErrors.email}
                                 />
                                 <TextField
                                     fullWidth
@@ -55,14 +110,17 @@ const SignIn = () => {
                                     name="password"
                                     value={credentials.password}
                                     onChange={handleChange}
+                                    onBlur={handleBlur}
                                     type="password"
                                     required
                                     aria-label="Password"
+                                    error={!!formErrors.password}
+                                    helperText={formErrors.password}
                                 />
                             </div>
 
                             <div className="flex justify-between items-center">
-                            <span className="text-neutral-500 text-sm">
+                                <span className="text-neutral-500 text-sm">
                                     Don't have an account?
                                     <Link
                                         to="/signup"
