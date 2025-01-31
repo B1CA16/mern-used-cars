@@ -54,10 +54,55 @@ const addCar = async (req, res) => {
 // List all cars
 const getCars = async (req, res) => {
     try {
-        const cars = await carModel.find({});
-        res.json({ success: true, data: cars });
+        const {
+            make,
+            model,
+            fromYear,
+            untilYear,
+            minPrice,
+            maxPrice,
+            fuel,
+            mileageFrom,
+            mileageTo,
+            segment,
+            hpFrom,
+            hpTo,
+            page = 1,
+            limit = 10,
+        } = req.query;
+
+        const query = {};
+
+        if (make) query.brand = make;
+        if (model) query.model = model;
+        if (fromYear) query.year = { $gte: Number(fromYear) };
+        if (untilYear) query.year = { ...query.year, $lte: Number(untilYear) };
+        if (minPrice) query.price = { $gte: Number(minPrice) };
+        if (maxPrice) query.price = { ...query.price, $lte: Number(maxPrice) };
+        if (fuel) query.fuel = fuel;
+        if (mileageFrom) query.km = { $gte: Number(mileageFrom) };
+        if (mileageTo) query.km = { ...query.km, $lte: Number(mileageTo) };
+        if (segment) query.segment = segment;
+        if (hpFrom) query.hp = { $gte: Number(hpFrom) };
+        if (hpTo) query.hp = { ...query.hp, $lte: Number(hpTo) };
+
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
+        const skip = (pageNumber - 1) * limitNumber;
+
+        const cars = await carModel.find(query).skip(skip).limit(limitNumber);
+        const totalCars = await carModel.countDocuments(query);
+
+        res.json({
+            success: true,
+            total: totalCars,
+            page: pageNumber,
+            limit: limitNumber,
+            totalPages: Math.ceil(totalCars / limitNumber),
+            data: cars,
+        });
     } catch (err) {
-        res.json({ success: false, message: err });
+        res.status(500).json({ success: false, message: err.message });
     }
 };
 
