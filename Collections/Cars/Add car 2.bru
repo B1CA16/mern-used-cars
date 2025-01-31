@@ -1,0 +1,55 @@
+meta {
+  name: Add car 2
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:4000/api/cars
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  name: Honda Civic
+  brand: Honda
+  model: Civic
+  version: Touring
+  segment: Sedan
+  year: 2021
+  month_of_registration: march
+  km: 15000
+  fuel: Gasoline
+  hp: 174
+  cm3: 1996
+  location: Porto
+  price: 22000
+  transmission: Automatic
+  owner: 6798de7791f872f64ce0e35c
+  description: Sporty and efficient sedan with advanced technology and low mileage.
+  financing_available: true
+  fixed_value: false
+  warranty: 24 Months
+  previous_owners: 1
+  service_book: true
+  non_smoker: true
+  second_key: true
+  vehicle_class: Class 2
+  audio_and_multimedia: Apple CarPlay
+  audio_and_multimedia: Android Auto
+  audio_and_multimedia: Premium Audio System
+  audio_and_multimedia: Wireless Charging
+  comfort_and_other_equipment: Heated Front Seats
+  comfort_and_other_equipment: Dual-Zone Automatic Climate Control
+  comfort_and_other_equipment: Power Sunroof
+  comfort_and_other_equipment: Keyless Entry
+  electronic_and_driving_assistance: Adaptive Cruise Control
+  electronic_and_driving_assistance: Lane Keeping Assist
+  electronic_and_driving_assistance: Blind Spot Monitoring
+  electronic_and_driving_assistance: Collision Mitigation Braking System
+  safety: ABS
+  safety: Driver Airbag
+  safety: Passenger Airbag
+  safety: Side Airbags
+  images: @file(C:\Users\Francisco\Desktop\car2.jpg)
+}

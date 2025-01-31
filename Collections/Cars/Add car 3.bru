@@ -1,0 +1,56 @@
+meta {
+  name: Add car 3
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:4000/api/cars
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  name: Toyota RAV4
+  brand: Toyota
+  model: RAV4
+  version: Adventure
+  segment: SUV
+  year: 2022
+  month_of_registration: july
+  km: 10000
+  fuel: Hybrid
+  hp: 219
+  cm3: 2487
+  location: Braga
+  price: 35000
+  transmission: Automatic
+  owner: 6798de7791f872f64ce0e35c
+  description: Modern and versatile SUV with hybrid technology, perfect for both city and off-road adventures.
+  financing_available: true
+  fixed_value: false
+  warranty: 36 Months
+  previous_owners: 0
+  service_book: true
+  non_smoker: true
+  second_key: true
+  vehicle_class: Class 3
+  images: @file(C:\Users\Francisco\Desktop\car3.jpg)
+  audio_and_multimedia: Apple CarPlay
+  audio_and_multimedia: Android Auto
+  audio_and_multimedia: JBL Premium Sound System
+  audio_and_multimedia: Wireless Charging
+  comfort_and_other_equipment: Heated Seats
+  comfort_and_other_equipment: Dual-Zone Automatic Climate Control
+  comfort_and_other_equipment: Panoramic Sunroof
+  comfort_and_other_equipment: Keyless Entry
+  electronic_and_driving_assistance: Adaptive Cruise Control
+  electronic_and_driving_assistance: Lane Departure Alert
+  electronic_and_driving_assistance: Blind Spot Monitor
+  electronic_and_driving_assistance: Rear Cross-Traffic Alert
+  safety: ABS
+  safety: Driver Airbag
+  safety: Passenger Airbag
+  safety: Side Airbags
+  safety: Knee Airbag
+}

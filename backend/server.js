@@ -19,7 +19,7 @@ app.use(cors());
 connectDB();
 
 //routes
-app.use("/images", express.static("uploads"));
+app.use("/api/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cars", carRouter);
 

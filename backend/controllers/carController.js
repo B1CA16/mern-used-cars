@@ -1,3 +1,4 @@
+import { create } from "domain";
 import carModel from "../models/carModel.js";
 import userModel from "../models/userModel.js";
 import fs from "fs";
@@ -5,7 +6,9 @@ import mongoose from "mongoose";
 
 // Add a new car
 const addCar = async (req, res) => {
-    let image_filename = req.file ? req.file.filename : null;
+    const image_filenames = req.files
+        ? req.files.map((file) => file.filename)
+        : [];
 
     const car = new carModel({
         name: req.body.name,
@@ -20,7 +23,7 @@ const addCar = async (req, res) => {
         hp: req.body.hp,
         cm3: req.body.cm3,
         location: req.body.location,
-        image: image_filename,
+        images: image_filenames,
         price: req.body.price,
         transmission: req.body.transmission,
         owner: req.body.owner,
@@ -41,13 +44,14 @@ const addCar = async (req, res) => {
                 req.body.electronic_and_driving_assistance || [],
             safety: req.body.safety || [],
         },
+        created_at: new Date(),
     });
 
     try {
         await car.save();
         res.json({ success: true, message: "Car added successfully" });
     } catch (err) {
-        res.json({ success: false, message: err });
+        res.json({ success: false, message: err.message });
     }
 };
 
@@ -69,6 +73,7 @@ const getCars = async (req, res) => {
             hpTo,
             page = 1,
             limit = 10,
+            sortBy = "default",
         } = req.query;
 
         const query = {};
@@ -90,7 +95,37 @@ const getCars = async (req, res) => {
         const limitNumber = Number(limit);
         const skip = (pageNumber - 1) * limitNumber;
 
-        const cars = await carModel.find(query).skip(skip).limit(limitNumber);
+        let sortQuery = {};
+        switch (sortBy) {
+            case "price_high":
+                sortQuery = { price: -1 };
+                break;
+            case "price_low":
+                sortQuery = { price: 1 };
+                break;
+            case "km_high":
+                sortQuery = { km: -1 };
+                break;
+            case "km_low":
+                sortQuery = { km: 1 };
+                break;
+            case "hp_high":
+                sortQuery = { hp: -1 };
+                break;
+            case "hp_low":
+                sortQuery = { hp: 1 };
+                break;
+            case "default":
+            default:
+                sortQuery = {};
+                break;
+        }
+
+        const cars = await carModel
+            .find(query)
+            .skip(skip)
+            .limit(limitNumber)
+            .sort(sortQuery);
         const totalCars = await carModel.countDocuments(query);
 
         res.json({

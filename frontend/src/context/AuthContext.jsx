@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
@@ -17,9 +18,7 @@ const AuthProvider = ({ children }) => {
                     const response = await fetch(url + "/" + decodedToken.id);
                     if (response.ok) {
                         const user = await response.json();
-                        console.log("User data:", user);
                         setUserData(user.user);
-                        console.log("User data:", user.user);
                     } else {
                         setUserData(null);
                     }

@@ -49,8 +49,8 @@ const carSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image: {
-        type: String,
+    images: {
+        type: [String],
         required: true,
     },
     price: {
@@ -127,6 +127,10 @@ const carSchema = new mongoose.Schema({
     views: {
         type: Number,
         default: 0,
+    },
+    created_at: {
+        type: Date,
+        default: Date.now,
     },
 });
 
