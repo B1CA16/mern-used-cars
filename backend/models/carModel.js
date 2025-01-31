@@ -124,7 +124,7 @@ const carSchema = new mongoose.Schema({
             },
         ],
     },
-    likes: {
+    views: {
         type: Number,
         default: 0,
     },
