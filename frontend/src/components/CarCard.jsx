@@ -9,7 +9,7 @@ const CarCard = ({ car }) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-        navigate(`/car/${car.id}`);
+        navigate(`/car/${car._id}`);
     };
 
     const { formatNumber } = useContext(CarContext);

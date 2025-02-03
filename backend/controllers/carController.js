@@ -4,7 +4,7 @@ import userModel from "../models/userModel.js";
 import fs from "fs";
 import mongoose from "mongoose";
 
-// Adicionar um novo carro
+// Add a new car
 const addCar = async (req, res) => {
     const image_filenames = req.files
         ? req.files.map((file) => file.filename)
@@ -55,13 +55,10 @@ const addCar = async (req, res) => {
     }
 };
 
-// Obter carros mais populares (10 carros com mais visualizações)
+// Get the most popular ads
 const getMostPopular = async (req, res) => {
     try {
-        const cars = await carModel
-            .find({})
-            .sort({ views: -1 }) // Ordenar por visualizações de forma decrescente
-            .limit(10); // Limitar a 10 carros
+        const cars = await carModel.find({}).sort({ views: -1 }).limit(10);
 
         res.json({
             success: true,
@@ -72,13 +69,10 @@ const getMostPopular = async (req, res) => {
     }
 };
 
-// Obter carros mais recentes (10 carros mais recentes)
+// Get the most recent ads
 const getMostRecent = async (req, res) => {
     try {
-        const cars = await carModel
-            .find({})
-            .sort({ created_at: -1 }) // Ordenar por data de criação de forma decrescente
-            .limit(10); // Limitar a 10 carros
+        const cars = await carModel.find({}).sort({ created_at: -1 }).limit(10);
 
         res.json({
             success: true,
@@ -89,7 +83,7 @@ const getMostRecent = async (req, res) => {
     }
 };
 
-// Obter todos os carros
+// Get all cars
 const getCars = async (req, res) => {
     try {
         const cars = await carModel.find({});
@@ -103,7 +97,7 @@ const getCars = async (req, res) => {
     }
 };
 
-// Obter carro por ID
+// Get car by ID
 const getCarById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -139,7 +133,7 @@ const getCarById = async (req, res) => {
     }
 };
 
-// Remover um carro
+// Remove car
 const removeCar = async (req, res) => {
     try {
         const { id } = req.params;
@@ -170,6 +164,29 @@ const removeCar = async (req, res) => {
     }
 };
 
+const countView = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const updatedAd = await carModel.findByIdAndUpdate(
+            id,
+            { $inc: { views: 1 } },
+            { new: true }
+        );
+
+        if (!updatedAd) {
+            return res.status(404).json({ message: "Anúncio não encontrado" });
+        }
+
+        res.status(200).json(updatedAd);
+    } catch (error) {
+        res.status(500).json({
+            message: "Erro ao atualizar visualizações",
+            error,
+        });
+    }
+};
+
 export {
     addCar,
     getCars,
@@ -177,4 +194,5 @@ export {
     removeCar,
     getMostPopular,
     getMostRecent,
+    countView,
 };

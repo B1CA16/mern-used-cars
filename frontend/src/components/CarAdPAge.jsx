@@ -1,14 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
-import Slider from "react-slick";
 import {
     FaBolt,
     FaBuilding,
     FaCheck,
-    FaChevronDown,
-    FaChevronUp,
     FaCogs,
     FaGasPump,
     FaPhone,
@@ -24,6 +21,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import axios from "axios";
 
 const CarAdPage = () => {
     const { id } = useParams();
@@ -36,6 +34,20 @@ const CarAdPage = () => {
     const navigate = useNavigate();
 
     const car = cars.find((car) => car._id === id);
+
+    useEffect(() => {
+        const incrementViews = async () => {
+            try {
+                await axios.patch(
+                    `http://localhost:4000/api/cars/${id}/countViews`
+                );
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        incrementViews();
+    }, [id]);
 
     if (!car) {
         return (
@@ -128,14 +140,6 @@ const CarAdPage = () => {
             ),
         },
     ];
-
-    const sliderSettings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
 
     return (
         <div className="container mx-auto px-4 py-8">
