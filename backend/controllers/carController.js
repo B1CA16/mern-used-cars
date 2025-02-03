@@ -56,6 +56,7 @@ const addCar = async (req, res) => {
 };
 
 // List all cars
+/*
 const getCars = async (req, res) => {
     try {
         const {
@@ -134,6 +135,19 @@ const getCars = async (req, res) => {
             page: pageNumber,
             limit: limitNumber,
             totalPages: Math.ceil(totalCars / limitNumber),
+            data: cars,
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+};
+*/
+const getCars = async (req, res) => {
+    try {
+        const cars = await carModel.find({});
+
+        res.json({
+            success: true,
             data: cars,
         });
     } catch (err) {

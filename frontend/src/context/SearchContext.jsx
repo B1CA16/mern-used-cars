@@ -16,7 +16,6 @@ export const SearchProvider = ({ children }) => {
     const [segment, setSegment] = useState(null);
     const [hpFrom, setHpFrom] = useState("");
     const [hpTo, setHpTo] = useState("");
-    const [sortBy, setSortBy] = useState("default");
 
     const contextValue = {
         make,
@@ -43,8 +42,6 @@ export const SearchProvider = ({ children }) => {
         setHpFrom,
         hpTo,
         setHpTo,
-        sortBy,
-        setSortBy,
     };
 
     return (
