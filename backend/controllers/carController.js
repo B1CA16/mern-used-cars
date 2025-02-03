@@ -4,7 +4,7 @@ import userModel from "../models/userModel.js";
 import fs from "fs";
 import mongoose from "mongoose";
 
-// Add a new car
+// Adicionar um novo carro
 const addCar = async (req, res) => {
     const image_filenames = req.files
         ? req.files.map((file) => file.filename)
@@ -55,93 +55,41 @@ const addCar = async (req, res) => {
     }
 };
 
-// List all cars
-/*
-const getCars = async (req, res) => {
+// Obter carros mais populares (10 carros com mais visualizações)
+const getMostPopular = async (req, res) => {
     try {
-        const {
-            make,
-            model,
-            fromYear,
-            untilYear,
-            minPrice,
-            maxPrice,
-            fuel,
-            mileageFrom,
-            mileageTo,
-            segment,
-            hpFrom,
-            hpTo,
-            page = 1,
-            limit = 10,
-            sortBy = "default",
-        } = req.query;
-
-        const query = {};
-
-        if (make) query.brand = make;
-        if (model) query.model = model;
-        if (fromYear) query.year = { $gte: Number(fromYear) };
-        if (untilYear) query.year = { ...query.year, $lte: Number(untilYear) };
-        if (minPrice) query.price = { $gte: Number(minPrice) };
-        if (maxPrice) query.price = { ...query.price, $lte: Number(maxPrice) };
-        if (fuel) query.fuel = fuel;
-        if (mileageFrom) query.km = { $gte: Number(mileageFrom) };
-        if (mileageTo) query.km = { ...query.km, $lte: Number(mileageTo) };
-        if (segment) query.segment = segment;
-        if (hpFrom) query.hp = { $gte: Number(hpFrom) };
-        if (hpTo) query.hp = { ...query.hp, $lte: Number(hpTo) };
-
-        const pageNumber = Number(page);
-        const limitNumber = Number(limit);
-        const skip = (pageNumber - 1) * limitNumber;
-
-        let sortQuery = {};
-        switch (sortBy) {
-            case "price_high":
-                sortQuery = { price: -1 };
-                break;
-            case "price_low":
-                sortQuery = { price: 1 };
-                break;
-            case "km_high":
-                sortQuery = { km: -1 };
-                break;
-            case "km_low":
-                sortQuery = { km: 1 };
-                break;
-            case "hp_high":
-                sortQuery = { hp: -1 };
-                break;
-            case "hp_low":
-                sortQuery = { hp: 1 };
-                break;
-            case "default":
-            default:
-                sortQuery = {};
-                break;
-        }
-
         const cars = await carModel
-            .find(query)
-            .skip(skip)
-            .limit(limitNumber)
-            .sort(sortQuery);
-        const totalCars = await carModel.countDocuments(query);
+            .find({})
+            .sort({ views: -1 }) // Ordenar por visualizações de forma decrescente
+            .limit(10); // Limitar a 10 carros
 
         res.json({
             success: true,
-            total: totalCars,
-            page: pageNumber,
-            limit: limitNumber,
-            totalPages: Math.ceil(totalCars / limitNumber),
             data: cars,
         });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
 };
-*/
+
+// Obter carros mais recentes (10 carros mais recentes)
+const getMostRecent = async (req, res) => {
+    try {
+        const cars = await carModel
+            .find({})
+            .sort({ created_at: -1 }) // Ordenar por data de criação de forma decrescente
+            .limit(10); // Limitar a 10 carros
+
+        res.json({
+            success: true,
+            data: cars,
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+};
+
+// Obter todos os carros
 const getCars = async (req, res) => {
     try {
         const cars = await carModel.find({});
@@ -155,7 +103,7 @@ const getCars = async (req, res) => {
     }
 };
 
-// Get car by ID
+// Obter carro por ID
 const getCarById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -191,7 +139,7 @@ const getCarById = async (req, res) => {
     }
 };
 
-// Remove one car
+// Remover um carro
 const removeCar = async (req, res) => {
     try {
         const { id } = req.params;
@@ -222,4 +170,11 @@ const removeCar = async (req, res) => {
     }
 };
 
-export { addCar, getCars, getCarById, removeCar };
+export {
+    addCar,
+    getCars,
+    getCarById,
+    removeCar,
+    getMostPopular,
+    getMostRecent,
+};

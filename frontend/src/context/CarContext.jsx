@@ -6,6 +6,8 @@ export const CarContext = createContext();
 export const CarProvider = ({ children }) => {
     const url = import.meta.env.VITE_API_URL + "cars";
     const [cars, setCars] = useState([]);
+    const [mostPopular, setMostPopular] = useState([]);
+    const [mostRecent, setMostRecent] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -29,8 +31,50 @@ export const CarProvider = ({ children }) => {
         }
     };
 
+    const fetchMostPopular = async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(url + "/most-popular");
+            const data = await response.json();
+
+            if (data.success) {
+                setMostPopular(data.data);
+            } else {
+                setError("Erro ao buscar carros populares.");
+            }
+        } catch (err) {
+            setError("Erro de conexão com a API.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchMostRecent = async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await fetch(url + "/most-recent");
+            const data = await response.json();
+
+            if (data.success) {
+                setMostRecent(data.data);
+            } else {
+                setError("Erro ao buscar carros recentes.");
+            }
+        } catch (err) {
+            setError("Erro de conexão com a API.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetchCars();
+        fetchMostPopular();
+        fetchMostRecent();
     }, []);
 
     const formatNumber = (num) => {
@@ -41,6 +85,8 @@ export const CarProvider = ({ children }) => {
         <CarContext.Provider
             value={{
                 cars,
+                mostPopular,
+                mostRecent,
                 loading,
                 error,
                 formatNumber,
