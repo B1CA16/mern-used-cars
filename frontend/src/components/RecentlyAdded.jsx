@@ -4,9 +4,10 @@ import "slick-carousel/slick/slick-theme.css";
 import CarCard from "./CarCard";
 import { useContext } from "react";
 import { CarContext } from "../context/CarContext";
+import Loader from "./Loader";
 
 const RecentlyAdded = () => {
-    const { mostRecent } = useContext(CarContext);
+    const { mostRecent, loading } = useContext(CarContext);
 
     const settings = {
         dots: false,
@@ -52,13 +53,17 @@ const RecentlyAdded = () => {
             <h2 className="text-4xl font-bold mb-6 text-center">
                 Recently Added Cars
             </h2>
-            <Slider {...settings}>
-                {mostRecent.map((car) => (
-                    <div key={car.id} className="p-4">
-                        <CarCard car={car} />
-                    </div>
-                ))}
-            </Slider>
+            {loading ? (
+                <Loader />
+            ) : (
+                <Slider {...settings}>
+                    {mostRecent.map((car) => (
+                        <div key={car.id} className="p-4">
+                            <CarCard car={car} />
+                        </div>
+                    ))}
+                </Slider>
+            )}
         </div>
     );
 };
