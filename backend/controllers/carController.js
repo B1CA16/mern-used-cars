@@ -86,7 +86,9 @@ const getMostRecent = async (req, res) => {
 // Get all cars
 const getCars = async (req, res) => {
     try {
-        const cars = await carModel.find({});
+        const cars = await carModel
+            .find({})
+            .populate("owner", "name email type phone");
 
         res.json({
             success: true,
