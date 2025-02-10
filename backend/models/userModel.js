@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
         cars: { type: Object, default: {} },
         favorites: { type: Array, default: [] },
         verified: { type: Boolean, default: false },
+        joined: { type: Date, default: Date.now },
     },
     { minimize: false }
 );

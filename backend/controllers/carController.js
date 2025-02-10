@@ -148,9 +148,13 @@ const removeCar = async (req, res) => {
                 .json({ success: false, message: "Car not found" });
         }
 
-        if (car.image) {
-            fs.unlink(`uploads/${car.image}`, (err) => {
-                if (err) console.error("Error removing image:", err);
+        if (car.images && car.images.length > 0) {
+            car.images.forEach((image) => {
+                fs.unlink(`uploads/${image}`, (err) => {
+                    if (err) {
+                        console.error(`Error removing image ${image}:`, err);
+                    }
+                });
             });
         }
 

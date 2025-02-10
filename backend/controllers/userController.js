@@ -101,4 +101,59 @@ const getUser = async (req, res) => {
     }
 };
 
-export { loginUser, registerUser, getUser };
+const editUser = async (req, res) => {
+    const { name, email, phone, type } = req.body;
+    const { id } = req.params;
+
+    try {
+        const user = await userModel.findById(id);
+        if (!user) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+
+        if (email && email !== user.email) {
+            const exists = await userModel.findOne({ email });
+            if (exists) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Email already in use",
+                });
+            }
+        }
+
+        if (phone && (phone.length > 16 || phone.length < 6)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid phone number",
+            });
+        }
+
+        if (type && !["dealer", "user"].includes(type)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user type",
+            });
+        }
+
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.phone = phone || user.phone;
+        user.type = type || user.type;
+
+        await user.save();
+
+        const { password, ...userData } = user.toObject();
+
+        res.status(200).json({ success: true, user: userData });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
+};
+
+export { loginUser, registerUser, getUser, editUser };

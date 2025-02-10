@@ -1,0 +1,17 @@
+meta {
+  name: Edit Profile
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:4000/api/user/679a2de7f48fe0ee27e8fa2f
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "phone": "999999999"
+  }
+}

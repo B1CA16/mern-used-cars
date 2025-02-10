@@ -40,7 +40,7 @@ const Navbar = () => {
                                 className="flex items-center gap-2 cursor-pointer"
                                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                             >
-                                <FaUser className="text-white text-3xl" />
+                                <FaUser className="text-white text-3xl hover:scale-105 active:scale-95 transition-all duration-300" />
                             </div>
 
                             {isProfileOpen && (

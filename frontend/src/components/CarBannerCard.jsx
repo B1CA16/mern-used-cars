@@ -70,7 +70,7 @@ const CarBannerCard = ({ car }) => {
                     {formatNumber(car.price)}{" "}
                     <span className="text-sm">EUR</span>
                 </p>
-                <FaHeart className="text-red-500 hover:text-red-700 text-lg sm:text-xl cursor-pointer" />
+                <FaHeart className="text-white hover:text-neutral-200 text-lg sm:text-xl cursor-pointer" />
             </div>
         </div>
     );

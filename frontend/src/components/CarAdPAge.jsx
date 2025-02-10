@@ -227,7 +227,7 @@ const CarAdPage = () => {
                                                     className="max-w-full h-auto object-cover w-3/4 cursor-pointer"
                                                     onClick={() =>
                                                         openFullscreen(index)
-                                                    } // Ao clicar, abre fullscreen
+                                                    }
                                                 />
                                                 <span className="mt-2 text-gray-500">
                                                     {index + 1}/
