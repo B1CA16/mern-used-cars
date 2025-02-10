@@ -4,8 +4,12 @@ meta {
   seq: 7
 }
 
-get {
+patch {
   url: http://localhost:4000/api/user/679a2de7f48fe0ee27e8fa2f/favorites
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {"carId":"67aa18ef7e49acd4a7d97c4c"}
 }

@@ -192,6 +192,45 @@ const addToFavourite = async (req, res) => {
     }
 };
 
+// Remove car from Favorites
+const removeFromFavourite = async (req, res) => {
+    const { carId } = req.body;
+    const { id } = req.params;
+
+    try {
+        const user = await userModel.findById(id);
+        if (!user) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+
+        if (!user.favorites.includes(carId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Car is not in favorites",
+            });
+        }
+
+        user.favorites = user.favorites.filter(
+            (fav) => fav.toString() !== carId
+        );
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Car removed from favorites",
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
+};
+
 // Get user favorites
 const getUserFavorites = async (req, res) => {
     const { id } = req.params;
@@ -248,6 +287,7 @@ export {
     getUser,
     editUser,
     addToFavourite,
+    removeFromFavourite,
     getUserFavorites,
     getUserCars,
 };

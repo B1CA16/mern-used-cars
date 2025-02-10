@@ -5,6 +5,7 @@ import {
     getUser,
     editUser,
     addToFavourite,
+    removeFromFavourite,
     getUserFavorites,
     getUserCars,
 } from "../controllers/userController.js";
@@ -16,6 +17,7 @@ userRouter.post("/login", loginUser);
 userRouter.get("/:id", getUser);
 userRouter.patch("/:id", editUser);
 userRouter.patch("/:id/favorites", addToFavourite);
+userRouter.patch("/:id/remove-favorite", removeFromFavourite);
 userRouter.get("/:id/favorites", getUserFavorites);
 userRouter.get("/:id/my-ads", getUserCars);
 
