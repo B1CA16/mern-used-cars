@@ -48,8 +48,22 @@ const addCar = async (req, res) => {
     });
 
     try {
-        await car.save();
-        res.json({ success: true, message: "Car added successfully" });
+        const savedCar = await car.save();
+
+        const user = await userModel.findById(req.body.owner);
+        if (!user) {
+            return res.json({ success: false, message: "User not found" });
+        }
+
+        user.cars.push(savedCar._id);
+
+        await user.save();
+
+        res.json({
+            success: true,
+            message: "Car added successfully",
+            car: savedCar,
+        });
     } catch (err) {
         res.json({ success: false, message: err.message });
     }

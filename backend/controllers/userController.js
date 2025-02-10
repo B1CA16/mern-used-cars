@@ -156,4 +156,98 @@ const editUser = async (req, res) => {
     }
 };
 
-export { loginUser, registerUser, getUser, editUser };
+// Add car to Favorites
+const addToFavourite = async (req, res) => {
+    const { carId } = req.body;
+    const { id } = req.params;
+
+    try {
+        const user = await userModel.findById(id);
+        if (!user) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+
+        if (user.favorites.includes(carId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Car is already in favorites",
+            });
+        }
+
+        user.favorites.push(carId);
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Car added to favorites",
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
+};
+
+// Get user favorites
+const getUserFavorites = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await userModel.findById(id).populate("favorites");
+        if (!user) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+
+        res.status(200).json({
+            success: true,
+            favorites: user.favorites,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
+};
+
+// get user ads
+const getUserCars = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await userModel.findById(id).populate("cars");
+        if (!user) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+
+        res.status(200).json({
+            success: true,
+            cars: user.cars,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
+};
+
+export {
+    loginUser,
+    registerUser,
+    getUser,
+    editUser,
+    addToFavourite,
+    getUserFavorites,
+    getUserCars,
+};
