@@ -6,6 +6,7 @@ import { SearchProvider } from "./context/SearchContext.jsx";
 import { CarProvider } from "./context/CarContext.jsx";
 import ScrollToTop from "./hooks/ScrollToTop.jsx";
 import AuthProvider from "./context/AuthContext.jsx";
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
     <BrowserRouter>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
                 <CarProvider>
                     <ScrollToTop />
                     <App />
+                    <ToastContainer />
                 </CarProvider>
             </SearchProvider>
         </AuthProvider>

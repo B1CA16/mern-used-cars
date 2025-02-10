@@ -10,8 +10,9 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
+import { FaTrashCan } from "react-icons/fa6";
 
-const CarBannerCard = ({ car }) => {
+const CarBannerCard = ({ car, myAds, remove }) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -70,7 +71,21 @@ const CarBannerCard = ({ car }) => {
                     {formatNumber(car.price)}{" "}
                     <span className="text-sm">EUR</span>
                 </p>
-                <FaHeart className="text-white hover:text-neutral-200 text-lg sm:text-xl cursor-pointer" />
+                {myAds && (
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            remove(car._id);
+                        }}
+                        className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                        title="Remove ad"
+                    >
+                        <FaTrashCan className="text-white" />
+                    </div>
+                )}
+                {!myAds && (
+                    <FaHeart className="text-white hover:text-neutral-200 text-lg sm:text-xl cursor-pointer" />
+                )}
             </div>
         </div>
     );
