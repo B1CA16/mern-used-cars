@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 import {
@@ -14,10 +14,11 @@ import {
 } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FaChevronLeft, FaHeart } from "react-icons/fa6";
+import { FaChevronLeft, FaHeart, FaX } from "react-icons/fa6";
 import NotFound from "./NotFound";
 import Accordion from "./Accordion";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Thumbs } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -26,8 +27,10 @@ import axios from "axios";
 const CarAdPage = () => {
     const { id } = useParams();
     const { cars, formatNumber } = useContext(CarContext);
-    const [openIndex, setOpenIndex] = useState(null);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const mainSwiperRef = useRef(null);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const url = import.meta.env.VITE_API_URL;
 
@@ -49,6 +52,15 @@ const CarAdPage = () => {
         incrementViews();
     }, [id]);
 
+    const openFullscreen = (index) => {
+        setActiveIndex(index);
+        setIsFullscreen(true);
+    };
+
+    const closeFullscreen = () => {
+        setIsFullscreen(false);
+    };
+
     if (!car) {
         return (
             <div className="flex flex-col items-center justify-center h-[80vh]">
@@ -61,18 +73,6 @@ const CarAdPage = () => {
             </div>
         );
     }
-
-    const handleThumbnailClick = (index) => {
-        setCurrentImageIndex(index);
-    };
-
-    const handleSlideChange = (swiper) => {
-        setCurrentImageIndex(swiper.activeIndex);
-    };
-
-    const toggleSection = (index) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
 
     const sections = [
         {
@@ -203,69 +203,124 @@ const CarAdPage = () => {
                             </h1>
                         </div>
                     </div>
-                    <div className="w-full flex justify-center px-auto bg-neutral-100 dark:bg-neutral-800 rounded-md">
+                    <div className="w-full flex justify-center px-auto pb-4 bg-neutral-100 dark:bg-neutral-800 rounded-md">
                         {Array.isArray(car.images) ? (
                             <div className="w-full">
-                                {/* Swiper para a imagem principal */}
                                 <Swiper
                                     spaceBetween={10}
                                     slidesPerView={1}
                                     navigation
-                                    pagination={{ clickable: true }}
-                                    onSlideChange={handleSlideChange} // Atualiza o estado quando o slide muda
-                                    className="mb-4"
+                                    thumbs={{ swiper: thumbsSwiper }}
+                                    modules={[Navigation, Thumbs]}
+                                    onSlideChange={(swiper) =>
+                                        setActiveIndex(swiper.activeIndex)
+                                    }
                                 >
                                     {car.images.map((image, index) => (
                                         <SwiperSlide key={index}>
-                                            <div className="flex justify-center">
+                                            <div className="flex flex-col items-center">
                                                 <img
-                                                    src={
-                                                        url +
-                                                        "images/" +
-                                                        car.images[
-                                                            currentImageIndex
-                                                        ]
-                                                    }
+                                                    src={`${url}images/${image}`}
                                                     alt={`Car image ${
-                                                        currentImageIndex + 1
+                                                        index + 1
                                                     }`}
-                                                    className="max-w-full h-auto object-cover w-3/4"
+                                                    className="max-w-full h-auto object-cover w-3/4 cursor-pointer"
+                                                    onClick={() =>
+                                                        openFullscreen(index)
+                                                    } // Ao clicar, abre fullscreen
                                                 />
+                                                <span className="mt-2 text-gray-500">
+                                                    {index + 1}/
+                                                    {car.images.length}
+                                                </span>
                                             </div>
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>
 
-                                {/* Swiper para as miniaturas (preview das próximas imagens) */}
-                                <Swiper
-                                    spaceBetween={10}
-                                    slidesPerView={4}
-                                    freeMode={true}
-                                    watchSlidesProgress={true}
-                                    className="flex justify-center"
-                                >
-                                    {car.images.map((image, index) => (
-                                        <SwiperSlide
-                                            key={index}
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                                handleThumbnailClick(index)
-                                            } // Alterar imagem principal ao clicar
-                                        >
-                                            <div className="flex justify-center">
-                                                <img
-                                                    src={
-                                                        url + "images/" + image
-                                                    }
-                                                    alt={`Car image preview ${
-                                                        index + 1
-                                                    }`}
-                                                    className="max-w-full h-auto object-cover w-24 rounded-lg"
-                                                />
+                                <div className="lg:block hidden">
+                                    <Swiper
+                                        onSwiper={setThumbsSwiper}
+                                        spaceBetween={16}
+                                        slidesPerView={8}
+                                        watchSlidesProgress
+                                        freeMode
+                                        modules={[Thumbs]}
+                                        className="flex justify-start px-2"
+                                    >
+                                        {car.images.map((image, index) => (
+                                            <SwiperSlide
+                                                key={index}
+                                                className="cursor-pointer"
+                                            >
+                                                <div className="flex justify-center">
+                                                    <img
+                                                        src={`${url}images/${image}`}
+                                                        alt={`Car image preview ${
+                                                            index + 1
+                                                        }`}
+                                                        className={`max-w-full h-auto object-cover w-24 rounded-lg transition-all duration-300 ${
+                                                            index ===
+                                                            activeIndex
+                                                                ? "border-4 border-blue-500 opacity-100"
+                                                                : "opacity-50"
+                                                        }`}
+                                                    />
+                                                </div>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </div>
+
+                                {isFullscreen && (
+                                    <div className="fixed inset-0 bg-black bg-opacity-85 flex justify-center items-center z-50">
+                                        <div className="relative w-full h-full">
+                                            <button
+                                                onClick={closeFullscreen}
+                                                className="absolute z-40 top-4 right-4 text-white text-2xl hover:cursor-pointer hover:text-neutral-200 active:scale-95 hover:scale-110 transition-all duration-300"
+                                            >
+                                                <FaX />
+                                            </button>
+                                            <Swiper
+                                                spaceBetween={10}
+                                                slidesPerView={1}
+                                                initialSlide={activeIndex}
+                                                navigation
+                                                º
+                                                modules={[Navigation]}
+                                                onSlideChange={(swiper) =>
+                                                    setActiveIndex(
+                                                        swiper.activeIndex
+                                                    )
+                                                }
+                                                className="w-full h-full"
+                                            >
+                                                {car.images.map(
+                                                    (image, index) => (
+                                                        <SwiperSlide
+                                                            key={index}
+                                                        >
+                                                            <div className="flex justify-center">
+                                                                <img
+                                                                    src={`${url}images/${image}`}
+                                                                    alt={`Fullscreen image ${
+                                                                        index +
+                                                                        1
+                                                                    }`}
+                                                                    className="w-4/5 h-screen object-contain"
+                                                                />
+                                                            </div>
+                                                        </SwiperSlide>
+                                                    )
+                                                )}
+                                            </Swiper>
+                                            <div className="absolute bottom-4 right-4 text-white text-lg">
+                                                {activeIndex + 1}/
+                                                {car.images.length}
                                             </div>
-                                        </SwiperSlide>
-                                    ))}
-                                </Swiper>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <div className="flex justify-center">
