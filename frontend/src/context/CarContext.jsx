@@ -90,6 +90,9 @@ export const CarProvider = ({ children }) => {
                 loading,
                 error,
                 formatNumber,
+                fetchCars,
+                fetchMostPopular,
+                fetchMostRecent,
             }}
         >
             {children}

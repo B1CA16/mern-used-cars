@@ -8,10 +8,13 @@ import ReactPaginate from "react-paginate";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { CarContext } from "../context/CarContext";
 
 const MyAds = () => {
     const url = import.meta.env.VITE_API_URL;
     const { userData } = useContext(AuthContext);
+    const { fetchCars, fetchMostPopular, fetchMostRecent } =
+        useContext(CarContext);
     const [myCars, setMyCars] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
@@ -51,6 +54,10 @@ const MyAds = () => {
                     if (previousCarCount % 5 === 1 && currentPage > 0) {
                         setCurrentPage(currentPage - 1);
                     }
+
+                    fetchCars();
+                    fetchMostPopular();
+                    fetchMostRecent();
                 })
                 .catch((error) => {
                     console.error("Error removing the car:", error);
