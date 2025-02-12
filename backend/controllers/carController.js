@@ -172,6 +172,12 @@ const removeCar = async (req, res) => {
             });
         }
 
+        const user = await userModel.findOne({ cars: id });
+        if (user) {
+            user.cars = user.cars.filter((carId) => carId.toString() !== id);
+            await user.save();
+        }
+
         await carModel.findByIdAndDelete(id);
 
         res.json({ success: true, message: "Car removed successfully" });

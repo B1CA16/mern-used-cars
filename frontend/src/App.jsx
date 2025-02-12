@@ -10,6 +10,7 @@ import SignUp from "./components/SignUp";
 import StartSelling from "./components/StartSelling";
 import Profile from "./components/Profile";
 import MyAds from "./components/MyAds";
+import Favorites from "./components/Favorites";
 
 const App = () => {
     const location = useLocation();
@@ -30,6 +31,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/my-ads" element={<MyAds />} />
+                <Route path="/favorites" element={<Favorites />} />
             </Routes>
 
             {!hideNavFooter && <Footer />}

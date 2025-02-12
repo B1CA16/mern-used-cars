@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     FaTachometerAlt,
     FaGasPump,
@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 import { FaTrashCan } from "react-icons/fa6";
+import { AuthContext } from "../context/AuthContext";
 
 const CarBannerCard = ({ car, myAds, remove }) => {
     const navigate = useNavigate();
@@ -22,6 +23,24 @@ const CarBannerCard = ({ car, myAds, remove }) => {
     const url = import.meta.env.VITE_API_URL;
 
     const { formatNumber } = useContext(CarContext);
+    const { favoritesId, addToFavorites, removeFromFavorites } =
+        useContext(AuthContext);
+
+    const [isFav, setIsFav] = useState(favoritesId.includes(car._id));
+
+    const handleAddToFavs = async () => {
+        await addToFavorites(car._id);
+        setIsFav(true);
+    };
+
+    const handleRemoveFromFavs = async () => {
+        await removeFromFavorites(car._id);
+        setIsFav(false);
+    };
+
+    useEffect(() => {
+        setIsFav(favoritesId.includes(car._id));
+    }, [favoritesId, car._id]);
 
     return (
         <div
@@ -83,8 +102,27 @@ const CarBannerCard = ({ car, myAds, remove }) => {
                         <FaTrashCan className="text-white" />
                     </div>
                 )}
-                {!myAds && (
-                    <FaHeart className="text-white hover:text-neutral-200 text-lg sm:text-xl cursor-pointer" />
+                {!myAds && !isFav && (
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToFavs();
+                        }}
+                        title="Add to favorites"
+                    >
+                        <FaHeart className="text-white hover:text-neutral-200 text-lg sm:text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300" />
+                    </div>
+                )}
+                {isFav && (
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveFromFavs();
+                        }}
+                        title="Remove from favorites"
+                    >
+                        <FaHeart className="text-red-500 hover:text-red-700 text-lg sm:text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300" />
+                    </div>
                 )}
             </div>
         </div>

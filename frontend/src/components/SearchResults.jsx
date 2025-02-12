@@ -8,8 +8,6 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import Loader from "./Loader";
 
 const SearchResults = () => {
-    const [sortOption, setSortOption] = useState("default");
-    const [dropdownOpen, setDropdownOpen] = useState(false);
     const { cars, loading } = useContext(CarContext);
 
     const resultsRef = useRef(null);
@@ -17,6 +15,8 @@ const SearchResults = () => {
     const [filteredCars, setFilteredCars] = useState(cars || []);
     const [currentPage, setCurrentPage] = useState(0);
     const carsPerPage = 5;
+    const [sortOption, setSortOption] = useState("default");
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const sortingOptions = useMemo(
         () => [
@@ -222,7 +222,7 @@ const SearchResults = () => {
                             />
                         ) : (
                             currentCars.map((car) => (
-                                <div key={car.id} className="p-4">
+                                <div key={car._id} className="p-4">
                                     <CarBannerCard car={car} />
                                 </div>
                             ))

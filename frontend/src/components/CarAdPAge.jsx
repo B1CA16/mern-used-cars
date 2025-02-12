@@ -23,20 +23,40 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 const CarAdPage = () => {
     const { id } = useParams();
     const { cars, formatNumber } = useContext(CarContext);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
-    const mainSwiperRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
+
+    const { favoritesId, addToFavorites, removeFromFavorites } =
+        useContext(AuthContext);
 
     const url = import.meta.env.VITE_API_URL;
 
     const navigate = useNavigate();
 
     const car = cars.find((car) => car._id === id);
+    const [isFav, setIsFav] = useState(false);
+
+    useEffect(() => {
+        if (car) {
+            setIsFav(favoritesId.includes(car._id));
+        }
+    }, [favoritesId, car]);
+
+    const handleAddToFavs = async () => {
+        await addToFavorites(car._id);
+        setIsFav(true);
+    };
+
+    const handleRemoveFromFavs = async () => {
+        await removeFromFavorites(car._id);
+        setIsFav(false);
+    };
 
     useEffect(() => {
         const incrementViews = async () => {
@@ -172,10 +192,19 @@ const CarAdPage = () => {
                         {car.model}
                     </a>
                 </div>
-                <div>
+                <div
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        isFav ? handleRemoveFromFavs() : handleAddToFavs();
+                    }}
+                    title={isFav ? "Remove from favorites" : "Add to favorites"}
+                >
                     <FaHeart
-                        title="Add to favorites"
-                        className="hover:text-neutral-700 hover:dark:text-neutral-300 text-2xl cursor-pointer hover:scale-110"
+                        className={`text-lg sm:text-2xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300 ${
+                            isFav
+                                ? "text-red-500 hover:text-red-700"
+                                : "text-white hover:text-neutral-200"
+                        }`}
                     />
                 </div>
             </div>

@@ -219,11 +219,11 @@ const Profile = () => {
                 </h2>
                 <div className="space-y-3">
                     <Link
-                        to="/favourites"
+                        to="/favorites"
                         className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
                     >
                         <FaHeart className="text-red-500 group-hover:scale-110" />
-                        Favourites
+                        Favorites
                     </Link>
                     <Link
                         to="/my-ads"

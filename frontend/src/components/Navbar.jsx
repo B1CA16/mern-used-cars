@@ -53,11 +53,11 @@ const Navbar = () => {
                                         Profile
                                     </Link>
                                     <Link
-                                        to="/favourites"
+                                        to="/favorites"
                                         className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 hover:scale-105 hover:font-medium transition duration-300 group"
                                     >
                                         <FaHeart className="text-red-500 group-hover:scale-110" />
-                                        Favourites
+                                        Favorites
                                     </Link>
                                     <Link
                                         to="/my-ads"
