@@ -49,7 +49,7 @@ const CarAdPage = () => {
     }, [favoritesId, car]);
 
     const handleAddToFavs = async () => {
-        await addToFavorites(car._id);
+        await addToFavorites(car);
         setIsFav(true);
     };
 

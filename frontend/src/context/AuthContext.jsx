@@ -55,22 +55,24 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const addToFavorites = async (carId) => {
-        if (userData && carId) {
+    const addToFavorites = async (car) => {
+        if (userData && car) {
             try {
                 const response = await axios.patch(
                     `${url}/${userData._id}/favorites`,
-                    { carId }
+                    { carId: car._id }
                 );
 
                 if (response.data.success) {
+                    setFavorites((prevFavorites) => [...prevFavorites, car]);
                     setFavoritesId((prevFavorites) => [
                         ...prevFavorites,
-                        carId,
+                        car._id,
                     ]);
-                    console.log("Added to favorites:", carId);
+
+                    console.log("Added to favorites:", car._id);
                     toast.success(
-                        response.data.message || "Added to favorites!"
+                        response.data.message || "Car added to favorites!"
                     );
                 } else {
                     toast.error(
@@ -93,12 +95,16 @@ const AuthProvider = ({ children }) => {
                 );
 
                 if (response.data.success) {
+                    setFavorites((prevFavorites) =>
+                        prevFavorites.filter((car) => car._id !== carId)
+                    );
                     setFavoritesId((prevFavorites) =>
                         prevFavorites.filter((id) => id !== carId)
                     );
+
                     console.log("Removed from favorites:", carId);
                     toast.info(
-                        response.data.message || "Removed from favorites."
+                        response.data.message || "Car removed from favorites."
                     );
                 } else {
                     toast.error(

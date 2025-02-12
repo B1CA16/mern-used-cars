@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true },
         type: { type: String, enum: ["dealer", "user"], default: "user" },
         phone: { type: String, default: "" },
-        cars: [{ type: mongoose.Schema.Types.ObjectId, ref: "car" }],
+        cars: [
+            { type: mongoose.Schema.Types.ObjectId, ref: "car", default: [] },
+        ],
         favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "car" }],
         verified: { type: Boolean, default: false },
         joined: { type: Date, default: Date.now },

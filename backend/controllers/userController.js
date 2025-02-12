@@ -205,7 +205,21 @@ const removeFromFavourite = async (req, res) => {
                 .json({ success: false, message: "User not found" });
         }
 
-        if (!user.favorites.includes(carId)) {
+        if (!user.favorites || user.favorites.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No favorites to remove",
+            });
+        }
+
+        const carExistsInFavorites = user.favorites.some((fav) => {
+            if (fav && fav.toString) {
+                return fav.toString() === carId;
+            }
+            return false;
+        });
+
+        if (!carExistsInFavorites) {
             return res.status(400).json({
                 success: false,
                 message: "Car is not in favorites",
@@ -213,7 +227,7 @@ const removeFromFavourite = async (req, res) => {
         }
 
         user.favorites = user.favorites.filter(
-            (fav) => fav.toString() !== carId
+            (fav) => fav && fav.toString() !== carId
         );
 
         await user.save();

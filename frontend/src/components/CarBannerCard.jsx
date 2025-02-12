@@ -29,7 +29,7 @@ const CarBannerCard = ({ car, myAds, remove }) => {
     const [isFav, setIsFav] = useState(favoritesId.includes(car._id));
 
     const handleAddToFavs = async () => {
-        await addToFavorites(car._id);
+        await addToFavorites(car);
         setIsFav(true);
     };
 
