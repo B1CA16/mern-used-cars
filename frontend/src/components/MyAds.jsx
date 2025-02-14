@@ -76,11 +76,11 @@ const MyAds = () => {
 
     return (
         <div>
-            <div className="relative bg-blue-700 pt-8 pb-20 flex flex-col-reverse xl:flex-row gap-12 items-center lg:justify-between">
-                <div className="text-center text-white space-y-4 mx-auto">
+            <div className="relative bg-blue-700 pt-8 lg:pb-16 md:pb-12 sm:pb-10 pb-8 flex flex-col-reverse xl:flex-row gap-12 items-center lg:justify-between">
+                <div className="text-center text-white space-y-4 mx-auto z-30">
                     <h1 className="text-4xl font-bold">My Ads</h1>
                 </div>
-                <div className="absolute bottom-0 left-0 w-full h-24 bg-blue-700 transform origin-bottom-right -skew-y-2"></div>
+                <div className="absolute bottom-0 left-0 z-0 w-full h-24 bg-blue-700 transform origin-bottom-right -skew-y-2"></div>
             </div>
             <BottomWheels />
             <div className="most-popular-section px-2 sm:px-12 py-12">

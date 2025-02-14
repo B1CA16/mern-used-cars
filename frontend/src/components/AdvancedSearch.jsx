@@ -409,22 +409,37 @@ const AdvancedSearch = () => {
                         </div>
 
                         {/* Search Buttons */}
-                        <div className="w-full flex justify-end pt-5">
-                            <a
+                        <div className="flex flex-col xs:flex-row justify-end gap-2 xs:gap-4 pt-5">
+                            {/* <a
                                 href="/cars"
                                 className="text-blue-500 px-6 mr-4 flex items-center justify-center font-medium text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500"
                             >
                                 <FaArrowsRotate className="mr-2 transform transition-transform duration-300 group-hover:scale-110" />
                                 Clear Choices
+                            </a> */}
+                            <a
+                                href="/cars"
+                                className="text-blue-500 flex gap-2 leading-4 text-center sm:leading-8 px-5 py-2 items-center justify-center font-medium text-base sm:text-lg border-2 rounded-md border-transparent hover:scale-105 hover:border-neutral-400 group transition duration-300 hover:text-neutral-500"
+                            >
+                                <FaArrowsRotate className="transform transition-transform duration-300 group-hover:scale-110" />{" "}
+                                Clear Choices
                             </a>
                             <button
+                                type="submit"
+                                className="bg-red-600 text-white uppercase flex items-center font-medium justify-center text-base sm:text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300"
+                                disabled={priceError || hpError || mileageError}
+                            >
+                                <FaMagnifyingGlass className="mr-2" />
+                                Search
+                            </button>
+                            {/* <button
                                 type="submit"
                                 className="bg-red-600 text-white uppercase flex items-center font-medium text-lg px-20 py-2 rounded-md hover:scale-105 hover:bg-red-500 transition duration-300"
                                 disabled={priceError || hpError || mileageError}
                             >
                                 <FaMagnifyingGlass className="mr-2" />
                                 Search
-                            </button>
+                            </button> */}
                         </div>
                     </form>
                 </div>
