@@ -54,10 +54,7 @@ const AdvancedSearch = () => {
             : [];
     }, [cars, make]);
 
-    const fuels = useMemo(
-        () => [...new Set(cars.map((car) => car.fuel))],
-        [cars]
-    );
+    const fuels = ["Petrol", "Diesel", "Electric", "Hybrid"];
     const segments = [
         "SUV",
         "Sedan",
@@ -73,7 +70,7 @@ const AdvancedSearch = () => {
     const years = Array.from(
         { length: maxYear - minYear + 1 },
         (_, i) => maxYear - i
-    ); // Gera uma lista de anos
+    );
 
     const handleFromYearChange = (event, newValue) => {
         if (newValue > untilYear) {

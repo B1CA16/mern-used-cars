@@ -11,6 +11,7 @@ import StartSelling from "./components/StartSelling";
 import Profile from "./components/Profile";
 import MyAds from "./components/MyAds";
 import Favorites from "./components/Favorites";
+import NewAd from "./components/NewAd";
 
 const App = () => {
     const location = useLocation();
@@ -32,6 +33,7 @@ const App = () => {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/my-ads" element={<MyAds />} />
                 <Route path="/favorites" element={<Favorites />} />
+                <Route path="/create-ad" element={<NewAd />} />
             </Routes>
 
             {!hideNavFooter && <Footer />}
