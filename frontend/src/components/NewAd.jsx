@@ -29,6 +29,7 @@ import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 import { toast } from "react-toastify";
+import NotFound from "./NotFound";
 
 const segments = [
     "SUV",
@@ -149,6 +150,7 @@ const inputExplanations = {
 
 const NewAd = () => {
     const { userData } = useContext(AuthContext);
+
     const [formData, setFormData] = useState({
         owner: userData ? userData?._id : null,
         name: "",
@@ -309,6 +311,19 @@ const NewAd = () => {
             console.error("Error creating ad:", error);
         }
     };
+
+    if (!userData) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[80vh]">
+                <NotFound
+                    title="Please Sign In"
+                    message="You need to be logged in to create an ad."
+                    buttonText="Sign In"
+                    link="/signin"
+                />
+            </div>
+        );
+    }
 
     return (
         <>

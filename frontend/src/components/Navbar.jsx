@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext, useRef, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import {
     FaPlus,
@@ -13,6 +13,31 @@ import {
 const Navbar = () => {
     const { token, logout } = useContext(AuthContext);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+    const profileMenuRef = useRef(null);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                profileMenuRef.current &&
+                !profileMenuRef.current.contains(event.target)
+            ) {
+                setIsProfileOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    useEffect(() => {
+        setIsProfileOpen(false);
+    }, [location]);
 
     return (
         <div>
@@ -44,7 +69,10 @@ const Navbar = () => {
                             </div>
 
                             {isProfileOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white shadow-md  text-neutral-800 rounded-lg overflow-hidden z-50">
+                                <div
+                                    ref={profileMenuRef}
+                                    className="absolute right-0 mt-2 w-48 bg-white shadow-md  text-neutral-800 rounded-lg overflow-hidden z-50"
+                                >
                                     <Link
                                         to="/profile"
                                         className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 hover:scale-105 hover:font-medium transition duration-300 group"

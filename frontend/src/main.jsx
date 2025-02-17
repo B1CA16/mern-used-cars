@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")).render(
                 <CarProvider>
                     <ScrollToTop />
                     <App />
-                    <ToastContainer />
+                    <ToastContainer position="bottom-right" />
                 </CarProvider>
             </SearchProvider>
         </AuthProvider>

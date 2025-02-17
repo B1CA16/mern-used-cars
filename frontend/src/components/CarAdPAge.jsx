@@ -31,6 +31,7 @@ const CarAdPage = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const mainSwiperRef = useRef(null);
 
     const { favoritesId, addToFavorites, removeFromFavorites } =
         useContext(AuthContext);
@@ -79,6 +80,9 @@ const CarAdPage = () => {
 
     const closeFullscreen = () => {
         setIsFullscreen(false);
+        if (mainSwiperRef.current) {
+            mainSwiperRef.current.slideTo(activeIndex);
+        }
     };
 
     if (!car) {
@@ -235,14 +239,19 @@ const CarAdPage = () => {
                     <div className="w-full flex justify-center px-auto pb-4 bg-neutral-100 dark:bg-neutral-800 rounded-md">
                         {Array.isArray(car.images) ? (
                             <div className="w-full">
+                                {/* Normal Slider */}
                                 <Swiper
                                     spaceBetween={10}
                                     slidesPerView={1}
                                     navigation
                                     thumbs={{ swiper: thumbsSwiper }}
                                     modules={[Navigation, Thumbs]}
+                                    initialSlide={activeIndex}
                                     onSlideChange={(swiper) =>
                                         setActiveIndex(swiper.activeIndex)
+                                    }
+                                    onSwiper={(swiper) =>
+                                        (mainSwiperRef.current = swiper)
                                     }
                                 >
                                     {car.images.map((image, index) => (
@@ -267,6 +276,7 @@ const CarAdPage = () => {
                                     ))}
                                 </Swiper>
 
+                                {/* Thumbnail Slider */}
                                 <div className="lg:block hidden">
                                     <Swiper
                                         onSwiper={setThumbsSwiper}
@@ -301,6 +311,7 @@ const CarAdPage = () => {
                                     </Swiper>
                                 </div>
 
+                                {/* Fullscreen Viewer */}
                                 {isFullscreen && (
                                     <div className="fixed inset-0 bg-black bg-opacity-85 flex justify-center items-center z-50">
                                         <div className="relative w-full h-full">
@@ -315,7 +326,6 @@ const CarAdPage = () => {
                                                 slidesPerView={1}
                                                 initialSlide={activeIndex}
                                                 navigation
-                                                º
                                                 modules={[Navigation]}
                                                 onSlideChange={(swiper) =>
                                                     setActiveIndex(
