@@ -3,12 +3,48 @@ import carModel from "../models/carModel.js";
 import userModel from "../models/userModel.js";
 import fs from "fs";
 import mongoose from "mongoose";
+import path from "path";
+import sharp from "sharp";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Add a new car
 const addCar = async (req, res) => {
-    const image_filenames = req.files
-        ? req.files.map((file) => file.filename)
-        : [];
+    const image_filenames = [];
+
+    if (req.files) {
+        for (const file of req.files) {
+            const inputPath = file.path;
+            const outputPath = path.join(
+                __dirname,
+                "../uploads",
+                `temp_${file.filename}`
+            );
+
+            try {
+                const metadata = await sharp(inputPath).metadata();
+
+                const newWidth = 1280;
+                const newHeight = Math.round((newWidth * 9) / 16);
+
+                await sharp(inputPath)
+                    .resize(newWidth, newHeight)
+                    .toFile(outputPath);
+
+                fs.renameSync(outputPath, inputPath);
+
+                image_filenames.push(file.filename);
+            } catch (err) {
+                console.error("Error redimensioning image:", err);
+                return res.json({
+                    success: false,
+                    message: "Error processing image",
+                });
+            }
+        }
+    }
 
     const car = new carModel({
         name: req.body.name,
@@ -56,7 +92,6 @@ const addCar = async (req, res) => {
         }
 
         user.cars.push(savedCar._id);
-
         await user.save();
 
         res.json({
