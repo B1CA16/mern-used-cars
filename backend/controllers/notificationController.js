@@ -1,5 +1,6 @@
 import Notification from "../models/notificationModel.js";
 import User from "../models/userModel.js";
+import { io } from "../server.js";
 
 // Create a new notification
 const createNotification = async (req, res) => {
@@ -15,6 +16,8 @@ const createNotification = async (req, res) => {
 
         const notification = new Notification({ userId, message });
         await notification.save();
+
+        io.to(userId).emit("new-notification", notification);
 
         res.status(201).json({ success: true, notification });
     } catch (error) {

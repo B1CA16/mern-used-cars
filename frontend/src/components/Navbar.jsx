@@ -2,6 +2,7 @@ import { useState, useContext, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import { io } from "socket.io-client";
 import {
     FaPlus,
     FaUser,
@@ -13,6 +14,8 @@ import {
 } from "react-icons/fa";
 import dayjs from "dayjs";
 import "dayjs/locale/pt";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 dayjs.locale("pt");
 
@@ -28,6 +31,31 @@ const Navbar = () => {
     const profileMenuRef = useRef(null);
     const notificationsMenuRef = useRef(null);
     const location = useLocation();
+
+    useEffect(() => {
+        if (userData?._id) {
+            const socket = io("http://localhost:4000");
+
+            // Join the user's room
+            socket.emit("join-room", userData._id);
+
+            // Listen for new notifications
+            socket.on("new-notification", (notification) => {
+                setNotifications((prevNotifications) => [
+                    notification,
+                    ...prevNotifications,
+                ]);
+                setHasUnread(true);
+
+                // Show toast notification
+                toast.info(`New Notification: ${notification.message}`);
+            });
+
+            return () => {
+                socket.disconnect();
+            };
+        }
+    }, [userData]);
 
     useEffect(() => {
         if (userData?._id) {

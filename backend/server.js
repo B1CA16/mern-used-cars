@@ -5,21 +5,32 @@ import carRouter from "./routes/carRoute.js";
 import userRouter from "./routes/userRoute.js";
 import dotenv from "dotenv";
 import notificationRouter from "./routes/notificationRouter.js";
+import http from "http";
+import { Server } from "socket.io";
 
 dotenv.config();
 
-//app config
+// App config
 const app = express();
 const port = 4000;
 
-//middleware
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173",
+        methods: ["GET", "POST"],
+    },
+});
+
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-//db connection
+// DB connection
 connectDB();
 
-//routes
+// Routes
 app.use("/api/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cars", carRouter);
@@ -29,6 +40,23 @@ app.get("/", (req, res) => {
     res.send("API Working");
 });
 
-app.listen(port, () => {
+// WebSocket connection handler
+io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+
+    socket.on("join-room", (userId) => {
+        socket.join(userId);
+        console.log(`User ${userId} joined room`);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected:", socket.id);
+    });
+});
+
+// Start the server
+server.listen(port, () => {
     console.log(`Server started on http://localhost:${port}`);
 });
+
+export { io };
