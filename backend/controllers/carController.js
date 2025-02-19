@@ -107,7 +107,10 @@ const addCar = async (req, res) => {
 // Get the most popular ads
 const getMostPopular = async (req, res) => {
     try {
-        const cars = await carModel.find({}).sort({ views: -1 }).limit(10);
+        const cars = await carModel
+            .find({ accepted: true })
+            .sort({ views: -1 })
+            .limit(10);
 
         res.json({
             success: true,
@@ -121,7 +124,10 @@ const getMostPopular = async (req, res) => {
 // Get the most recent ads
 const getMostRecent = async (req, res) => {
     try {
-        const cars = await carModel.find({}).sort({ created_at: -1 }).limit(10);
+        const cars = await carModel
+            .find({ accepted: true })
+            .sort({ created_at: -1 })
+            .limit(10);
 
         res.json({
             success: true,
@@ -136,7 +142,7 @@ const getMostRecent = async (req, res) => {
 const getCars = async (req, res) => {
     try {
         const cars = await carModel
-            .find({})
+            .find({ accepted: true })
             .populate("owner", "name email type phone");
 
         res.json({
@@ -248,6 +254,45 @@ const countView = async (req, res) => {
     }
 };
 
+// Accept a car
+const acceptCar = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid car ID format",
+            });
+        }
+
+        const car = await carModel.findByIdAndUpdate(
+            id,
+            { accepted: true },
+            { new: true }
+        );
+
+        if (!car) {
+            return res.status(404).json({
+                success: false,
+                message: "Car not found",
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Car accepted successfully",
+            car,
+        });
+    } catch (err) {
+        console.error("Error accepting car:", err);
+        res.status(500).json({
+            success: false,
+            message: err.message || "Server error",
+        });
+    }
+};
+
 export {
     addCar,
     getCars,
@@ -256,4 +301,5 @@ export {
     getMostPopular,
     getMostRecent,
     countView,
+    acceptCar,
 };

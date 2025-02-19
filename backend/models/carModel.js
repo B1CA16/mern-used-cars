@@ -132,6 +132,10 @@ const carSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    accepted: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const carModel = mongoose.models.car || mongoose.model("car", carSchema);

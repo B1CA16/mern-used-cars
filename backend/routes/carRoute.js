@@ -7,6 +7,7 @@ import {
     getMostPopular,
     getMostRecent,
     countView,
+    acceptCar,
 } from "../controllers/carController.js";
 import multer from "multer";
 
@@ -27,6 +28,7 @@ carRouter.post("/", upload.array("images", 30), addCar);
 carRouter.get("/", getCars);
 carRouter.get("/:id", getCarById);
 carRouter.patch("/:id/countViews", countView);
+carRouter.patch("/accept/:id", acceptCar);
 carRouter.delete("/:id", removeCar);
 
 export default carRouter;
