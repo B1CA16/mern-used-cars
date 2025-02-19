@@ -4,6 +4,7 @@ import { connectDB } from "./config/db.js";
 import carRouter from "./routes/carRoute.js";
 import userRouter from "./routes/userRoute.js";
 import dotenv from "dotenv";
+import notificationRouter from "./routes/notificationRouter.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ connectDB();
 app.use("/api/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cars", carRouter);
+app.use("/api/notifications", notificationRouter);
 
 app.get("/", (req, res) => {
     res.send("API Working");

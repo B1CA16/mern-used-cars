@@ -1,0 +1,18 @@
+meta {
+  name: Create Notification
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:4000/api/notifications
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "userId": "679a2de7f48fe0ee27e8fa2f",
+    "message": "Notification 1"
+  }
+}

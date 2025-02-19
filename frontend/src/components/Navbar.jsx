@@ -1,6 +1,7 @@
 import { useState, useContext, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 import {
     FaPlus,
     FaUser,
@@ -8,15 +9,69 @@ import {
     FaSignOutAlt,
     FaUserCircle,
     FaCar,
+    FaBell,
 } from "react-icons/fa";
+import dayjs from "dayjs";
+import "dayjs/locale/pt";
+
+dayjs.locale("pt");
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
-    const { token, logout } = useContext(AuthContext);
+    const { token, logout, userData } = useContext(AuthContext);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [hasUnread, setHasUnread] = useState(false);
 
     const profileMenuRef = useRef(null);
-
+    const notificationsMenuRef = useRef(null);
     const location = useLocation();
+
+    useEffect(() => {
+        if (userData?._id) {
+            axios
+                .get(`${API_URL}notifications/${userData._id}`)
+                .then((response) => {
+                    if (response.data.success) {
+                        setNotifications(response.data.data);
+                        setHasUnread(
+                            response.data.data.some(
+                                (notification) => !notification.isRead
+                            )
+                        );
+                    }
+                })
+                .catch((error) => {
+                    console.error("Erro ao obter notificações:", error);
+                });
+        }
+    }, [userData]);
+
+    const handleNotificationClick = async (notificationId) => {
+        try {
+            await axios.patch(`${API_URL}notifications/${notificationId}/read`);
+
+            setNotifications((prevNotifications) =>
+                prevNotifications.map((notification) =>
+                    notification._id === notificationId
+                        ? { ...notification, isRead: true }
+                        : notification
+                )
+            );
+
+            setHasUnread(
+                notifications.some(
+                    (notification) =>
+                        notification._id !== notificationId &&
+                        !notification.isRead
+                )
+            );
+        } catch (error) {
+            console.error("Erro ao marcar notificação como lida:", error);
+        }
+    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -26,10 +81,16 @@ const Navbar = () => {
             ) {
                 setIsProfileOpen(false);
             }
+
+            if (
+                notificationsMenuRef.current &&
+                !notificationsMenuRef.current.contains(event.target)
+            ) {
+                setIsNotificationsOpen(false);
+            }
         };
 
         document.addEventListener("mousedown", handleClickOutside);
-
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
@@ -37,6 +98,7 @@ const Navbar = () => {
 
     useEffect(() => {
         setIsProfileOpen(false);
+        setIsNotificationsOpen(false);
     }, [location]);
 
     return (
@@ -59,54 +121,123 @@ const Navbar = () => {
                         Start selling
                     </Link>
 
+                    {token && (
+                        <div className="relative">
+                            <div
+                                className="relative cursor-pointer"
+                                onClick={() =>
+                                    setIsNotificationsOpen(!isNotificationsOpen)
+                                }
+                            >
+                                <FaBell className="text-white text-3xl hover:scale-105 transition-all duration-300" />
+                                {hasUnread && (
+                                    <span className="absolute top-0 right-0 bg-red-500 border-4 border-blue-700 w-4 h-4 rounded-full"></span>
+                                )}
+                            </div>
+
+                            {isNotificationsOpen && (
+                                <div
+                                    ref={notificationsMenuRef}
+                                    className="absolute right-0 mt-2 w-64 bg-white shadow-md text-neutral-800 rounded-lg overflow-hidden z-50"
+                                >
+                                    {notifications.length === 0 ? (
+                                        <p className="p-3 text-center text-sm text-neutral-600">
+                                            No notifications
+                                        </p>
+                                    ) : (
+                                        notifications.map((notification) => (
+                                            <div
+                                                key={notification._id}
+                                                onClick={() =>
+                                                    !notification.isRead &&
+                                                    handleNotificationClick(
+                                                        notification._id
+                                                    )
+                                                }
+                                                className={`px-4 py-3 text-sm transition duration-300 flex flex-col ${
+                                                    notification.isRead
+                                                        ? "text-neutral-500"
+                                                        : "cursor-pointer font-bold hover:bg-neutral-200"
+                                                }`}
+                                            >
+                                                <div
+                                                    className="flex items-center justify-between"
+                                                    title={
+                                                        !notification.isRead
+                                                            ? "Mark as read"
+                                                            : ""
+                                                    }
+                                                >
+                                                    <p className="flex-1">
+                                                        {notification.message}
+                                                    </p>
+                                                    {!notification.isRead && (
+                                                        <span className="w-2.5 h-2.5 bg-red-500 rounded-full ml-2"></span>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs text-neutral-500">
+                                                    {dayjs(
+                                                        notification.createdAt
+                                                    ).format(
+                                                        "DD/MM/YYYY HH:mm"
+                                                    )}
+                                                </p>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     {token ? (
                         <div className="relative">
                             <div
                                 className="flex items-center gap-2 cursor-pointer"
                                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                             >
-                                <FaUser className="text-white text-3xl hover:scale-105 active:scale-95 transition-all duration-300" />
+                                <FaUser className="text-white text-3xl hover:scale-105 transition-all duration-300" />
                             </div>
 
                             {isProfileOpen && (
                                 <div
                                     ref={profileMenuRef}
-                                    className="absolute right-0 mt-2 w-48 bg-white shadow-md  text-neutral-800 rounded-lg overflow-hidden z-50"
+                                    className="absolute right-0 mt-2 w-48 bg-white shadow-md text-neutral-800 rounded-lg overflow-hidden z-50"
                                 >
                                     <Link
                                         to="/profile"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 hover:scale-105 hover:font-medium transition duration-300 group"
+                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
                                     >
-                                        <FaUserCircle className="text-blue-600 group-hover:scale-110" />
+                                        <FaUserCircle className="text-blue-600" />
                                         Profile
                                     </Link>
                                     <Link
                                         to="/favorites"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 hover:scale-105 hover:font-medium transition duration-300 group"
+                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
                                     >
-                                        <FaHeart className="text-red-500 group-hover:scale-110" />
+                                        <FaHeart className="text-red-500" />
                                         Favorites
                                     </Link>
                                     <Link
                                         to="/my-ads"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 hover:scale-105 hover:font-medium transition duration-300 group"
+                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
                                     >
-                                        <FaCar className="text-yellow-500 group-hover:scale-110" />
+                                        <FaCar className="text-yellow-500" />
                                         My Ads
                                     </Link>
                                     <Link
                                         to="/create-ad"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 hover:scale-105 hover:font-medium transition duration-300 group"
+                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
                                     >
-                                        <FaPlus className="text-green-500 group-hover:scale-110" />
+                                        <FaPlus className="text-green-500" />
                                         New Ad
                                     </Link>
-                                    <hr className="px-2" />
+                                    <hr />
                                     <button
                                         onClick={logout}
-                                        className="w-full text-left flex items-center gap-2 px-4 py-3 hover:bg-red-200 text-red-600 hover:scale-105 hover:font-medium transition duration-300 group"
+                                        className="w-full flex items-center gap-2 px-4 py-3 text-red-600 hover:bg-red-200 transition duration-300"
                                     >
-                                        <FaSignOutAlt className="group-hover:scale-110" />
+                                        <FaSignOutAlt />
                                         Logout
                                     </button>
                                 </div>
@@ -115,7 +246,7 @@ const Navbar = () => {
                     ) : (
                         <Link
                             to="/signin"
-                            className="bg-white text-blue-950 uppercase font-medium text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-neutral-200 hover::sca transition duration-300"
+                            className="bg-white text-blue-950 uppercase font-medium text-lg px-5 py-2 rounded-md hover:scale-105 transition duration-300"
                         >
                             Sign In
                         </Link>
