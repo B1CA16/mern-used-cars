@@ -9,16 +9,19 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { CarContext } from "../context/CarContext";
+import { useNavigate } from "react-router-dom";
 
 const MyAds = () => {
     const url = import.meta.env.VITE_API_URL;
-    const { userData } = useContext(AuthContext);
+    const { userData, isAdmin } = useContext(AuthContext);
     const { fetchCars, fetchMostPopular, fetchMostRecent } =
         useContext(CarContext);
     const [myCars, setMyCars] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const carsPerPage = 5;
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const userId = userData?._id;
@@ -73,6 +76,10 @@ const MyAds = () => {
     const handlePageClick = (event) => {
         setCurrentPage(event.selected);
     };
+
+    if (isAdmin) {
+        navigate("/");
+    }
 
     return (
         <div>

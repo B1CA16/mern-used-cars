@@ -22,7 +22,7 @@ dayjs.locale("pt");
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
-    const { token, logout, userData } = useContext(AuthContext);
+    const { token, logout, userData, isAdmin } = useContext(AuthContext);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
@@ -36,10 +36,8 @@ const Navbar = () => {
         if (userData?._id) {
             const socket = io("http://localhost:4000");
 
-            // Join the user's room
             socket.emit("join-room", userData._id);
 
-            // Listen for new notifications
             socket.on("new-notification", (notification) => {
                 setNotifications((prevNotifications) => [
                     notification,
@@ -47,7 +45,6 @@ const Navbar = () => {
                 ]);
                 setHasUnread(true);
 
-                // Show toast notification
                 toast.info(`New Notification: ${notification.message}`);
             });
 
@@ -232,34 +229,55 @@ const Navbar = () => {
                                     ref={profileMenuRef}
                                     className="absolute right-0 mt-2 w-48 bg-white shadow-md text-neutral-800 rounded-lg overflow-hidden z-50"
                                 >
-                                    <Link
-                                        to="/profile"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
-                                    >
-                                        <FaUserCircle className="text-blue-600" />
-                                        Profile
-                                    </Link>
-                                    <Link
-                                        to="/favorites"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
-                                    >
-                                        <FaHeart className="text-red-500" />
-                                        Favorites
-                                    </Link>
-                                    <Link
-                                        to="/my-ads"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
-                                    >
-                                        <FaCar className="text-yellow-500" />
-                                        My Ads
-                                    </Link>
-                                    <Link
-                                        to="/create-ad"
-                                        className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
-                                    >
-                                        <FaPlus className="text-green-500" />
-                                        New Ad
-                                    </Link>
+                                    {!isAdmin ? (
+                                        <>
+                                            <Link
+                                                to="/profile"
+                                                className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
+                                            >
+                                                <FaUserCircle className="text-blue-600" />
+                                                Profile
+                                            </Link>
+                                            <Link
+                                                to="/favorites"
+                                                className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
+                                            >
+                                                <FaHeart className="text-red-500" />
+                                                Favorites
+                                            </Link>
+                                            <Link
+                                                to="/my-ads"
+                                                className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
+                                            >
+                                                <FaCar className="text-yellow-500" />
+                                                My Ads
+                                            </Link>
+                                            <Link
+                                                to="/create-ad"
+                                                className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
+                                            >
+                                                <FaPlus className="text-green-500" />
+                                                New Ad
+                                            </Link>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link
+                                                to="/profile"
+                                                className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
+                                            >
+                                                <FaUserCircle className="text-blue-600" />
+                                                Profile
+                                            </Link>
+                                            <Link
+                                                to="/pending-ads"
+                                                className="flex items-center gap-2 px-4 py-3 hover:bg-neutral-200 transition duration-300"
+                                            >
+                                                <FaCar className="text-yellow-500" />
+                                                Pending Ads
+                                            </Link>
+                                        </>
+                                    )}
                                     <hr />
                                     <button
                                         onClick={logout}

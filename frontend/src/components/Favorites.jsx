@@ -6,12 +6,15 @@ import NotFound from "./NotFound";
 import Loader from "./Loader";
 import ReactPaginate from "react-paginate";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Favorites = () => {
-    const { favorites, userData, removeFromFavorites } =
+    const { favorites, userData, removeFromFavorites, isAdmin } =
         useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(0);
     const carsPerPage = 5;
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!userData) return;
@@ -31,6 +34,10 @@ const Favorites = () => {
     const handleRemoveFromFavorites = (carId) => {
         removeFromFavorites(carId);
     };
+
+    if (isAdmin) {
+        navigate("/");
+    }
 
     return (
         <div>

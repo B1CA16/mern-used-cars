@@ -85,6 +85,7 @@ export const CarProvider = ({ children }) => {
         <CarContext.Provider
             value={{
                 cars,
+                setCars,
                 mostPopular,
                 mostRecent,
                 loading,

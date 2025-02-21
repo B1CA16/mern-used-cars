@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FaChevronLeft, FaHeart, FaX } from "react-icons/fa6";
+import { FaChevronLeft, FaHeart, FaTrashCan, FaX } from "react-icons/fa6";
 import NotFound from "./NotFound";
 import Accordion from "./Accordion";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -24,17 +24,30 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const CarAdPage = () => {
     const { id } = useParams();
-    const { cars, formatNumber } = useContext(CarContext);
+    const {
+        cars,
+        formatNumber,
+        fetchCars,
+        fetchMostPopular,
+        fetchMostRecent,
+        setCars,
+    } = useContext(CarContext);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const mainSwiperRef = useRef(null);
 
-    const { favoritesId, addToFavorites, removeFromFavorites } =
-        useContext(AuthContext);
+    const {
+        favoritesId,
+        addToFavorites,
+        removeFromFavorites,
+        isAdmin,
+        userData,
+    } = useContext(AuthContext);
 
     const url = import.meta.env.VITE_API_URL;
 
@@ -165,6 +178,31 @@ const CarAdPage = () => {
         },
     ];
 
+    const remove = (carId) => {
+        const userId = userData?._id;
+
+        if (userId) {
+            axios
+                .delete(`${url}cars/${carId}`)
+                .then(() => {
+                    setCars((prevCars) =>
+                        prevCars.filter((car) => car._id !== carId)
+                    );
+                    toast.success("Car removed successfully!");
+
+                    navigate("/");
+
+                    fetchCars();
+                    fetchMostPopular();
+                    fetchMostRecent();
+                })
+                .catch((error) => {
+                    console.error("Error removing the car:", error);
+                    toast.error("Error removing the car!");
+                });
+        }
+    };
+
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="flex justify-between px-4">
@@ -196,21 +234,36 @@ const CarAdPage = () => {
                         {car.model}
                     </a>
                 </div>
-                <div
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        isFav ? handleRemoveFromFavs() : handleAddToFavs();
-                    }}
-                    title={isFav ? "Remove from favorites" : "Add to favorites"}
-                >
-                    <FaHeart
-                        className={`text-lg sm:text-2xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300 ${
-                            isFav
-                                ? "text-red-500 hover:text-red-700"
-                                : "text-white hover:text-neutral-200"
-                        }`}
-                    />
-                </div>
+                {!isAdmin ? (
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            isFav ? handleRemoveFromFavs() : handleAddToFavs();
+                        }}
+                        title={
+                            isFav ? "Remove from favorites" : "Add to favorites"
+                        }
+                    >
+                        <FaHeart
+                            className={`text-lg sm:text-2xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300 ${
+                                isFav
+                                    ? "text-red-500 hover:text-red-700"
+                                    : "text-white hover:text-neutral-200"
+                            }`}
+                        />
+                    </div>
+                ) : (
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            remove(car._id);
+                        }}
+                        className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                        title="Remove ad"
+                    >
+                        <FaTrashCan className="text-white" />
+                    </div>
+                )}
             </div>
             <div className="flex md:flex-row flex-col justify-between md:gap-8 gap-0">
                 <div className="md:w-3/4 w-full p-4">

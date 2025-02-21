@@ -18,7 +18,8 @@ import BottomWheels from "./BottomWheels";
 import { FaFloppyDisk } from "react-icons/fa6";
 
 const Profile = () => {
-    const { userData, setUserData, logout, url } = useContext(AuthContext);
+    const { userData, setUserData, logout, url, isAdmin } =
+        useContext(AuthContext);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
@@ -111,20 +112,22 @@ const Profile = () => {
                                     className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:bg-neutral-700 dark:text-white dark:border-neutral-600"
                                 />
                             </div>
-                            <div className="w-full">
-                                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-200">
-                                    User Type
-                                </label>
-                                <select
-                                    name="type"
-                                    value={formData.type}
-                                    onChange={handleChange}
-                                    className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:bg-neutral-700 dark:text-white dark:border-neutral-600"
-                                >
-                                    <option value="user">User</option>
-                                    <option value="dealer">Dealer</option>
-                                </select>
-                            </div>
+                            {!isAdmin ? (
+                                <div className="w-full">
+                                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-200">
+                                        User Type
+                                    </label>
+                                    <select
+                                        name="type"
+                                        value={formData.type}
+                                        onChange={handleChange}
+                                        className="mt-1 block w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:bg-neutral-700 dark:text-white dark:border-neutral-600"
+                                    >
+                                        <option value="user">User</option>
+                                        <option value="dealer">Dealer</option>
+                                    </select>
+                                </div>
+                            ) : null}
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-200">
@@ -232,27 +235,39 @@ const Profile = () => {
                         Quick Access to Your Actions
                     </h2>
                     <div className="space-y-3">
-                        <Link
-                            to="/favorites"
-                            className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
-                        >
-                            <FaHeart className="text-red-500 group-hover:scale-110" />
-                            Favorites
-                        </Link>
-                        <Link
-                            to="/my-ads"
-                            className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
-                        >
-                            <FaCar className="text-yellow-500 group-hover:scale-110" />
-                            My Ads
-                        </Link>
-                        <Link
-                            to="/create-ad"
-                            className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
-                        >
-                            <FaPlus className="text-green-500 group-hover:scale-110" />
-                            New Ad
-                        </Link>
+                        {!isAdmin ? (
+                            <>
+                                <Link
+                                    to="/favorites"
+                                    className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
+                                >
+                                    <FaHeart className="text-red-500 group-hover:scale-110" />
+                                    Favorites
+                                </Link>
+                                <Link
+                                    to="/my-ads"
+                                    className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
+                                >
+                                    <FaCar className="text-yellow-500 group-hover:scale-110" />
+                                    My Ads
+                                </Link>
+                                <Link
+                                    to="/create-ad"
+                                    className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
+                                >
+                                    <FaPlus className="text-green-500 group-hover:scale-110" />
+                                    New Ad
+                                </Link>
+                            </>
+                        ) : (
+                            <Link
+                                to="/pending-ads"
+                                className="flex items-center gap-2 px-4 py-3 bg-neutral-200/75 dark:bg-neutral-800 rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 transition duration-300"
+                            >
+                                <FaCar className="text-yellow-500 group-hover:scale-110" />
+                                Pending Ads
+                            </Link>
+                        )}
                         <button
                             onClick={logout}
                             className="w-full text-left flex items-center gap-2 px-4 py-3 text-red-500 bg-neutral-200/75 dark:bg-neutral-800 hover:bg-neutral-200 hover:dark:bg-neutral-700/50 hover:scale-105 hover:font-medium transition duration-300 group rounded-lg"

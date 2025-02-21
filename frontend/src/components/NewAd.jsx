@@ -149,7 +149,7 @@ const inputExplanations = {
 };
 
 const NewAd = () => {
-    const { userData } = useContext(AuthContext);
+    const { userData, isAdmin } = useContext(AuthContext);
 
     const [formData, setFormData] = useState({
         owner: userData ? userData?._id : null,
@@ -311,6 +311,10 @@ const NewAd = () => {
             console.error("Error creating ad:", error);
         }
     };
+
+    if (isAdmin) {
+        navigate("/");
+    }
 
     if (!userData) {
         return (

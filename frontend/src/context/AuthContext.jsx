@@ -13,6 +13,8 @@ const AuthProvider = ({ children }) => {
     const [favorites, setFavorites] = useState([]);
     const [favoritesId, setFavoritesId] = useState([]);
 
+    const isAdmin = userData && userData?.type === "admin";
+
     useEffect(() => {
         const fetchUserData = async () => {
             if (token) {
@@ -141,6 +143,7 @@ const AuthProvider = ({ children }) => {
                 setFavoritesId,
                 addToFavorites,
                 removeFromFavorites,
+                isAdmin,
             }}
         >
             {children}

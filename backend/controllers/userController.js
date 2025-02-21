@@ -65,7 +65,7 @@ const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const userType =
-            type && ["dealer", "user"].includes(type) ? type : "user";
+            type && ["dealer", "user", "admin"].includes(type) ? type : "user";
 
         const newUser = new userModel({
             name,

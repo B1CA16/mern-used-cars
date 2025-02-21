@@ -23,7 +23,7 @@ const CarBannerCard = ({ car, myAds, remove }) => {
     const url = import.meta.env.VITE_API_URL;
 
     const { formatNumber } = useContext(CarContext);
-    const { favoritesId, addToFavorites, removeFromFavorites } =
+    const { favoritesId, addToFavorites, removeFromFavorites, isAdmin } =
         useContext(AuthContext);
 
     const [isFav, setIsFav] = useState(favoritesId.includes(car._id));
@@ -90,19 +90,20 @@ const CarBannerCard = ({ car, myAds, remove }) => {
                     {formatNumber(car.price)}{" "}
                     <span className="text-sm">EUR</span>
                 </p>
-                {myAds && (
-                    <div
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            remove(car._id);
-                        }}
-                        className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
-                        title="Remove ad"
-                    >
-                        <FaTrashCan className="text-white" />
-                    </div>
-                )}
-                {!myAds && !isFav && (
+                {myAds ||
+                    (isAdmin && (
+                        <div
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                remove(car._id);
+                            }}
+                            className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                            title="Remove ad"
+                        >
+                            <FaTrashCan className="text-white" />
+                        </div>
+                    ))}
+                {!myAds && !isFav && !isAdmin && (
                     <div
                         onClick={(e) => {
                             e.stopPropagation();
