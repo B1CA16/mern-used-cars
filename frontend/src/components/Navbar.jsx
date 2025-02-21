@@ -37,13 +37,23 @@ const Navbar = () => {
             const socket = io("http://localhost:4000");
 
             socket.emit("join-room", userData._id);
+            console.log(`User ${userData._id} joined room`);
 
-            socket.on("new-notification", (notification) => {
-                setNotifications((prevNotifications) => [
-                    notification,
-                    ...prevNotifications,
-                ]);
-                setHasUnread(true);
+            socket.on("notification", (notification) => {
+                setNotifications((prevNotifications) => {
+                    const updatedNotifications = [
+                        notification,
+                        ...prevNotifications,
+                    ];
+
+                    const hasUnreadNotifications = updatedNotifications.some(
+                        (notification) => !notification.isRead
+                    );
+
+                    setHasUnread(hasUnreadNotifications);
+
+                    return updatedNotifications;
+                });
 
                 toast.info(`New Notification: ${notification.message}`);
             });
@@ -60,12 +70,16 @@ const Navbar = () => {
                 .get(`${API_URL}notifications/${userData._id}`)
                 .then((response) => {
                     if (response.data.success) {
-                        setNotifications(response.data.data);
-                        setHasUnread(
-                            response.data.data.some(
+                        const fetchedNotifications = response.data.data;
+
+                        setNotifications(fetchedNotifications);
+
+                        const hasUnreadNotifications =
+                            fetchedNotifications.some(
                                 (notification) => !notification.isRead
-                            )
-                        );
+                            );
+
+                        setHasUnread(hasUnreadNotifications);
                     }
                 })
                 .catch((error) => {
@@ -86,13 +100,12 @@ const Navbar = () => {
                 )
             );
 
-            setHasUnread(
-                notifications.some(
-                    (notification) =>
-                        notification._id !== notificationId &&
-                        !notification.isRead
-                )
+            const hasUnreadNotifications = notifications.some(
+                (notification) =>
+                    notification._id !== notificationId && !notification.isRead
             );
+
+            setHasUnread(hasUnreadNotifications);
         } catch (error) {
             console.error("Erro ao marcar notificação como lida:", error);
         }
@@ -125,6 +138,14 @@ const Navbar = () => {
         setIsProfileOpen(false);
         setIsNotificationsOpen(false);
     }, [location]);
+
+    useEffect(() => {
+        const hasUnreadNotifications = notifications.some(
+            (notification) => !notification.isRead
+        );
+
+        setHasUnread(hasUnreadNotifications);
+    }, [notifications]);
 
     return (
         <div>
@@ -163,7 +184,7 @@ const Navbar = () => {
                             {isNotificationsOpen && (
                                 <div
                                     ref={notificationsMenuRef}
-                                    className="absolute right-0 mt-2 w-64 bg-white shadow-md text-neutral-800 rounded-lg overflow-hidden z-50"
+                                    className="absolute right-0 mt-2 w-64 bg-white h-[calc(100vh-100px)] overflow-y-scroll shadow-md text-neutral-800 rounded-lg overflow-hidden z-50"
                                 >
                                     {notifications.length === 0 ? (
                                         <p className="p-3 text-center text-sm text-neutral-600">

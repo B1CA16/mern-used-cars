@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 import path from "path";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
+import { io } from "../server.js";
+import axios from "axios";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -279,6 +281,21 @@ const acceptCar = async (req, res) => {
             });
         }
 
+        const message = `Your car listing "${car.name}" has been accepted!`;
+
+        io.to(car.owner.toString()).emit("notification", { message });
+        console.log(`Notification sent via WebSocket to user ${car.owner}`);
+
+        try {
+            await axios.post("http://localhost:4000/api/notifications", {
+                userId: car.owner,
+                message,
+            });
+            console.log(`Notification sent via API to user ${car.owner}`);
+        } catch (error) {
+            console.error("Error sending notification via API:", error);
+        }
+
         res.json({
             success: true,
             message: "Car accepted successfully",
@@ -293,6 +310,82 @@ const acceptCar = async (req, res) => {
     }
 };
 
+// Reject a car
+const rejectCar = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid car ID format",
+            });
+        }
+
+        const car = await carModel.findByIdAndDelete(id);
+
+        if (car.images && car.images.length > 0) {
+            car.images.forEach((image) => {
+                fs.unlink(`uploads/${image}`, (err) => {
+                    if (err) {
+                        console.error(`Error removing image ${image}:`, err);
+                    }
+                });
+            });
+        }
+
+        if (!car) {
+            return res.status(404).json({
+                success: false,
+                message: "Car not found",
+            });
+        }
+
+        const message = `Your car listing "${car.name}" has been rejected and removed.`;
+
+        io.to(car.owner.toString()).emit("notification", { message });
+        console.log(`Notification sent via WebSocket to user ${car.owner}`);
+
+        try {
+            await axios.post("http://localhost:4000/api/notifications", {
+                userId: car.owner,
+                message,
+            });
+            console.log(`Notification sent via API to user ${car.owner}`);
+        } catch (error) {
+            console.error("Error sending notification via API:", error);
+        }
+
+        res.json({
+            success: true,
+            message: "Car rejected and removed successfully",
+        });
+    } catch (err) {
+        console.error("Error rejecting car:", err);
+        res.status(500).json({
+            success: false,
+            message: err.message || "Server error",
+        });
+    }
+};
+
+// Get all pending cars
+const getAllPendingCars = async (req, res) => {
+    try {
+        const pendingCars = await carModel
+            .find({ accepted: false })
+            .populate("owner", "name email type phone");
+
+        res.json({
+            success: true,
+            data: pendingCars,
+        });
+    } catch (err) {
+        console.error("Error getting pending cars:", err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
 export {
     addCar,
     getCars,
@@ -302,4 +395,6 @@ export {
     getMostRecent,
     countView,
     acceptCar,
+    getAllPendingCars,
+    rejectCar,
 };

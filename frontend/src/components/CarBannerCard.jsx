@@ -10,10 +10,10 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
-import { FaTrashCan } from "react-icons/fa6";
+import { FaCheck, FaTrashCan, FaX } from "react-icons/fa6";
 import { AuthContext } from "../context/AuthContext";
 
-const CarBannerCard = ({ car, myAds, remove }) => {
+const CarBannerCard = ({ car, myAds, remove, reject, accept, pending }) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -90,19 +90,18 @@ const CarBannerCard = ({ car, myAds, remove }) => {
                     {formatNumber(car.price)}{" "}
                     <span className="text-sm">EUR</span>
                 </p>
-                {myAds ||
-                    (isAdmin && (
-                        <div
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                remove(car._id);
-                            }}
-                            className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
-                            title="Remove ad"
-                        >
-                            <FaTrashCan className="text-white" />
-                        </div>
-                    ))}
+                {myAds && (
+                    <div
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            remove(car._id);
+                        }}
+                        className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                        title="Remove ad"
+                    >
+                        <FaTrashCan className="text-white" />
+                    </div>
+                )}
                 {!myAds && !isFav && !isAdmin && (
                     <div
                         onClick={(e) => {
@@ -123,6 +122,30 @@ const CarBannerCard = ({ car, myAds, remove }) => {
                         title="Remove from favorites"
                     >
                         <FaHeart className="text-red-500 hover:text-red-700 text-lg sm:text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300" />
+                    </div>
+                )}
+                {pending && (
+                    <div className="flex gap-2 items-center">
+                        <div
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                accept(car._id);
+                            }}
+                            className="bg-green-500 hover:bg-green-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                            title="Accept ad"
+                        >
+                            <FaCheck className="text-white" />
+                        </div>
+                        <div
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                reject(car._id);
+                            }}
+                            className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                            title="Reject ad"
+                        >
+                            <FaX className="text-white" />
+                        </div>
                     </div>
                 )}
             </div>

@@ -190,7 +190,7 @@ const CarAdPage = () => {
                     );
                     toast.success("Car removed successfully!");
 
-                    navigate("/");
+                    navigate("/cars");
 
                     fetchCars();
                     fetchMostPopular();
