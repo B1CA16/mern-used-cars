@@ -18,7 +18,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "https://secondrive.onrender.com/",
+        origin: "https://yoursecondrive.netlify.app",
         methods: ["GET", "POST"],
     },
 });
