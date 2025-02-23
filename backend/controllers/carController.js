@@ -287,10 +287,13 @@ const acceptCar = async (req, res) => {
         console.log(`Notification sent via WebSocket to user ${car.owner}`);
 
         try {
-            await axios.post("http://localhost:4000/api/notifications", {
-                userId: car.owner,
-                message,
-            });
+            await axios.post(
+                "https://secondrive-backend.onrender.com/api/notifications",
+                {
+                    userId: car.owner,
+                    message,
+                }
+            );
             console.log(`Notification sent via API to user ${car.owner}`);
         } catch (error) {
             console.error("Error sending notification via API:", error);
@@ -347,10 +350,13 @@ const rejectCar = async (req, res) => {
         console.log(`Notification sent via WebSocket to user ${car.owner}`);
 
         try {
-            await axios.post("http://localhost:4000/api/notifications", {
-                userId: car.owner,
-                message,
-            });
+            await axios.post(
+                "https://secondrive-backend.onrender.com/api/notifications",
+                {
+                    userId: car.owner,
+                    message,
+                }
+            );
             console.log(`Notification sent via API to user ${car.owner}`);
         } catch (error) {
             console.error("Error sending notification via API:", error);

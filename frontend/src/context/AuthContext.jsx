@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const url = "http://localhost:4000/api/user";
+    const url = import.meta.env.VITE_API_URL + "user";
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [userData, setUserData] = useState(null);
     const [favorites, setFavorites] = useState([]);
