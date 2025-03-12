@@ -121,6 +121,7 @@ const MyAds = () => {
                                         car={car}
                                         reject={rejectCar}
                                         accept={acceptCar}
+                                        disabled={true}
                                     />
                                 </div>
                             ))

@@ -13,7 +13,15 @@ import { CarContext } from "../context/CarContext";
 import { FaCheck, FaTrashCan, FaX } from "react-icons/fa6";
 import { AuthContext } from "../context/AuthContext";
 
-const CarBannerCard = ({ car, myAds, remove, reject, accept, pending }) => {
+const CarBannerCard = ({
+    car,
+    myAds,
+    remove,
+    reject,
+    accept,
+    pending,
+    disabled,
+}) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -44,8 +52,10 @@ const CarBannerCard = ({ car, myAds, remove, reject, accept, pending }) => {
 
     return (
         <div
-            onClick={handleNavigate}
-            className="dark:bg-neutral-800 bg-white rounded-lg overflow-hidden hover:cursor-pointer shadow transform transition-transform duration-300 hover:scale-105 flex flex-wrap sm:flex-nowrap"
+            onClick={!disabled && handleNavigate}
+            className={`dark:bg-neutral-800 bg-white rounded-lg overflow-hidden ${
+                !disabled && "hover:cursor-pointer hover:scale-105"
+            } shadow transform transition-transform duration-300 flex flex-wrap sm:flex-nowrap`}
         >
             <img
                 src={url + "images/" + car.images[0]}

@@ -81,6 +81,12 @@ const MyAds = () => {
         navigate("/");
     }
 
+    // Separate cars by accepted status
+    const pendingCars = myCars.filter((car) => !car.accepted);
+    const approvedCars = myCars.filter((car) => car.accepted);
+
+    const hasAds = pendingCars.length > 0 || approvedCars.length > 0;
+
     return (
         <div>
             <div className="relative bg-blue-700 pt-8 lg:pb-16 md:pb-12 sm:pb-10 pb-8 flex flex-col-reverse xl:flex-row gap-12 items-center lg:justify-between">
@@ -90,24 +96,42 @@ const MyAds = () => {
                 <div className="absolute bottom-0 left-0 z-0 w-full h-24 bg-blue-700 transform origin-bottom-right -skew-y-2"></div>
             </div>
             <BottomWheels />
+
+            {/* Pending Cars Section */}
             <div className="most-popular-section px-2 sm:px-12 py-12">
                 {!loading ? (
                     <div className="w-11/12 xl:w-3/4 mx-auto">
-                        <p className="text-lg mb-4 pl-4">
-                            Showing <strong>{currentCars.length}</strong> of{" "}
-                            <strong>{myCars.length}</strong>{" "}
-                            {myCars.length === 1 ? "ad" : "ads"}
-                        </p>
-
-                        {myCars.length === 0 ? (
+                        <h2 className="text-2xl font-semibold mb-6">
+                            Pending Ads
+                        </h2>
+                        {pendingCars.length === 0 ? (
                             <NotFound
-                                title="No cars found"
-                                message="We couldn't find any cars matching your search."
-                                buttonText="Back to Cars"
-                                link="/cars"
+                                title="No pending ads"
+                                message="We couldn't find any pending ads."
                             />
                         ) : (
-                            currentCars.map((car) => (
+                            pendingCars.map((car) => (
+                                <div key={car._id} className="p-4">
+                                    <CarBannerCard
+                                        myAds={true}
+                                        car={car}
+                                        remove={remove}
+                                        disabled={true}
+                                    />
+                                </div>
+                            ))
+                        )}
+
+                        <h2 className="text-2xl font-semibold mt-8 mb-6">
+                            Approved Ads
+                        </h2>
+                        {approvedCars.length === 0 ? (
+                            <NotFound
+                                title="No approved ads"
+                                message="We couldn't find any approved ads."
+                            />
+                        ) : (
+                            approvedCars.map((car) => (
                                 <div key={car._id} className="p-4">
                                     <CarBannerCard
                                         myAds={true}
@@ -116,6 +140,15 @@ const MyAds = () => {
                                     />
                                 </div>
                             ))
+                        )}
+
+                        {!hasAds && (
+                            <NotFound
+                                title="No cars found"
+                                message="We couldn't find any cars matching your search."
+                                buttonText="Back to Cars"
+                                link="/cars"
+                            />
                         )}
 
                         {myCars.length > carsPerPage && (
