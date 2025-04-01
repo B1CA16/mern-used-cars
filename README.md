@@ -32,7 +32,7 @@ If, when you open the website, the loading is taking a while, it is likely becau
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/seconDrive.git
+git clone https://github.com/B1CA16/react-tailwind-mern-used-cars.git
 cd seconDrive
 ```
 
