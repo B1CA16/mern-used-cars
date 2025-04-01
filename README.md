@@ -9,6 +9,14 @@ This is a concept website for used cars sales and purchase application, built wi
 - Backend: Node.js with Express
 - Database: MongoDB
 
+## Features
+
+- User registration and authentication
+- Listing of available cars
+- Search filters by brand, model, year, etc.
+- Publishing sale advertisements
+- Contact between buyers and sellers
+
 ## Note
 
 If, when you open the website, the loading is taking a while, it is likely because the backend is starting up. Sometimes, if the backend has been inactive for a certain period, it may take a couple of minutes to resume full operation due to the limitations of the free instance on Render.com.
@@ -83,11 +91,3 @@ npm run dev
 ```
 
 3. Access the project at: `http://localhost:5173`
-
-## Features
-
-- User registration and authentication
-- Listing of available cars
-- Search filters by brand, model, year, etc.
-- Publishing sale advertisements
-- Contact between buyers and sellers
