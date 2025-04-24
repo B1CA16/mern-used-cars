@@ -7,6 +7,7 @@ import {
     FaCalendarAlt,
     FaMapMarkerAlt,
     FaHeart,
+    FaSpinner,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
@@ -21,14 +22,15 @@ const CarBannerCard = ({
     accept,
     pending,
     disabled,
+    acceptLoading,
+    rejectLoading,
+    myAdsLoading,
 }) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
         navigate(`/car/${car._id}`);
     };
-
-    const url = import.meta.env.VITE_API_URL;
 
     const { formatNumber } = useContext(CarContext);
     const { favoritesId, addToFavorites, removeFromFavorites, isAdmin } =
@@ -58,7 +60,7 @@ const CarBannerCard = ({
             } shadow transform transition-transform duration-300 flex flex-wrap sm:flex-nowrap`}
         >
             <img
-                src={url + "images/" + car.images[0]}
+                src={car.thumbnail || car.images[0]}
                 alt={car.name}
                 className="w-full sm:w-48 md:w-60 lg:w-72 object-cover"
             />
@@ -103,13 +105,21 @@ const CarBannerCard = ({
                 {myAds && (
                     <div
                         onClick={(e) => {
+                            if (myAdsLoading) return;
                             e.stopPropagation();
                             remove(car._id);
                         }}
-                        className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                        className={`bg-red-500 p-2 rounded-lg text-xl cursor-pointer ${
+                            rejectLoading &&
+                            "hover:scale-110 active:scale-95 hover:bg-red-700 transform transition-transform duration-300 pointer-events-none"
+                        }`}
                         title="Remove ad"
                     >
-                        <FaTrashCan className="text-white" />
+                        {myAdsLoading ? (
+                            <FaSpinner className="text-white animate-spin" />
+                        ) : (
+                            <FaTrashCan className="text-white" />
+                        )}
                     </div>
                 )}
                 {!myAds && !isFav && !isAdmin && (
@@ -138,23 +148,39 @@ const CarBannerCard = ({
                     <div className="flex gap-2 items-center">
                         <div
                             onClick={(e) => {
+                                if (acceptLoading) return;
                                 e.stopPropagation();
                                 accept(car._id);
                             }}
-                            className="bg-green-500 hover:bg-green-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                            className={`bg-green-500 p-2 rounded-lg text-xl cursor-pointer ${
+                                rejectLoading &&
+                                "hover:scale-110 active:scale-95 hover:bg-green-700 transform transition-transform duration-300 pointer-events-none"
+                            }`}
                             title="Accept ad"
                         >
-                            <FaCheck className="text-white" />
+                            {acceptLoading ? (
+                                <FaSpinner className="text-white animate-spin" />
+                            ) : (
+                                <FaCheck className="text-white" />
+                            )}
                         </div>
                         <div
                             onClick={(e) => {
+                                if (rejectLoading) return;
                                 e.stopPropagation();
                                 reject(car._id);
                             }}
-                            className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                            className={`bg-red-500 p-2 rounded-lg text-xl cursor-pointer ${
+                                rejectLoading &&
+                                "hover:scale-110 active:scale-95 hover:bg-red-700 transform transition-transform duration-300 pointer-events-none"
+                            }`}
                             title="Reject ad"
                         >
-                            <FaX className="text-white" />
+                            {rejectLoading ? (
+                                <FaSpinner className="text-white animate-spin" />
+                            ) : (
+                                <FaX className="text-white" />
+                            )}
                         </div>
                     </div>
                 )}

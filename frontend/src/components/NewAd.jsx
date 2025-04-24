@@ -25,7 +25,7 @@ import {
     FaSquarePlus,
     FaUpload,
 } from "react-icons/fa6";
-import { FaTimes } from "react-icons/fa";
+import { FaSpinner, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 import { toast } from "react-toastify";
@@ -150,6 +150,7 @@ const inputExplanations = {
 
 const NewAd = () => {
     const { userData, isAdmin } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [formData, setFormData] = useState({
         owner: userData ? userData?._id : null,
@@ -288,6 +289,7 @@ const NewAd = () => {
         });
 
         try {
+            setIsLoading(true);
             const response = await axios.post(
                 "http://localhost:4000/api/cars",
                 formDataToSend,
@@ -301,20 +303,25 @@ const NewAd = () => {
             if (response.data.success) {
                 fetchCars();
                 toast.success("Ad created successfully!");
-                navigate(`/car/${response.data.car._id}`);
+                navigate(`/my-ads`);
             } else {
                 toast.error(`Error: ${response.data.message}`);
                 console.error("Error creating ad:", response.data.message);
             }
+            setIsLoading(false);
         } catch (error) {
             toast.error("Error creating ad: " + error.message);
             console.error("Error creating ad:", error);
+            setIsLoading(false);
         }
     };
 
-    if (isAdmin) {
-        navigate("/");
-    }
+    useEffect(() => {
+        if (isAdmin) {
+            toast.error("Admins cannot create ads.");
+            navigate("/");
+        }
+    }, [isAdmin, navigate]);
 
     if (!userData) {
         return (
@@ -750,9 +757,21 @@ const NewAd = () => {
                             </a>
                             <button
                                 type="submit"
-                                className="bg-blue-600 text-white w-full uppercase flex items-center font-medium justify-center mx-auto text-base sm:text-lg px-5 py-2 rounded-md hover:scale-105 hover:bg-blue-500 transition duration-300"
+                                className={`bg-blue-600 text-white w-full uppercase flex items-center font-medium justify-center mx-auto text-base sm:text-lg px-5 py-2 rounded-md ${
+                                    !isLoading &&
+                                    "hover:scale-105 hover:bg-blue-500 transition duration-300"
+                                }`}
+                                {...(isLoading ? { disabled: true } : {})}
                             >
-                                Create Ad
+                                {isLoading ? (
+                                    <FaSpinner
+                                        size={24}
+                                        className="text-white animate-spin mr-2"
+                                    />
+                                ) : (
+                                    ""
+                                )}
+                                <span>Create Ad</span>
                             </button>
                         </div>
                     </form>

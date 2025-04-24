@@ -20,6 +20,7 @@ const MyAds = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const carsPerPage = 5;
+    const [loadingStates, setLoadingStates] = useState({});
 
     const navigate = useNavigate();
 
@@ -44,6 +45,7 @@ const MyAds = () => {
         const userId = userData?._id;
 
         if (userId) {
+            setLoadingStates((prev) => ({ ...prev, [carId]: true }));
             const previousCarCount = myCars.length;
 
             axios
@@ -65,6 +67,9 @@ const MyAds = () => {
                 .catch((error) => {
                     console.error("Error removing the car:", error);
                     toast.error("Error removing the car!");
+                })
+                .finally(() => {
+                    setLoadingStates((prev) => ({ ...prev, [carId]: false }));
                 });
         }
     };
@@ -117,6 +122,7 @@ const MyAds = () => {
                                         car={car}
                                         remove={remove}
                                         disabled={true}
+                                        myAdsLoading={loadingStates[car._id]}
                                     />
                                 </div>
                             ))
@@ -137,6 +143,7 @@ const MyAds = () => {
                                         myAds={true}
                                         car={car}
                                         remove={remove}
+                                        myAdsLoading={loadingStates[car._id]}
                                     />
                                 </div>
                             ))

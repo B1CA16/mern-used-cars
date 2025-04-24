@@ -6,6 +6,7 @@ import userRouter from "./routes/userRoute.js";
 import dotenv from "dotenv";
 import notificationRouter from "./routes/notificationRouter.js";
 import http from "http";
+import cloudinary from "cloudinary";
 import { Server } from "socket.io";
 
 dotenv.config();
@@ -38,6 +39,13 @@ app.use("/api/notifications", notificationRouter);
 
 app.get("/", (req, res) => {
     res.send("API Working");
+});
+
+// Cloudinary configuration
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // WebSocket connection handler

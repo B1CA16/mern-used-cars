@@ -1,91 +1,112 @@
-import { create } from "domain";
 import carModel from "../models/carModel.js";
 import userModel from "../models/userModel.js";
-import fs from "fs";
 import mongoose from "mongoose";
-import path from "path";
-import sharp from "sharp";
-import { fileURLToPath } from "url";
 import { io } from "../server.js";
 import axios from "axios";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import cloudinary from "cloudinary";
+import fs from "fs";
 
 // Add a new car
 const addCar = async (req, res) => {
-    const image_filenames = [];
-
-    if (req.files) {
-        for (const file of req.files) {
-            const inputPath = file.path;
-            const outputPath = path.join(
-                __dirname,
-                "../uploads",
-                `temp_${file.filename}`
-            );
-
-            try {
-                const metadata = await sharp(inputPath).metadata();
-
-                const newWidth = 1280;
-                const newHeight = Math.round((newWidth * 9) / 16);
-
-                await sharp(inputPath)
-                    .resize(newWidth, newHeight)
-                    .toFile(outputPath);
-
-                fs.renameSync(outputPath, inputPath);
-
-                image_filenames.push(file.filename);
-            } catch (err) {
-                console.error("Error redimensioning image:", err);
-                return res.json({
-                    success: false,
-                    message: "Error processing image",
-                });
-            }
-        }
+    if (!req.files || req.files.length === 0) {
+        return res.json({ success: false, message: "No image file uploaded" });
     }
 
-    const car = new carModel({
-        name: req.body.name,
-        brand: req.body.brand,
-        model: req.body.model,
-        version: req.body.version,
-        segment: req.body.segment,
-        year: req.body.year,
-        month_of_registration: req.body.month_of_registration,
-        km: req.body.km,
-        fuel: req.body.fuel,
-        hp: req.body.hp,
-        cm3: req.body.cm3,
-        location: req.body.location,
-        images: image_filenames,
-        price: req.body.price,
-        transmission: req.body.transmission,
-        owner: req.body.owner,
-        description: req.body.description,
-        financing_available: req.body.financing_available,
-        fixed_value: req.body.fixed_value,
-        warranty: req.body.warranty,
-        previous_owners: req.body.previous_owners,
-        service_book: req.body.service_book,
-        non_smoker: req.body.non_smoker,
-        second_key: req.body.second_key,
-        vehicle_class: req.body.vehicle_class,
-        extras: {
-            audio_and_multimedia: req.body.audio_and_multimedia || [],
-            comfort_and_other_equipment:
-                req.body.comfort_and_other_equipment || [],
-            electronic_and_driving_assistance:
-                req.body.electronic_and_driving_assistance || [],
-            safety: req.body.safety || [],
-        },
-        created_at: new Date(),
-    });
-
     try {
+        const image_urls = [];
+        let thumbnail_url = "";
+
+        const uploadPromises = req.files.map(async (file, index) => {
+            try {
+                console.log("Processing file:", file.path);
+
+                const result = await cloudinary.uploader.upload(file.path, {
+                    resource_type: "auto",
+                    folder: "cars",
+                    quality: "auto",
+                    fetch_format: "auto",
+                    transformation: [
+                        { width: 1280, height: 720, crop: "fill" },
+                    ],
+                });
+
+                image_urls.push(result.secure_url);
+
+                if (index === 0) {
+                    const thumbnailResult = await cloudinary.uploader.upload(
+                        file.path,
+                        {
+                            resource_type: "auto",
+                            folder: "cars/thumbnails",
+                            transformation: [
+                                {
+                                    width: 400,
+                                    height: 225,
+                                    crop: "fill",
+                                    quality: 70,
+                                },
+                            ],
+                        }
+                    );
+
+                    thumbnail_url = thumbnailResult.secure_url;
+                    console.log("Thumbnail URL set:", thumbnail_url);
+                }
+
+                fs.unlinkSync(file.path);
+                console.log("Temporary file removed:", file.path);
+            } catch (err) {
+                console.error("Error uploading image to Cloudinary:", err);
+            }
+        });
+
+        await Promise.all(uploadPromises);
+
+        if (image_urls.length === 0) {
+            return res.json({
+                success: false,
+                message: "Failed to upload any images",
+            });
+        }
+
+        const car = new carModel({
+            name: req.body.name,
+            brand: req.body.brand,
+            model: req.body.model,
+            version: req.body.version,
+            segment: req.body.segment,
+            year: req.body.year,
+            month_of_registration: req.body.month_of_registration,
+            km: req.body.km,
+            fuel: req.body.fuel,
+            hp: req.body.hp,
+            cm3: req.body.cm3,
+            location: req.body.location,
+            images: image_urls,
+            thumbnail: thumbnail_url || "",
+            price: req.body.price,
+            transmission: req.body.transmission,
+            owner: req.body.owner,
+            description: req.body.description,
+            financing_available: req.body.financing_available,
+            fixed_value: req.body.fixed_value,
+            warranty: req.body.warranty,
+            previous_owners: req.body.previous_owners,
+            service_book: req.body.service_book,
+            non_smoker: req.body.non_smoker,
+            second_key: req.body.second_key,
+            vehicle_class: req.body.vehicle_class,
+            extras: {
+                audio_and_multimedia: req.body.audio_and_multimedia || [],
+                comfort_and_other_equipment:
+                    req.body.comfort_and_other_equipment || [],
+                electronic_and_driving_assistance:
+                    req.body.electronic_and_driving_assistance || [],
+                safety: req.body.safety || [],
+            },
+            created_at: new Date(),
+        });
+
         const savedCar = await car.save();
 
         const user = await userModel.findById(req.body.owner);
@@ -102,6 +123,7 @@ const addCar = async (req, res) => {
             car: savedCar,
         });
     } catch (err) {
+        console.error("Main error in addCar:", err);
         res.json({ success: false, message: err.message });
     }
 };
@@ -206,13 +228,35 @@ const removeCar = async (req, res) => {
         }
 
         if (car.images && car.images.length > 0) {
-            car.images.forEach((image) => {
-                fs.unlink(`uploads/${image}`, (err) => {
-                    if (err) {
-                        console.error(`Error removing image ${image}:`, err);
+            for (const imageUrl of car.images) {
+                try {
+                    const publicId = extractPublicIdFromUrl(imageUrl);
+                    if (publicId) {
+                        await cloudinary.uploader
+                            .destroy(publicId)
+                            .then((result) => console.log(result));
                     }
-                });
-            });
+                } catch (error) {
+                    console.error(
+                        `Error removing image from Cloudinary: ${error}`
+                    );
+                }
+            }
+        }
+
+        if (car.thumbnail) {
+            try {
+                const thumbnailPublicId = extractPublicIdFromUrl(car.thumbnail);
+                if (thumbnailPublicId) {
+                    await cloudinary.uploader
+                        .destroy(thumbnailPublicId)
+                        .then((result) => console.log(result));
+                }
+            } catch (error) {
+                console.error(
+                    `Error removing thumbnail from Cloudinary: ${error}`
+                );
+            }
         }
 
         const user = await userModel.findOne({ cars: id });
@@ -325,17 +369,7 @@ const rejectCar = async (req, res) => {
             });
         }
 
-        const car = await carModel.findByIdAndDelete(id);
-
-        if (car.images && car.images.length > 0) {
-            car.images.forEach((image) => {
-                fs.unlink(`uploads/${image}`, (err) => {
-                    if (err) {
-                        console.error(`Error removing image ${image}:`, err);
-                    }
-                });
-            });
-        }
+        const car = await carModel.findById(id);
 
         if (!car) {
             return res.status(404).json({
@@ -343,6 +377,40 @@ const rejectCar = async (req, res) => {
                 message: "Car not found",
             });
         }
+
+        if (car.images && car.images.length > 0) {
+            for (const imageUrl of car.images) {
+                try {
+                    const publicId = extractPublicIdFromUrl(imageUrl);
+                    if (publicId) {
+                        await cloudinary.uploader
+                            .destroy(publicId)
+                            .then((result) => console.log(result));
+                    }
+                } catch (error) {
+                    console.error(
+                        `Error removing image from Cloudinary: ${error}`
+                    );
+                }
+            }
+        }
+
+        if (car.thumbnail) {
+            try {
+                const thumbnailPublicId = extractPublicIdFromUrl(car.thumbnail);
+                if (thumbnailPublicId) {
+                    await cloudinary.uploader
+                        .destroy(thumbnailPublicId)
+                        .then((result) => console.log(result));
+                }
+            } catch (error) {
+                console.error(
+                    `Error removing thumbnail from Cloudinary: ${error}`
+                );
+            }
+        }
+
+        await carModel.findByIdAndDelete(id);
 
         const message = `Your car listing "${car.name}" has been rejected and removed.`;
 
@@ -389,6 +457,31 @@ const getAllPendingCars = async (req, res) => {
     } catch (err) {
         console.error("Error getting pending cars:", err);
         res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+// Function to extract public ID from URL
+const extractPublicIdFromUrl = (url) => {
+    try {
+        const uploadIndex = url.indexOf("/upload/");
+        if (uploadIndex === -1) return null;
+
+        let path = url.substring(uploadIndex + 8);
+
+        const queryIndex = path.indexOf("?");
+        if (queryIndex !== -1) {
+            path = path.substring(0, queryIndex);
+        }
+
+        path = path.replace(/^v\d+\//, "");
+
+        path = path.replace(/\.[^/.]+$/, "");
+
+        console.log(`URL: ${url} -> Public ID: ${path}`);
+        return path;
+    } catch (error) {
+        console.error("Error extracting public ID:", error);
+        return null;
     }
 };
 

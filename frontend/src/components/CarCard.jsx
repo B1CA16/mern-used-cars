@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { CarContext } from "../context/CarContext";
 
 const CarCard = ({ car }) => {
-    const url = import.meta.env.VITE_API_URL;
-
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -20,7 +18,7 @@ const CarCard = ({ car }) => {
             className="dark:bg-neutral-800 rounded-lg overflow-hidden hover:cursor-pointer shadow transform transition-transform duration-300 hover:scale-105"
         >
             <img
-                src={url + "images/" + car.images[0]}
+                src={car.thumbnail || car.images[0]}
                 alt={car.name}
                 className="w-full h-48 object-cover"
             />

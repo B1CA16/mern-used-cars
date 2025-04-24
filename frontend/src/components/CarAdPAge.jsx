@@ -10,6 +10,7 @@ import {
     FaGasPump,
     FaPhone,
     FaRoad,
+    FaSpinner,
     FaUser,
 } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
@@ -40,6 +41,7 @@ const CarAdPage = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const mainSwiperRef = useRef(null);
+    const [loading, setLoading] = useState(false);
 
     const {
         favoritesId,
@@ -182,6 +184,7 @@ const CarAdPage = () => {
         const userId = userData?._id;
 
         if (userId) {
+            setLoading(true);
             axios
                 .delete(`${url}cars/${carId}`)
                 .then(() => {
@@ -195,10 +198,12 @@ const CarAdPage = () => {
                     fetchCars();
                     fetchMostPopular();
                     fetchMostRecent();
+                    setLoading(false);
                 })
                 .catch((error) => {
                     console.error("Error removing the car:", error);
                     toast.error("Error removing the car!");
+                    setLoading(false);
                 });
         }
     };
@@ -255,13 +260,21 @@ const CarAdPage = () => {
                 ) : (
                     <div
                         onClick={(e) => {
+                            if (loading) return;
                             e.stopPropagation();
                             remove(car._id);
                         }}
-                        className="bg-red-500 hover:bg-red-700 p-2 rounded-lg text-xl cursor-pointer hover:scale-110 active:scale-95 transform transition-transform duration-300"
+                        className={`bg-red-500 p-2 rounded-lg text-xl cursor-pointer ${
+                            loading &&
+                            "hover:scale-110 active:scale-95 hover:bg-red-700 transform transition-transform duration-300 pointer-events-none"
+                        }`}
                         title="Remove ad"
                     >
-                        <FaTrashCan className="text-white" />
+                        {loading ? (
+                            <FaSpinner className="text-white animate-spin" />
+                        ) : (
+                            <FaTrashCan className="text-white" />
+                        )}
                     </div>
                 )}
             </div>
@@ -311,7 +324,7 @@ const CarAdPage = () => {
                                         <SwiperSlide key={index}>
                                             <div className="flex flex-col items-center">
                                                 <img
-                                                    src={`${url}images/${image}`}
+                                                    src={`${image}`}
                                                     alt={`Car image ${
                                                         index + 1
                                                     }`}
@@ -347,7 +360,7 @@ const CarAdPage = () => {
                                             >
                                                 <div className="flex justify-center">
                                                     <img
-                                                        src={`${url}images/${image}`}
+                                                        src={`${image}`}
                                                         alt={`Car image preview ${
                                                             index + 1
                                                         }`}
@@ -394,7 +407,7 @@ const CarAdPage = () => {
                                                         >
                                                             <div className="flex justify-center">
                                                                 <img
-                                                                    src={`${url}images/${image}`}
+                                                                    src={`${image}`}
                                                                     alt={`Fullscreen image ${
                                                                         index +
                                                                         1
@@ -619,7 +632,7 @@ const CarAdPage = () => {
                                 Seller
                             </h2>
                             <div className="mb-1">
-                                {car.owner.name ? (
+                                {car.owner.type === "user" ? (
                                     <div className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base">
                                         <p className="flex items-center gap-4 mb-1">
                                             <FaUser />
@@ -634,7 +647,7 @@ const CarAdPage = () => {
                                     <div className="text-neutral-800 dark:text-neutral-200 sm:text-lg text-base">
                                         <p className="flex items-center gap-4 mb-1">
                                             <FaBuilding />
-                                            {car.owner.company}
+                                            {car.owner.name}
                                         </p>
                                         <p className="flex items-center gap-4">
                                             <FaPhone />

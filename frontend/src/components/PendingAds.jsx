@@ -18,6 +18,8 @@ const MyAds = () => {
         useContext(CarContext);
     const [cars, setCars] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [acceptLoadingId, setAcceptLoadingId] = useState(null);
+    const [rejectLoadingId, setRejectLoadingId] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
     const carsPerPage = 5;
 
@@ -27,6 +29,7 @@ const MyAds = () => {
         const userId = userData?._id;
 
         if (userId) {
+            setLoading(true);
             axios
                 .get(`${url}cars/pending`)
                 .then((response) => {
@@ -41,6 +44,7 @@ const MyAds = () => {
     }, [userData, url]);
 
     const acceptCar = (carId) => {
+        setAcceptLoadingId(carId);
         axios
             .patch(`${url}cars/accept/${carId}`)
             .then(() => {
@@ -55,10 +59,12 @@ const MyAds = () => {
             .catch((error) => {
                 console.error("Error accepting the car:", error);
                 toast.error("Error accepting the car!");
-            });
+            })
+            .finally(() => setAcceptLoadingId(null));
     };
 
     const rejectCar = (carId) => {
+        setRejectLoadingId(carId);
         axios
             .delete(`${url}cars/reject/${carId}`)
             .then(() => {
@@ -73,7 +79,8 @@ const MyAds = () => {
             .catch((error) => {
                 console.error("Error rejecting the car:", error);
                 toast.error("Error rejecting the car!");
-            });
+            })
+            .finally(() => setRejectLoadingId(null));
     };
 
     const startIndex = currentPage * carsPerPage;
@@ -122,6 +129,12 @@ const MyAds = () => {
                                         reject={rejectCar}
                                         accept={acceptCar}
                                         disabled={true}
+                                        acceptLoading={
+                                            acceptLoadingId === car._id
+                                        }
+                                        rejectLoading={
+                                            rejectLoadingId === car._id
+                                        }
                                     />
                                 </div>
                             ))
