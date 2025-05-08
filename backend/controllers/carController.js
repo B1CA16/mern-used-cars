@@ -23,7 +23,6 @@ const addCar = async (req, res) => {
                 const result = await cloudinary.uploader.upload(file.path, {
                     resource_type: "auto",
                     folder: "cars",
-                    quality: "auto",
                     fetch_format: "auto",
                     transformation: [
                         { width: 1280, height: 720, crop: "fill" },
@@ -43,7 +42,6 @@ const addCar = async (req, res) => {
                                     width: 400,
                                     height: 225,
                                     crop: "fill",
-                                    quality: 70,
                                 },
                             ],
                         }
