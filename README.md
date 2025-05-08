@@ -27,6 +27,7 @@ If, when you open the website, the loading is taking a while, it is likely becau
 - Node.js 
 - npm or other package manager
 - MongoDB Atlas account or local MongoDB
+- Cloudinary account
 
 ### Installation
 
@@ -54,6 +55,9 @@ npm install
 ```
 JWT_SECRET="random#secret"
 MONGODB_URI="mongodb+srv://your-username:your-password@your-cluster.mongodb.net/SeconDrive"
+CLOUDINARY_CLOUD_NAME="your_cloud_name"
+CLOUDINARY_API_KEY="your_api_public_key"
+CLOUDINARY_API_SECRET="your_api_secret_key"
 PORT=5000
 ```
 
